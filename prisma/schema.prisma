@@ -9,7 +9,7 @@ datasource db {
 
 model billing_adresses {
   id            Int     @id
-  user_id       Int
+  user_id       String
   forname       String? @db.VarChar(255)
   surname       String? @db.VarChar(255)
   company_name  String? @db.VarChar(255)
@@ -20,21 +20,9 @@ model billing_adresses {
   state         String  @db.VarChar(255)
   phonenumber   String  @db.VarChar(255)
   city          String  @db.VarChar(255)
-  user          user    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_BILLING_ADRESSES")
+  user          User    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_BILLING_ADRESSES")
 
   @@index([user_id], map: "User_BILLING_ADRESSES")
-}
-
-model external_user {
-  id               Int     @id
-  user_id          Int
-  external_user_id String  @db.VarChar(255)
-  username         String? @db.VarChar(255)
-  email            String? @db.VarChar(255)
-  avatar_url       String? @db.VarChar(255)
-  user             user    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_EXTERNAL_USER")
-
-  @@index([user_id], map: "User_EXTERNAL_USER")
 }
 
 model game_server_product {
@@ -64,7 +52,7 @@ model payment_providers {
 
 model payments {
   id                   Int               @id
-  User_id              Int
+  User_id              String
   payment_providers_id Int
   provider_payment_id  String            @db.VarChar(255)
   product_type         String            @db.VarChar(255)
@@ -72,7 +60,7 @@ model payments {
   tax_value            Decimal           @db.Decimal(10, 0)
   tax_percent          Int
   total_price          Decimal           @db.Decimal(10, 0)
-  user                 user              @relation(fields: [User_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_PAYMENTS")
+  user                 User              @relation(fields: [User_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_PAYMENTS")
   payment_providers    payment_providers @relation(fields: [payment_providers_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "PAYMENT_PROVIDERS_PAYMENTS")
 
   @@index([payment_providers_id], map: "PAYMENT_PROVIDERS_PAYMENTS")
@@ -101,18 +89,6 @@ model pterodactyl_server_options {
   game_server_product game_server_product[]
 }
 
-model user {
-  id               Int                @id
-  username         String             @db.VarChar(255)
-  email            String             @db.VarChar(255)
-  creation_date    DateTime           @db.Timestamp(0)
-  disabled         Boolean
-  avatar           String?            @db.VarChar(255)
-  billing_adresses billing_adresses[]
-  external_user    external_user[]
-  payments         payments[]
-}
-
 model vps_product {
   id                 Int              @id
   name               String           @db.VarChar(255)
@@ -130,4 +106,57 @@ model vps_systems {
   id          Int           @id
   system_name String        @db.VarChar(255)
   vps_product vps_product[]
+}
+
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id               String    @id @default(cuid())
+  name             String?
+  email            String?   @unique
+  emailVerified    DateTime?
+  image            String?
+  accounts         Account[]
+  sessions         Session[]
+  username         String?             @db.VarChar(255)
+  creation_date    DateTime?           @db.Timestamp(0)
+  disabled         Boolean?
+  avatar           String?            @db.VarChar(255)
+  billing_adresses billing_adresses[]
+  payments         payments[]
+}
+
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
