@@ -1,30 +1,14 @@
-// ** Next Imports
 import Head from 'next/head'
 import { Router } from 'next/router'
-
-// ** Loader Import
 import NProgress from 'nprogress'
-
-// ** Emotion Imports
 import { CacheProvider } from '@emotion/react'
-
-// ** Config Imports
 import themeConfig from 'src/configs/themeConfig'
-
-// ** Component Imports
 import UserLayout from 'src/layouts/UserLayout'
 import ThemeComponent from 'src/@core/theme/ThemeComponent'
-
-// ** Contexts
 import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext'
-
-// ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
-
-// ** React Perfect Scrollbar Style
+import { SessionProvider } from 'next-auth/react'
 import 'react-perfect-scrollbar/dist/css/styles.css'
-
-// ** Global css styles
 import '../../styles/globals.css'
 
 const clientSideEmotionCache = createEmotionCache()
@@ -43,7 +27,7 @@ if (themeConfig.routingLoader) {
 }
 
 // ** Configure JSS & ClassName
-const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps }) => {
+const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps: { session, ...pageProps } }) => {
   // Variables
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
@@ -60,11 +44,13 @@ const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps }) =>
       </Head>
 
       <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-          }}
-        </SettingsConsumer>
+        <SessionProvider session={session}>
+          <SettingsConsumer>
+            {({ settings }) => {
+              return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+            }}
+          </SettingsConsumer>
+        </SessionProvider>
       </SettingsProvider>
     </CacheProvider>
   )

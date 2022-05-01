@@ -108,20 +108,19 @@ model vps_systems {
   vps_product vps_product[]
 }
 
-
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -137,21 +136,19 @@ model Session {
 }
 
 model User {
-  id               String    @id @default(cuid())
-  name             String?
-  email            String?   @unique
+  id               String             @id @default(cuid()) @db.VarChar(255)
+  name             String?            @db.VarChar(255)
+  email            String?            @unique @db.VarChar(255)
   emailVerified    DateTime?
-  image            String?
+  image            String?            @db.VarChar(255)
   accounts         Account[]
   sessions         Session[]
-  username         String?             @db.VarChar(255)
-  creation_date    DateTime?           @db.Timestamp(0)
+  createdAt        DateTime?          @db.Timestamp(0)
+  updatedAt        DateTime?          @db.Timestamp(0)
   disabled         Boolean?
-  avatar           String?            @db.VarChar(255)
   billing_adresses billing_adresses[]
   payments         payments[]
 }
-
 
 model VerificationToken {
   identifier String

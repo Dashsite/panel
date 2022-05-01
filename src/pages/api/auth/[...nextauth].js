@@ -15,5 +15,22 @@ export default NextAuth({
   ],
   pages: {
     signIn: '/pages/login'
+  },
+  events: {
+    createUser: async ({ user }) => {
+      console.log(user)
+
+      // add additional user fields here to db
+      await prisma.user.update({
+        where: {
+          id: user.id
+        },
+        data: {
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          disabled: false
+        }
+      })
+    }
   }
 })
