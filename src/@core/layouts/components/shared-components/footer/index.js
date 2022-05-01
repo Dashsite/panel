@@ -1,19 +1,18 @@
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import { useTheme } from '@mui/material/styles'
+import { useSelector } from 'react-redux'
 
 // ** Footer Content Component
 import FooterContent from './FooterContent'
 
 const Footer = props => {
   // ** Props
-  const { settings, footerContent: userFooterContent } = props
+  const { footerContent: userFooterContent } = props
 
   // ** Hook
+  const contentWidth = useSelector(state => state.themeSettings.contentWidth)
   const theme = useTheme()
-
-  // ** Vars
-  const { contentWidth } = settings
 
   return (
     <Box

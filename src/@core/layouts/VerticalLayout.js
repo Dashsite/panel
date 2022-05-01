@@ -1,24 +1,14 @@
-// ** React Imports
 import { useState } from 'react'
-
-// ** MUI Imports
 import Fab from '@mui/material/Fab'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
-
-// ** Icons Imports
 import ArrowUp from 'mdi-material-ui/ArrowUp'
-
-// ** Theme Config Import
+import { useSelector } from 'react-redux'
 import themeConfig from 'src/configs/themeConfig'
-
-// ** Components
 import AppBar from './components/vertical/appBar'
 import Navigation from './components/vertical/navigation'
 import Footer from './components/shared-components/footer'
 import ScrollToTop from 'src/@core/components/scroll-to-top'
-
-// ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 
 const VerticalLayoutWrapper = styled('div')({
@@ -45,18 +35,12 @@ const ContentWrapper = styled('main')(({ theme }) => ({
   }
 }))
 
-const VerticalLayout = props => {
-  // ** Props
-  const { settings, children, scrollToTop } = props
-
-  // ** Vars
-  const { contentWidth } = settings
+const VerticalLayout = ({ children, scrollToTop, ...props }) => {
+  const contentWidth = useSelector(state => state.themeSettings.contentWidth)
   const navWidth = themeConfig.navigationSize
 
-  // ** States
   const [navVisible, setNavVisible] = useState(false)
 
-  // ** Toggle Functions
   const toggleNavVisibility = () => setNavVisible(!navVisible)
 
   return (

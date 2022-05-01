@@ -2,6 +2,7 @@
 import { styled, useTheme } from '@mui/material/styles'
 import MuiAppBar from '@mui/material/AppBar'
 import MuiToolbar from '@mui/material/Toolbar'
+import { useSelector } from 'react-redux'
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   transition: 'none',
@@ -29,13 +30,11 @@ const Toolbar = styled(MuiToolbar)(({ theme }) => ({
 
 const LayoutAppBar = props => {
   // ** Props
-  const { settings, verticalAppBarContent: userVerticalAppBarContent } = props
+  const { verticalAppBarContent: userVerticalAppBarContent } = props
 
   // ** Hooks
   const theme = useTheme()
-
-  // ** Vars
-  const { contentWidth } = settings
+  const contentWidth = useSelector(state => state.themeSettings.contentWidth)
 
   return (
     <AppBar elevation={0} color='default' className='layout-navbar' position='static'>

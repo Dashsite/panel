@@ -16,12 +16,14 @@ import themeOptions from './ThemeOptions'
 // ** Global Styles
 import GlobalStyling from './globalStyles'
 
-const ThemeComponent = props => {
+import { useSelector } from 'react-redux'
+
+const ThemeComponent = ({ children }) => {
   // ** Props
-  const { settings, children } = props
+  const themeSettings = useSelector(state => state.themeSettings)
 
   // ** Merged ThemeOptions of Core and User
-  const coreThemeConfig = themeOptions(settings)
+  const coreThemeConfig = themeOptions(themeSettings)
 
   // ** Pass ThemeOptions to CreateTheme Function to create partial theme without component overrides
   let theme = createTheme(coreThemeConfig)

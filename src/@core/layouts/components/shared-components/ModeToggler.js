@@ -3,28 +3,19 @@ import IconButton from '@mui/material/IconButton'
 // ** Icons Imports
 import WeatherNight from 'mdi-material-ui/WeatherNight'
 import WeatherSunny from 'mdi-material-ui/WeatherSunny'
+import { useSelector, useDispatch } from 'react-redux'
 
-const ModeToggler = props => {
-  // ** Props
-  const { settings, saveSettings } = props
+import { toggleMode } from 'src/redux/reducers/themeSettings'
 
-  const handleModeChange = mode => {
-    saveSettings({ ...settings, mode })
-  }
-
-  const handleModeToggle = () => {
-    if (settings.mode === 'light') {
-      handleModeChange('dark')
-    } else {
-      handleModeChange('light')
-    }
-  }
+const ThemeModeToggler = () => {
+  const dispatch = useDispatch()
+  const mode = useSelector(state => state.themeSettings.mode)
 
   return (
-    <IconButton color='inherit' aria-haspopup='true' onClick={handleModeToggle}>
-      {settings.mode === 'dark' ? <WeatherSunny /> : <WeatherNight />}
+    <IconButton color='inherit' aria-haspopup='true' onClick={() => dispatch(toggleMode())}>
+      {mode === 'dark' ? <WeatherSunny /> : <WeatherNight />}
     </IconButton>
   )
 }
 
-export default ModeToggler
+export default ThemeModeToggler
