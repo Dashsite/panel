@@ -7,7 +7,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import VerticalLayout from 'src/@core/layouts/VerticalLayout'
 
 // ** Navigation Imports
-import VerticalNavItems from 'src/navigation/vertical'
+import VerticalNavItems from 'src/views/navigation/vertical'
 
 // ** Component Import
 import VerticalAppBarContent from './components/vertical/AppBarContent'
