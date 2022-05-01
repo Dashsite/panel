@@ -39,6 +39,9 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
+// ** Auth Imports
+import { getProviders, signIn } from 'next-auth/react'
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -57,7 +60,7 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
-const LoginPage = () => {
+const LoginPage = ({ providers }) => {
   // ** State
   const [values, setValues] = useState({
     password: '',
@@ -164,10 +167,11 @@ const LoginPage = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField disabled autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
+                disabled
                 label='Password'
                 value={values.password}
                 id='auth-login-password'
@@ -201,6 +205,7 @@ const LoginPage = () => {
               variant='contained'
               sx={{ marginBottom: 7 }}
               onClick={() => router.push('/')}
+              disabled
             >
               Login
             </Button>
@@ -216,7 +221,7 @@ const LoginPage = () => {
             </Box>
             <Divider sx={{ my: 5 }}>or</Divider>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
+              {/* <Link href='/' passHref>
                 <IconButton component='a' onClick={e => e.preventDefault()}>
                   <Facebook sx={{ color: '#497ce2' }} />
                 </IconButton>
@@ -232,9 +237,9 @@ const LoginPage = () => {
                     sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
                   />
                 </IconButton>
-              </Link>
+              </Link> */}
               <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
+                <IconButton component='a' onClick={() => signIn(providers['google'].id)}>
                   <Google sx={{ color: '#db4437' }} />
                 </IconButton>
               </Link>
@@ -249,3 +254,11 @@ const LoginPage = () => {
 LoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
 export default LoginPage
+
+export async function getServerSideProps(context) {
+  const providers = await getProviders()
+
+  return {
+    props: { providers }
+  }
+}
