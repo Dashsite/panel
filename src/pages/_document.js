@@ -1,13 +1,6 @@
-// ** React Import
 import { Children } from 'react'
-
-// ** Next Import
 import Document, { Html, Head, Main, NextScript } from 'next/document'
-
-// ** Emotion Imports
 import createEmotionServer from '@emotion/server/create-instance'
-
-// ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 
 class CustomDocument extends Document {
@@ -32,19 +25,14 @@ class CustomDocument extends Document {
     )
   }
 }
+
 CustomDocument.getInitialProps = async ctx => {
   const originalRenderPage = ctx.renderPage
   const cache = createEmotionCache()
   const { extractCriticalToChunks } = createEmotionServer(cache)
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: App => props =>
-        (
-          <App
-            {...props} // @ts-ignore
-            emotionCache={cache}
-          />
-        )
+      enhanceApp: App => props => <App {...props} emotionCache={cache} />
     })
   const initialProps = await Document.getInitialProps(ctx)
   const emotionStyles = extractCriticalToChunks(initialProps.html)
