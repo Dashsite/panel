@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model billing_adresses {
+  id            Int     @id
+  user_id       Int
+  forname       String? @db.VarChar(255)
+  surname       String? @db.VarChar(255)
+  company_name  String? @db.VarChar(255)
+  adress_line_1 String  @db.VarChar(255)
+  adress_line_2 String? @db.VarChar(255)
+  postalcode    String  @db.VarChar(255)
+  country       String  @db.VarChar(255)
+  state         String  @db.VarChar(255)
+  phonenumber   String  @db.VarChar(255)
+  city          String  @db.VarChar(255)
+  user          user    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_BILLING_ADRESSES")
+
+  @@index([user_id], map: "User_BILLING_ADRESSES")
+}
+
+model external_user {
+  id               Int     @id
+  user_id          Int
+  external_user_id String  @db.VarChar(255)
+  username         String? @db.VarChar(255)
+  email            String? @db.VarChar(255)
+  avatar_url       String? @db.VarChar(255)
+  user             user    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_EXTERNAL_USER")
+
+  @@index([user_id], map: "User_EXTERNAL_USER")
+}
+
+model game_server_product {
+  id                            Int                         @id
+  name                          String                      @db.VarChar(255)
+  price_per_hour                Decimal                     @db.Decimal(10, 0)
+  game_server_systems_id        Int
+  pterodactyl_server_options_id Int?
+  game_server_systems           game_server_systems         @relation(fields: [game_server_systems_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "GAME_SERVER_TYPES_GAME_SERVER_PRODUCT")
+  pterodactyl_server_options    pterodactyl_server_options? @relation(fields: [pterodactyl_server_options_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "PTERODACTYL_OPTIONS_GAME_SERVER_PRODUCT")
+
+  @@index([game_server_systems_id], map: "GAME_SERVER_TYPES_GAME_SERVER_PRODUCT")
+  @@index([pterodactyl_server_options_id], map: "PTERODACTYL_OPTIONS_GAME_SERVER_PRODUCT")
+}
+
+model game_server_systems {
+  id                  Int                   @id
+  system_name         String                @db.VarChar(255)
+  game_server_product game_server_product[]
+}
+
+model payment_providers {
+  id       Int        @id
+  name     String     @db.VarChar(255)
+  payments payments[]
+}
+
+model payments {
+  id                   Int               @id
+  User_id              Int
+  payment_providers_id Int
+  provider_payment_id  String            @db.VarChar(255)
+  product_type         String            @db.VarChar(255)
+  product_id           Int
+  tax_value            Decimal           @db.Decimal(10, 0)
+  tax_percent          Int
+  total_price          Decimal           @db.Decimal(10, 0)
+  user                 user              @relation(fields: [User_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_PAYMENTS")
+  payment_providers    payment_providers @relation(fields: [payment_providers_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "PAYMENT_PROVIDERS_PAYMENTS")
+
+  @@index([payment_providers_id], map: "PAYMENT_PROVIDERS_PAYMENTS")
+  @@index([User_id], map: "User_PAYMENTS")
+}
+
+model proxmox_options {
+  id             Int           @id
+  cpu_cores      Int
+  memory         Int
+  minimum_memory Int?
+  disk_size      Int
+  cpu_ballooning Boolean
+  vps_product    vps_product[]
+}
+
+model pterodactyl_server_options {
+  id                  Int                   @id
+  memory              Int
+  cpu                 Int
+  disk_storage        Int
+  block_io_weight     Int
+  db_limit            Int
+  allocation_limit    Int
+  backup_limit        Int
+  game_server_product game_server_product[]
+}
+
+model user {
+  id               Int                @id
+  username         String             @db.VarChar(255)
+  email            String             @db.VarChar(255)
+  creation_date    DateTime           @db.Timestamp(0)
+  disabled         Boolean
+  avatar           String?            @db.VarChar(255)
+  billing_adresses billing_adresses[]
+  external_user    external_user[]
+  payments         payments[]
+}
+
+model vps_product {
+  id                 Int              @id
+  name               String           @db.VarChar(255)
+  price_per_hour     Int
+  vps_systems_id     Int
+  proxmox_options_id Int?
+  proxmox_options    proxmox_options? @relation(fields: [proxmox_options_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "PROXMOX_OPTIONS_VPS_PRODUCT")
+  vps_systems        vps_systems      @relation(fields: [vps_systems_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "VPS_SYSTEMS_VPS_PRODUCT")
+
+  @@index([proxmox_options_id], map: "PROXMOX_OPTIONS_VPS_PRODUCT")
+  @@index([vps_systems_id], map: "VPS_SYSTEMS_VPS_PRODUCT")
+}
+
+model vps_systems {
+  id          Int           @id
+  system_name String        @db.VarChar(255)
+  vps_product vps_product[]
+}
