@@ -1,20 +1,26 @@
 import { useState, Fragment } from 'react'
 import Link from 'next/link'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import InputLabel from '@mui/material/InputLabel'
-import IconButton from '@mui/material/IconButton'
-import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Divider,
+  Checkbox,
+  TextField,
+  Typography,
+  InputLabel,
+  IconButton,
+  CardContent,
+  List,
+  ListItem,
+  FormControl,
+  OutlinedInput,
+  Card as MuiCard,
+  InputAdornment,
+  FormControlLabel as MuiFormControlLabel
+} from '@mui/material'
 import { styled } from '@mui/material/styles'
-import MuiCard from '@mui/material/Card'
-import InputAdornment from '@mui/material/InputAdornment'
-import MuiFormControlLabel from '@mui/material/FormControlLabel'
 import Google from 'mdi-material-ui/Google'
 import Github from 'mdi-material-ui/Github'
 import Twitter from 'mdi-material-ui/Twitter'
@@ -47,9 +53,13 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 }))
 
 const RegisterPage = ({ providers }) => {
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [isPrivacyChecked, setIsPrivacyChecked] = useState(false)
+  const [error, setError] = useState('')
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
@@ -79,86 +89,119 @@ const RegisterPage = ({ providers }) => {
               Adventure starts here 🚀
             </Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} />
-            <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} />
-            <FormControl fullWidth sx={{ marginBottom: 4 }}>
-              <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
-              <OutlinedInput
-                label='Password'
-                value={password}
-                id='auth-register-password'
-                onChange={setPassword}
-                type={showPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      edge='end'
-                      onClick={setShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      aria-label='toggle password visibility'
-                    >
-                      {showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <InputLabel htmlFor='auth-register-password'>Confirm Password</InputLabel>
-              <OutlinedInput
-                label='ConfirmPassword'
-                value={passwordConfirm}
-                id='auth-register-password'
-                onChange={setPasswordConfirm}
-                type={showPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      edge='end'
-                      onClick={setShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      aria-label='toggle password visibility'
-                    >
-                      {showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox />}
-              label={
-                <Fragment>
-                  <span>I agree to </span>
-                  <Link href='/' passHref>
-                    <LinkStyled onClick={e => e.preventDefault()}>Privacy policy & Terms</LinkStyled>
-                  </Link>
-                </Fragment>
+          {error && (
+            <Alert severity='error' sx={{ marginBottom: 4 }}>
+              <AlertTitle>Error</AlertTitle>
+              <List>
+                {error.split('. ').map((string, index) => (
+                  <ListItem dense disableGutters key={index}>
+                    • {string}.
+                  </ListItem>
+                ))}
+              </List>
+            </Alert>
+          )}
+          <TextField
+            autoFocus
+            fullWidth
+            id='username'
+            label='Username'
+            value={username}
+            sx={{ marginBottom: 4 }}
+            onChange={event => setUsername(event.target.value)}
+          />
+          <TextField
+            fullWidth
+            type='email'
+            label='Email'
+            value={email}
+            sx={{ marginBottom: 4 }}
+            onChange={event => setEmail(event.target.value)}
+          />
+          <FormControl fullWidth sx={{ marginBottom: 4 }}>
+            <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
+            <OutlinedInput
+              label='Password'
+              value={password}
+              id='auth-register-password'
+              onChange={event => setPassword(event.target.value)}
+              type={showPassword ? 'text' : 'password'}
+              endAdornment={
+                <InputAdornment position='end'>
+                  <IconButton
+                    edge='end'
+                    onClick={() => setShowPassword(!showPassword)}
+                    onMouseDown={handleMouseDownPassword}
+                    aria-label='toggle password visibility'
+                  >
+                    {showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
+                  </IconButton>
+                </InputAdornment>
               }
             />
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
-              Sign up
-            </Button>
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Typography variant='body2' sx={{ marginRight: 2 }}>
-                Already have an account?
-              </Typography>
-              <Typography variant='body2'>
-                <Link passHref href='/pages/login'>
-                  <LinkStyled>Sign in instead</LinkStyled>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel htmlFor='auth-register-password'>Confirm Password</InputLabel>
+            <OutlinedInput
+              label='ConfirmPassword'
+              value={passwordConfirm}
+              id='auth-register-password'
+              onChange={() => setPasswordConfirm(event.target.value)}
+              type={showPassword ? 'text' : 'password'}
+              endAdornment={
+                <InputAdornment position='end'>
+                  <IconButton
+                    edge='end'
+                    onClick={() => setShowPassword(!showPassword)}
+                    onMouseDown={handleMouseDownPassword}
+                    aria-label='toggle password visibility'
+                  >
+                    {showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <FormControlLabel
+            control={<Checkbox checked={isPrivacyChecked} onChange={() => setIsPrivacyChecked(!isPrivacyChecked)} />}
+            label={
+              <Fragment>
+                <span>I agree to </span>
+                <Link href='/' passHref>
+                  <LinkStyled onClick={e => e.preventDefault()}>Privacy policy & Terms</LinkStyled>
                 </Link>
-              </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={() => signIn(providers['google'].id)}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
+              </Fragment>
+            }
+          />
+          <Button
+            fullWidth
+            size='large'
+            type='submit'
+            variant='contained'
+            disabled={!(isPrivacyChecked && username && email && password && passwordConfirm)}
+            sx={{ marginBottom: 7 }}
+            onClick={() => handleRegister(username, email, password, passwordConfirm, isPrivacyChecked, setError)}
+          >
+            Sign up
+          </Button>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <Typography variant='body2' sx={{ marginRight: 2 }}>
+              Already have an account?
+            </Typography>
+            <Typography variant='body2'>
+              <Link passHref href='/pages/login'>
+                <LinkStyled>Sign in instead</LinkStyled>
               </Link>
-            </Box>
-          </form>
+            </Typography>
+          </Box>
+          <Divider sx={{ my: 5 }}>or</Divider>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Link href='/' passHref>
+              <IconButton component='a' onClick={() => signIn(providers['google'].id)}>
+                <Google sx={{ color: '#db4437' }} />
+              </IconButton>
+            </Link>
+          </Box>
         </CardContent>
       </Card>
       <FooterIllustrationsV1 />
@@ -167,6 +210,32 @@ const RegisterPage = ({ providers }) => {
 }
 
 RegisterPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
+
+const handleRegister = async (username, email, password, passwordConfirm, isPrivacyChecked, setError) => {
+  if (!username || !email || !password || !isPrivacyChecked) return
+  if (password !== passwordConfirm) {
+    setError('Passwords do not match')
+
+    return
+  }
+
+  const response = await fetch('/api/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ username, email, password })
+  })
+  if (response.status === 200) {
+    signIn('credentials', { email, password, callbackUrl: `${window.location.origin}/dashboard`, redirect: false })
+
+    return
+  }
+
+  const jsonResponse = await response.json()
+  if (response.status === 400) setError(jsonResponse.error)
+  if (response.status === 409) setError('Email already in use')
+}
 
 export default RegisterPage
 

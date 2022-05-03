@@ -2,9 +2,8 @@ import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import bcrypt from 'bcrypt'
+import prisma from 'src/lib/utils/PrismaClient'
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -19,7 +18,7 @@ export default NextAuth({
       credentials: {},
       async authorize(credentials) {
         try {
-          const user = await prisma.user.findFirst({
+          const user = await prisma.user.findUnique({
             where: {
               email: credentials.email
             }
@@ -37,12 +36,10 @@ export default NextAuth({
               email: user.email
             }
           } else {
-            console.log('Hash not matched logging in')
-
             return null
           }
         } catch (err) {
-          console.log('Authorize error:', err)
+          return null
         }
       }
     })
@@ -83,3 +80,11 @@ export default NextAuth({
     }
   }
 })
+
+const confirmPasswordHash = (plainPassword, hashedPassword) => {
+  return new Promise(resolve => {
+    bcrypt.compare(plainPassword, hashedPassword, function (err, res) {
+      resolve(res)
+    })
+  })
+}

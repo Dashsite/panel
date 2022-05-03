@@ -4,7 +4,7 @@ import NProgress from 'nprogress'
 import themeConfig from 'src/configs/themeConfig'
 import UserLayout from 'src/layouts/UserLayout'
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
-import Providers from 'src/helpers/Providers'
+import Providers from 'src/lib/utils/Providers'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import '../../styles/globals.css'
 
