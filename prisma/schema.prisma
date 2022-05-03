@@ -143,11 +143,12 @@ model User {
   image            String?            @db.VarChar(255)
   accounts         Account[]
   sessions         Session[]
-  createdAt        DateTime?          @db.Timestamp(0)
-  updatedAt        DateTime?          @db.Timestamp(0)
+  createdAt        DateTime?          @default(now()) @db.Timestamp()
+  updatedAt        DateTime?          @default(now()) @db.Timestamp()
   disabled         Boolean?
   billing_adresses billing_adresses[]
   payments         payments[]
+  password         String?            @db.VarChar(255)
 }
 
 model VerificationToken {
