@@ -81,7 +81,7 @@ const RegisterForm = ({ successHandler }) => {
 
   return (
     <>
-      <Collapse in={error} timeout='auto'>
+      <Collapse in={error.length > 0} timeout='auto'>
         <Alert severity='error' sx={{ marginBottom: 4 }}>
           <AlertTitle>Error</AlertTitle>
           <List>
@@ -138,12 +138,12 @@ const RegisterForm = ({ successHandler }) => {
           />
         </FormControl>
         <FormControl fullWidth>
-          <InputLabel htmlFor='auth-register-password'>Confirm Password</InputLabel>
+          <InputLabel htmlFor='auth-register-confirm-password'>Confirm Password</InputLabel>
           <OutlinedInput
             label='ConfirmPassword'
             value={passwordConfirm}
-            id='auth-register-password'
-            onChange={() => setPasswordConfirm(event.target.value)}
+            id='auth-register-confirm-password'
+            onChange={event => setPasswordConfirm(event.target.value)}
             type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position='end'>

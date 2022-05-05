@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Alert, Box, Collapse, Typography, CardContent, Card as MuiCard } from '@mui/material'
+import { Alert, Box, Collapse, Divider, Typography, CardContent, Card as MuiCard } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { getProviders, signIn } from 'next-auth/react'
+import Link from 'next/link'
 
 // import Github from 'mdi-material-ui/Github'
 // import Twitter from 'mdi-material-ui/Twitter'
@@ -15,6 +16,12 @@ import { RegisterForm, OAuthSignIn } from 'src/views/auth'
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
+}))
+
+const LinkStyled = styled('a')(({ theme }) => ({
+  fontSize: '0.875rem',
+  textDecoration: 'none',
+  color: theme.palette.primary.main
 }))
 
 const RegisterPage = ({ providers }) => {
@@ -52,6 +59,17 @@ const RegisterPage = ({ providers }) => {
 
           <Collapse unmountOnExit onExited={() => setShowSuccess(true)} in={!registerSuccess} timeout='auto'>
             <RegisterForm successHandler={setRegisterSuccess} />
+            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <Typography variant='body2' sx={{ marginRight: 2 }}>
+                Already have an account?
+              </Typography>
+              <Typography variant='body2'>
+                <Link passHref href='/login'>
+                  <LinkStyled>Sign in instead</LinkStyled>
+                </Link>
+              </Typography>
+            </Box>
+            <Divider sx={{ my: 5 }}>or</Divider>
             <OAuthSignIn providers={providers} />
           </Collapse>
         </CardContent>
