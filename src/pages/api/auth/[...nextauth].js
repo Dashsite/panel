@@ -15,7 +15,16 @@ export default NextAuth({
     CredentialsProvider({
       id: 'credentials',
       name: 'credentials',
-      credentials: {},
+      credentials: {
+        email: {
+          label: 'Email',
+          type: 'email'
+        },
+        password: {
+          label: 'Password',
+          type: 'password'
+        }
+      },
       async authorize(credentials) {
         try {
           const user = await prisma.user.findUnique({
@@ -25,15 +34,13 @@ export default NextAuth({
           })
 
           if (!user) return null
-
-          //Compare the hash
           const res = await confirmPasswordHash(credentials.password, user.password)
           if (res === true) {
             return {
-              id: user.id,
+              userId: user.id,
               name: user.name,
-              image: user.image,
-              email: user.email
+              email: user.email,
+              image: user.image
             }
           } else {
             return null
@@ -44,13 +51,6 @@ export default NextAuth({
       }
     })
   ],
-  session: {
-    jwt: true,
-    maxAge: 30 * 24 * 60 * 60
-  },
-  pages: {
-    signIn: '/pages/login'
-  },
   events: {
     createUser: async ({ user }) => {
       await prisma.user.update({
@@ -67,17 +67,26 @@ export default NextAuth({
       })
     }
   },
+  jwt: { encryption: true },
   callbacks: {
-    signIn: async ({ user }) => {
-      try {
-        if (!user) return false
-        if (user.disabled) return false
+    jwt: async ({ token, user }) => {
+      user && (token.user = user)
 
-        return user
-      } catch (err) {
-        console.log('Signin callback error:', err)
-      }
+      return token
+    },
+    session: async ({ session, token }) => {
+      session.user = token.user
+
+      return session
     }
+  },
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60 // 24 hours
+  },
+  pages: {
+    signIn: 'pages/login'
   }
 })
 

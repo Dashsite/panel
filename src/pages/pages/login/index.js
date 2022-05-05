@@ -1,11 +1,6 @@
-// ** React Imports
-import { useState } from 'react'
-
-// ** Next Imports
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-
-// ** MUI Components
 import {
   Alert,
   AlertTitle,
@@ -38,7 +33,7 @@ import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import { getProviders, signIn } from 'next-auth/react'
+import { getProviders, signIn, useSession } from 'next-auth/react'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -62,6 +57,7 @@ const LoginPage = ({ providers }) => {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showError, setShowError] = useState(false)
+  const { status } = useSession()
 
   const handleLogin = async () => {
     setShowError(false)
@@ -73,7 +69,59 @@ const LoginPage = ({ providers }) => {
       redirect: false
     })
 
+    console.log('Result:', result)
+
     if (result.error) setShowError(true)
+  }
+
+  if (status === 'authenticated') {
+    return (
+      <Box className='content-center'>
+        <Card sx={{ zIndex: 1 }}>
+          <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
+            <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img alt='Logo' src='/images/Dashsite_logo.png' width={80} />
+              <Typography
+                variant='h6'
+                sx={{
+                  ml: 3,
+                  lineHeight: 1,
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  fontSize: '1.5rem !important'
+                }}
+              >
+                {themeConfig.templateName}
+              </Typography>
+            </Box>
+            <Box sx={{ mb: 6 }}>
+              <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
+                Welcome to {themeConfig.templateName}! 👋🏻
+              </Typography>
+
+              <Alert severity='success' sx={{ mt: 8 }}>
+                You are already logged in!
+              </Alert>
+            </Box>
+            <Box>
+              <Button
+                variant='contained'
+                color='primary'
+                sx={{
+                  mt: 3,
+                  width: '100%',
+                  fontWeight: 600,
+                  fontSize: '1rem !important'
+                }}
+                href='/dashboard'
+              >
+                Go to Dashboard
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+    )
   }
 
   return (
@@ -99,7 +147,9 @@ const LoginPage = ({ providers }) => {
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Welcome to {themeConfig.templateName}! 👋🏻
             </Typography>
-            <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
+            {!(status === 'authenticated') && (
+              <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
+            )}
           </Box>
           {showError && (
             <Alert severity='error' sx={{ marginBottom: 8 }}>
@@ -108,50 +158,60 @@ const LoginPage = ({ providers }) => {
               Email or password is incorrect. Please check your credentials and try again.
             </Alert>
           )}
-          <TextField
-            fullWidth
-            type='email'
-            label='Email'
-            value={email}
-            sx={{ marginBottom: 4 }}
-            onChange={event => setEmail(event.target.value)}
-          />
-          <FormControl fullWidth>
-            <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
-            <OutlinedInput
-              label='Password'
-              value={password}
-              id='auth-login-password'
-              onChange={event => setPassword(event.target.value)}
-              type={showPassword ? 'text' : 'password'}
-              endAdornment={
-                <InputAdornment position='end'>
-                  <IconButton
-                    edge='end'
-                    onClick={() => setShowPassword(!showPassword)}
-                    aria-label='toggle password visibility'
-                  >
-                    {showPassword ? <EyeOutline /> : <EyeOffOutline />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <Box sx={{ mb: 3, mt: 3, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'right' }}>
-            <Link passHref href='/'>
-              <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
-            </Link>
-          </Box>
-          <Button
-            fullWidth
-            size='large'
-            variant='contained'
-            sx={{ marginBottom: 7 }}
-            onClick={handleLogin}
-            disabled={!(email && password)}
+          <form
+            onSubmit={e => {
+              e.preventDefault()
+              handleLogin()
+            }}
           >
-            Login
-          </Button>
+            <TextField
+              fullWidth
+              type='email'
+              label='Email'
+              value={email}
+              sx={{ marginBottom: 4 }}
+              onChange={event => setEmail(event.target.value)}
+            />
+            <FormControl fullWidth>
+              <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
+              <OutlinedInput
+                label='Password'
+                value={password}
+                id='auth-login-password'
+                onChange={event => setPassword(event.target.value)}
+                type={showPassword ? 'text' : 'password'}
+                endAdornment={
+                  <InputAdornment position='end'>
+                    <IconButton
+                      edge='end'
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label='toggle password visibility'
+                    >
+                      {showPassword ? <EyeOutline /> : <EyeOffOutline />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <Box
+              sx={{ mb: 3, mt: 3, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'right' }}
+            >
+              <Link passHref href='/'>
+                <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
+              </Link>
+            </Box>
+            {/* // make button default enter key */}
+            <Button
+              fullWidth
+              size='large'
+              variant='contained'
+              sx={{ marginBottom: 7 }}
+              disabled={!(email && password)}
+              type='submit'
+            >
+              Login
+            </Button>
+          </form>
           <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
             <Typography variant='body2' sx={{ marginRight: 2 }}>
               New on our platform?
