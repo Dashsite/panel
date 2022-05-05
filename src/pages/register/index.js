@@ -1,39 +1,20 @@
-import { useState, Fragment } from 'react'
-import Link from 'next/link'
-import {
-  Alert,
-  Box,
-  Collapse,
-  Divider,
-  Typography,
-  IconButton,
-  InputLabel,
-  CardContent,
-  Card as MuiCard
-} from '@mui/material'
+import { useState } from 'react'
+import { Alert, Box, Collapse, Typography, CardContent, Card as MuiCard } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { getProviders, signIn } from 'next-auth/react'
 
-import Google from 'mdi-material-ui/Google'
-
 // import Github from 'mdi-material-ui/Github'
 // import Twitter from 'mdi-material-ui/Twitter'
 // import Facebook from 'mdi-material-ui/Facebook'
 
-import RegistrationForm from 'src/views/register/RegisterForm'
+import { RegisterForm, OAuthSignIn } from 'src/views/auth'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
-}))
-
-const LinkStyled = styled('a')(({ theme }) => ({
-  fontSize: '0.875rem',
-  textDecoration: 'none',
-  color: theme.palette.primary.main
 }))
 
 const RegisterPage = ({ providers }) => {
@@ -70,25 +51,8 @@ const RegisterPage = ({ providers }) => {
           </Collapse>
 
           <Collapse unmountOnExit onExited={() => setShowSuccess(true)} in={!registerSuccess} timeout='auto'>
-            <RegistrationForm successHandler={setRegisterSuccess} />
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Typography variant='body2' sx={{ marginRight: 2 }}>
-                Already have an account?
-              </Typography>
-              <Typography variant='body2'>
-                <Link passHref href='/pages/login'>
-                  <LinkStyled>Sign in instead</LinkStyled>
-                </Link>
-              </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={() => signIn(providers['google'].id)}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
-            </Box>
+            <RegisterForm successHandler={setRegisterSuccess} />
+            <OAuthSignIn providers={providers} />
           </Collapse>
         </CardContent>
       </Card>
@@ -100,11 +64,3 @@ const RegisterPage = ({ providers }) => {
 RegisterPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
 export default RegisterPage
-
-export async function getServerSideProps(context) {
-  const providers = await getProviders()
-
-  return {
-    props: { providers }
-  }
-}
