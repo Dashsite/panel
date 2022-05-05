@@ -25,25 +25,6 @@ model billing_adresses {
   @@index([user_id], map: "User_BILLING_ADRESSES")
 }
 
-model game_server_product {
-  id                            Int                         @id
-  name                          String                      @db.VarChar(255)
-  price_per_hour                Decimal                     @db.Decimal(10, 0)
-  game_server_systems_id        Int
-  pterodactyl_server_options_id Int?
-  game_server_systems           game_server_systems         @relation(fields: [game_server_systems_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "GAME_SERVER_TYPES_GAME_SERVER_PRODUCT")
-  pterodactyl_server_options    pterodactyl_server_options? @relation(fields: [pterodactyl_server_options_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "PTERODACTYL_OPTIONS_GAME_SERVER_PRODUCT")
-
-  @@index([game_server_systems_id], map: "GAME_SERVER_TYPES_GAME_SERVER_PRODUCT")
-  @@index([pterodactyl_server_options_id], map: "PTERODACTYL_OPTIONS_GAME_SERVER_PRODUCT")
-}
-
-model game_server_systems {
-  id                  Int                   @id
-  system_name         String                @db.VarChar(255)
-  game_server_product game_server_product[]
-}
-
 model payment_providers {
   id       Int        @id
   name     String     @db.VarChar(255)
@@ -67,47 +48,6 @@ model payments {
   @@index([User_id], map: "User_PAYMENTS")
 }
 
-model proxmox_options {
-  id             Int           @id
-  cpu_cores      Int
-  memory         Int
-  minimum_memory Int?
-  disk_size      Int
-  cpu_ballooning Boolean
-  vps_product    vps_product[]
-}
-
-model pterodactyl_server_options {
-  id                  Int                   @id
-  memory              Int
-  cpu                 Int
-  disk_storage        Int
-  block_io_weight     Int
-  db_limit            Int
-  allocation_limit    Int
-  backup_limit        Int
-  game_server_product game_server_product[]
-}
-
-model vps_product {
-  id                 Int              @id
-  name               String           @db.VarChar(255)
-  price_per_hour     Int
-  vps_systems_id     Int
-  proxmox_options_id Int?
-  proxmox_options    proxmox_options? @relation(fields: [proxmox_options_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "PROXMOX_OPTIONS_VPS_PRODUCT")
-  vps_systems        vps_systems      @relation(fields: [vps_systems_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "VPS_SYSTEMS_VPS_PRODUCT")
-
-  @@index([proxmox_options_id], map: "PROXMOX_OPTIONS_VPS_PRODUCT")
-  @@index([vps_systems_id], map: "VPS_SYSTEMS_VPS_PRODUCT")
-}
-
-model vps_systems {
-  id          Int           @id
-  system_name String        @db.VarChar(255)
-  vps_product vps_product[]
-}
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -121,10 +61,10 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId], map: "Account_userId_fkey")
 }
 
 model Session {
@@ -133,22 +73,24 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "Session_userId_fkey")
 }
 
 model User {
   id               String             @id @default(cuid()) @db.VarChar(255)
-  name             String?            @db.VarChar(255)
   email            String?            @unique @db.VarChar(255)
   emailVerified    DateTime?
   image            String?            @db.VarChar(255)
+  createdAt        DateTime?          @db.Timestamp(0)
+  updatedAt        DateTime?          @db.Timestamp(0)
+  disabled         Boolean?
+  name             String?            @db.VarChar(255)
+  password         String?            @db.VarChar(255)
   accounts         Account[]
   sessions         Session[]
-  createdAt        DateTime?          @default(now()) @db.Timestamp()
-  updatedAt        DateTime?          @default(now()) @db.Timestamp()
-  disabled         Boolean?
   billing_adresses billing_adresses[]
   payments         payments[]
-  password         String?            @db.VarChar(255)
 }
 
 model VerificationToken {
@@ -157,4 +99,55 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model product_categories {
+  id                  Int                   @id
+  name                String                @db.VarChar(255)
+  proxmox_product     proxmox_product[]
+  pterodactyl_product pterodactyl_product[]
+}
+
+model promox_hosts {
+  id              Int               @id
+  name            String            @db.VarChar(255)
+  max_cpu         Int
+  max_ram         Int
+  max_disk        Int
+  proxmox_product proxmox_product[]
+}
+
+model proxmox_product {
+  id                    Int                @id
+  promox_hosts_id       Int
+  product_categories_id Int
+  price_per_hour        Decimal            @db.Decimal(10, 4)
+  name                  String             @db.VarChar(255)
+  cpu_cores             Int
+  memory                Int
+  minimum_memory        Int
+  disk_size             Int
+  cpu_bllooning         Boolean
+  product_categories    product_categories @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_proxmox_product")
+  promox_hosts          promox_hosts       @relation(fields: [promox_hosts_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "promox_hosts_proxmox_product")
+
+  @@index([product_categories_id], map: "product_categories_proxmox_product")
+  @@index([promox_hosts_id], map: "promox_hosts_proxmox_product")
+}
+
+model pterodactyl_product {
+  id                    Int                @id
+  product_categories_id Int
+  name                  Bytes              @db.VarBinary(255)
+  price_per_hour        Decimal            @db.Decimal(10, 4)
+  memory                Int
+  cpu                   Int
+  disk_storage          Int
+  block_io_weight       Int
+  db_limit              Int
+  allocation_limit      Int
+  backup_limit          Int
+  product_categories    product_categories @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_pterodactyl_product")
+
+  @@index([product_categories_id], map: "product_categories_pterodactyl_product")
 }

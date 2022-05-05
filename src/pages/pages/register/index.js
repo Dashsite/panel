@@ -65,6 +65,32 @@ const RegisterPage = ({ providers }) => {
     event.preventDefault()
   }
 
+  const handleRegister = async () => {
+    if (!username || !email || !password || !isPrivacyChecked) return
+    if (password !== passwordConfirm) {
+      setError('Passwords do not match')
+
+      return
+    }
+
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, email, password })
+    })
+    if (response.status === 200) {
+      signIn('credentials', { email, password, callbackUrl: `${window.location.origin}/dashboard`, redirect: false })
+
+      return
+    }
+
+    const jsonResponse = await response.json()
+    if (response.status === 400) setError(jsonResponse.error)
+    if (response.status === 409) setError('Email already in use')
+  }
+
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
@@ -180,7 +206,7 @@ const RegisterPage = ({ providers }) => {
             variant='contained'
             disabled={!(isPrivacyChecked && username && email && password && passwordConfirm)}
             sx={{ marginBottom: 7 }}
-            onClick={() => handleRegister(username, email, password, passwordConfirm, isPrivacyChecked, setError)}
+            onClick={handleRegister}
           >
             Sign up
           </Button>
@@ -210,32 +236,6 @@ const RegisterPage = ({ providers }) => {
 }
 
 RegisterPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
-
-const handleRegister = async (username, email, password, passwordConfirm, isPrivacyChecked, setError) => {
-  if (!username || !email || !password || !isPrivacyChecked) return
-  if (password !== passwordConfirm) {
-    setError('Passwords do not match')
-
-    return
-  }
-
-  const response = await fetch('/api/auth/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username, email, password })
-  })
-  if (response.status === 200) {
-    signIn('credentials', { email, password, callbackUrl: `${window.location.origin}/dashboard`, redirect: false })
-
-    return
-  }
-
-  const jsonResponse = await response.json()
-  if (response.status === 400) setError(jsonResponse.error)
-  if (response.status === 409) setError('Email already in use')
-}
 
 export default RegisterPage
 
