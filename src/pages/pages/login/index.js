@@ -6,23 +6,28 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 // ** MUI Components
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
-import TextField from '@mui/material/TextField'
-import InputLabel from '@mui/material/InputLabel'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import { styled, useTheme } from '@mui/material/styles'
-import MuiCard from '@mui/material/Card'
-import InputAdornment from '@mui/material/InputAdornment'
-import MuiFormControlLabel from '@mui/material/FormControlLabel'
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  List,
+  ListItem,
+  Button,
+  Divider,
+  TextField,
+  InputLabel,
+  Typography,
+  IconButton,
+  CardContent,
+  FormControl,
+  OutlinedInput,
+  Card as MuiCard,
+  InputAdornment,
+  FormControlLabel as MuiFormControlLabel
+} from '@mui/material'
 
-// ** Icons Imports
+import { styled, useTheme } from '@mui/material/styles'
+
 import Google from 'mdi-material-ui/Google'
 import Github from 'mdi-material-ui/Github'
 import Twitter from 'mdi-material-ui/Twitter'
@@ -30,19 +35,11 @@ import Facebook from 'mdi-material-ui/Facebook'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
-// ** Configs
 import themeConfig from 'src/configs/themeConfig'
-
-// ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
-
-// ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-
-// ** Auth Imports
 import { getProviders, signIn } from 'next-auth/react'
 
-// ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
 }))
@@ -61,26 +58,22 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 }))
 
 const LoginPage = ({ providers }) => {
-  // ** State
-  const [values, setValues] = useState({
-    password: '',
-    showPassword: false
-  })
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showError, setShowError] = useState(false)
 
-  // ** Hook
-  const theme = useTheme()
-  const router = useRouter()
+  const handleLogin = async () => {
+    setShowError(false)
 
-  const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
+    const result = await signIn('credentials', {
+      email,
+      password,
+      callbackUrl: `${window.location.origin}/dashboard`,
+      redirect: false
+    })
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
-
-  const handleMouseDownPassword = event => {
-    event.preventDefault()
+    if (result.error) setShowError(true)
   }
 
   return (
@@ -108,62 +101,70 @@ const LoginPage = ({ providers }) => {
             </Typography>
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField disabled autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
-            <FormControl fullWidth>
-              <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
-              <OutlinedInput
-                disabled
-                label='Password'
-                value={values.password}
-                id='auth-login-password'
-                onChange={handleChange('password')}
-                type={values.showPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      edge='end'
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      aria-label='toggle password visibility'
-                    >
-                      {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <Box
-              sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
-            >
-              <FormControlLabel control={<Checkbox />} label='Remember Me' />
-              <Link passHref href='/'>
-                <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
+          {showError && (
+            <Alert severity='error' sx={{ marginBottom: 8 }}>
+              <AlertTitle>Error</AlertTitle>
+              {/* Login Error wrong */}
+              Email or password is incorrect. Please check your credentials and try again.
+            </Alert>
+          )}
+          <TextField
+            fullWidth
+            type='email'
+            label='Email'
+            value={email}
+            sx={{ marginBottom: 4 }}
+            onChange={event => setEmail(event.target.value)}
+          />
+          <FormControl fullWidth>
+            <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
+            <OutlinedInput
+              label='Password'
+              value={password}
+              id='auth-login-password'
+              onChange={event => setPassword(event.target.value)}
+              type={showPassword ? 'text' : 'password'}
+              endAdornment={
+                <InputAdornment position='end'>
+                  <IconButton
+                    edge='end'
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label='toggle password visibility'
+                  >
+                    {showPassword ? <EyeOutline /> : <EyeOffOutline />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <Box sx={{ mb: 3, mt: 3, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'right' }}>
+            <Link passHref href='/'>
+              <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
+            </Link>
+          </Box>
+          <Button
+            fullWidth
+            size='large'
+            variant='contained'
+            sx={{ marginBottom: 7 }}
+            onClick={handleLogin}
+            disabled={!(email && password)}
+          >
+            Login
+          </Button>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <Typography variant='body2' sx={{ marginRight: 2 }}>
+              New on our platform?
+            </Typography>
+            <Typography variant='body2'>
+              <Link passHref href='/pages/register'>
+                <LinkStyled>Create an account</LinkStyled>
               </Link>
-            </Box>
-            <Button
-              fullWidth
-              size='large'
-              variant='contained'
-              sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
-              disabled
-            >
-              Login
-            </Button>
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Typography variant='body2' sx={{ marginRight: 2 }}>
-                New on our platform?
-              </Typography>
-              <Typography variant='body2'>
-                <Link passHref href='/pages/register'>
-                  <LinkStyled>Create an account</LinkStyled>
-                </Link>
-              </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {/* <Link href='/' passHref>
+            </Typography>
+          </Box>
+          <Divider sx={{ my: 5 }}>or</Divider>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* <Link href='/' passHref>
                 <IconButton component='a' onClick={e => e.preventDefault()}>
                   <Facebook sx={{ color: '#497ce2' }} />
                 </IconButton>
@@ -180,13 +181,12 @@ const LoginPage = ({ providers }) => {
                   />
                 </IconButton>
               </Link> */}
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={() => signIn(providers['google'].id)}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
-            </Box>
-          </form>
+            <Link href='/' passHref>
+              <IconButton component='a' onClick={() => signIn(providers['google'].id)}>
+                <Google sx={{ color: '#db4437' }} />
+              </IconButton>
+            </Link>
+          </Box>
         </CardContent>
       </Card>
       <FooterIllustrationsV1 />
