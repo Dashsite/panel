@@ -7,7 +7,7 @@ const registerSchema = Joi.object().keys({
   password: joiPassword
     .string()
     .min(8)
-    .max(128)
+    .max(70)
     .minOfLowercase(1)
     .minOfUppercase(1)
     .minOfNumeric(1)
@@ -19,7 +19,7 @@ const registerSchema = Joi.object().keys({
       'password.minOfNumeric': 'Password must contain at least one number',
       'password.noWhiteSpaces': 'Password must not contain any white spaces',
       'string.min': 'Password must be at least 8 characters long',
-      'string.max': 'Password must be at most 128 characters long'
+      'string.max': 'Password must be at most 70 characters long'
     })
 })
 
