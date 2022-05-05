@@ -58,7 +58,7 @@ const RegisterPage = ({ providers }) => {
           </Collapse>
 
           <Collapse unmountOnExit onExited={() => setShowSuccess(true)} in={!registerSuccess} timeout='auto'>
-            <RegisterForm successHandler={setRegisterSuccess} />
+            <RegisterForm providers={providers} successHandler={setRegisterSuccess} />
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Typography variant='body2' sx={{ marginRight: 2 }}>
                 Already have an account?
@@ -82,3 +82,11 @@ const RegisterPage = ({ providers }) => {
 RegisterPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
 export default RegisterPage
+
+export async function getServerSideProps(context) {
+  const providers = await getProviders()
+
+  return {
+    props: { providers }
+  }
+}

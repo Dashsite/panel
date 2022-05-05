@@ -2,7 +2,7 @@ import { Box, IconButton } from '@mui/material'
 import Link from 'next/link'
 import Google from 'mdi-material-ui/Google'
 
-import { getProviders, signIn } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 
 const OAuthSignIn = ({ providers }) => {
   return (
@@ -19,11 +19,3 @@ const OAuthSignIn = ({ providers }) => {
 }
 
 export default OAuthSignIn
-
-export async function getServerSideProps(context) {
-  const providers = await getProviders()
-
-  return {
-    props: { providers }
-  }
-}
