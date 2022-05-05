@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import EmailProvider from 'next-auth/providers/email'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import bcrypt from 'bcrypt'
@@ -8,6 +9,19 @@ import prisma from 'src/lib/utils/PrismaClient'
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
+    EmailProvider({
+      id: 'verify',
+      name: 'verify',
+      server: {
+        host: 'smtp.mailtrap.io',
+        port: 2525,
+        auth: {
+          user: '1ea393d13c711a',
+          pass: '4f356815afbe06'
+        }
+      },
+      from: process.env.EMAIL_FROM
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
@@ -86,7 +100,8 @@ export default NextAuth({
     updateAge: 24 * 60 * 60 // 24 hours
   },
   pages: {
-    signIn: 'pages/login'
+    signIn: '/pages/login',
+    verifyRequest: '/pages/verify'
   }
 })
 

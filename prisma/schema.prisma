@@ -91,6 +91,7 @@ model User {
   sessions         Session[]
   billing_adresses billing_adresses[]
   payments         payments[]
+  isAdmin          Boolean?           @default(false)
 }
 
 model VerificationToken {

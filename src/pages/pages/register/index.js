@@ -66,6 +66,7 @@ const RegisterPage = ({ providers }) => {
   }
 
   const handleRegister = async () => {
+    setError('')
     if (!username || !email || !password || !isPrivacyChecked) return
     if (password !== passwordConfirm) {
       setError('Passwords do not match')
@@ -81,7 +82,9 @@ const RegisterPage = ({ providers }) => {
       body: JSON.stringify({ username, email, password })
     })
     if (response.status === 200) {
-      signIn('credentials', { email, password, callbackUrl: `${window.location.origin}/dashboard`, redirect: false })
+      signIn('verify', { email, callbackUrl: `${window.location.origin}/pages/login`, redirect: true })
+
+      // signIn('credentials', { email, password, callbackUrl: `${window.location.origin}/dashboard`, redirect: false })
 
       return
     }
