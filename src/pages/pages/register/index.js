@@ -5,6 +5,7 @@ import {
   AlertTitle,
   Box,
   Button,
+  Collapse,
   Divider,
   Checkbox,
   TextField,
@@ -20,17 +21,20 @@ import {
   InputAdornment,
   FormControlLabel as MuiFormControlLabel
 } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
 import { styled } from '@mui/material/styles'
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { getProviders, signIn } from 'next-auth/react'
+
+import Google from 'mdi-material-ui/Google'
+
+// import Github from 'mdi-material-ui/Github'
+// import Twitter from 'mdi-material-ui/Twitter'
+// import Facebook from 'mdi-material-ui/Facebook'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -60,10 +64,9 @@ const RegisterPage = ({ providers }) => {
   const [showPassword, setShowPassword] = useState(false)
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false)
   const [error, setError] = useState('')
-
-  const handleMouseDownPassword = event => {
-    event.preventDefault()
-  }
+  const [registerSuccess, setRegisterSuccess] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleRegister = async () => {
     setError('')
@@ -73,6 +76,7 @@ const RegisterPage = ({ providers }) => {
 
       return
     }
+    setIsLoading(true)
 
     const response = await fetch('/api/auth/register', {
       method: 'POST',
@@ -81,10 +85,10 @@ const RegisterPage = ({ providers }) => {
       },
       body: JSON.stringify({ username, email, password })
     })
+    setIsLoading(false)
     if (response.status === 200) {
-      signIn('verify', { email, callbackUrl: `${window.location.origin}/pages/login`, redirect: true })
-
-      // signIn('credentials', { email, password, callbackUrl: `${window.location.origin}/dashboard`, redirect: false })
+      signIn('verify', { email, callbackUrl: `${window.location.origin}/pages/verify`, redirect: false })
+      setRegisterSuccess(true)
 
       return
     }
@@ -118,7 +122,8 @@ const RegisterPage = ({ providers }) => {
               Adventure starts here 🚀
             </Typography>
           </Box>
-          {error && (
+
+          <Collapse in={error}>
             <Alert severity='error' sx={{ marginBottom: 4 }}>
               <AlertTitle>Error</AlertTitle>
               <List>
@@ -129,110 +134,124 @@ const RegisterPage = ({ providers }) => {
                 ))}
               </List>
             </Alert>
-          )}
-          <TextField
-            autoFocus
-            fullWidth
-            id='username'
-            label='Username'
-            value={username}
-            sx={{ marginBottom: 4 }}
-            onChange={event => setUsername(event.target.value)}
-          />
-          <TextField
-            fullWidth
-            type='email'
-            label='Email'
-            value={email}
-            sx={{ marginBottom: 4 }}
-            onChange={event => setEmail(event.target.value)}
-          />
-          <FormControl fullWidth sx={{ marginBottom: 4 }}>
-            <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
-            <OutlinedInput
-              label='Password'
-              value={password}
-              id='auth-register-password'
-              onChange={event => setPassword(event.target.value)}
-              type={showPassword ? 'text' : 'password'}
-              endAdornment={
-                <InputAdornment position='end'>
-                  <IconButton
-                    edge='end'
-                    onClick={() => setShowPassword(!showPassword)}
-                    onMouseDown={handleMouseDownPassword}
-                    aria-label='toggle password visibility'
-                  >
-                    {showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel htmlFor='auth-register-password'>Confirm Password</InputLabel>
-            <OutlinedInput
-              label='ConfirmPassword'
-              value={passwordConfirm}
-              id='auth-register-password'
-              onChange={() => setPasswordConfirm(event.target.value)}
-              type={showPassword ? 'text' : 'password'}
-              endAdornment={
-                <InputAdornment position='end'>
-                  <IconButton
-                    edge='end'
-                    onClick={() => setShowPassword(!showPassword)}
-                    onMouseDown={handleMouseDownPassword}
-                    aria-label='toggle password visibility'
-                  >
-                    {showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <FormControlLabel
-            control={<Checkbox checked={isPrivacyChecked} onChange={() => setIsPrivacyChecked(!isPrivacyChecked)} />}
-            label={
-              <Fragment>
-                <span>I agree to </span>
-                <Link href='/' passHref>
-                  <LinkStyled onClick={e => e.preventDefault()}>Privacy policy & Terms</LinkStyled>
+          </Collapse>
+
+          <Collapse unmountOnExit onExited={() => setShowSuccess(true)} in={!registerSuccess} timeout='auto'>
+            <form
+              onSubmit={event => {
+                event.preventDefault()
+                handleRegister()
+              }}
+            >
+              <TextField
+                autoFocus
+                fullWidth
+                id='username'
+                label='Username'
+                value={username}
+                sx={{ marginBottom: 4 }}
+                onChange={event => setUsername(event.target.value)}
+              />
+              <TextField
+                fullWidth
+                type='email'
+                label='Email'
+                value={email}
+                sx={{ marginBottom: 4 }}
+                onChange={event => setEmail(event.target.value)}
+              />
+              <FormControl fullWidth sx={{ marginBottom: 4 }}>
+                <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
+                <OutlinedInput
+                  label='Password'
+                  value={password}
+                  id='auth-register-password'
+                  onChange={event => setPassword(event.target.value)}
+                  type={showPassword ? 'text' : 'password'}
+                  endAdornment={
+                    <InputAdornment position='end'>
+                      <IconButton
+                        edge='end'
+                        onClick={() => setShowPassword(!showPassword)}
+                        aria-label='toggle password visibility'
+                      >
+                        {showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel htmlFor='auth-register-password'>Confirm Password</InputLabel>
+                <OutlinedInput
+                  label='ConfirmPassword'
+                  value={passwordConfirm}
+                  id='auth-register-password'
+                  onChange={() => setPasswordConfirm(event.target.value)}
+                  type={showPassword ? 'text' : 'password'}
+                  endAdornment={
+                    <InputAdornment position='end'>
+                      <IconButton
+                        edge='end'
+                        onClick={() => setShowPassword(!showPassword)}
+                        aria-label='toggle password visibility'
+                      >
+                        {showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+              <FormControlLabel
+                control={
+                  <Checkbox checked={isPrivacyChecked} onChange={() => setIsPrivacyChecked(!isPrivacyChecked)} />
+                }
+                label={
+                  <Fragment>
+                    <span>I agree to </span>
+                    <Link href='/' passHref>
+                      <LinkStyled onClick={e => e.preventDefault()}>Privacy policy & Terms</LinkStyled>
+                    </Link>
+                  </Fragment>
+                }
+              />
+              <LoadingButton
+                type='submit'
+                loading={isLoading}
+                fullWidth
+                size='large'
+                variant='contained'
+                disabled={!(isPrivacyChecked && username && email && password && passwordConfirm)}
+                sx={{ marginBottom: 7 }}
+              >
+                Sign up
+              </LoadingButton>
+            </form>
+            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <Typography variant='body2' sx={{ marginRight: 2 }}>
+                Already have an account?
+              </Typography>
+              <Typography variant='body2'>
+                <Link passHref href='/pages/login'>
+                  <LinkStyled>Sign in instead</LinkStyled>
                 </Link>
-              </Fragment>
-            }
-          />
-          <Button
-            fullWidth
-            size='large'
-            type='submit'
-            variant='contained'
-            disabled={!(isPrivacyChecked && username && email && password && passwordConfirm)}
-            sx={{ marginBottom: 7 }}
-            onClick={handleRegister}
-          >
-            Sign up
-          </Button>
-          <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <Typography variant='body2' sx={{ marginRight: 2 }}>
-              Already have an account?
-            </Typography>
-            <Typography variant='body2'>
-              <Link passHref href='/pages/login'>
-                <LinkStyled>Sign in instead</LinkStyled>
+              </Typography>
+            </Box>
+            <Divider sx={{ my: 5 }}>or</Divider>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Link href='/' passHref>
+                <IconButton component='a' onClick={() => signIn(providers['google'].id)}>
+                  <Google sx={{ color: '#db4437' }} />
+                </IconButton>
               </Link>
-            </Typography>
-          </Box>
-          <Divider sx={{ my: 5 }}>or</Divider>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Link href='/' passHref>
-              <IconButton component='a' onClick={() => signIn(providers['google'].id)}>
-                <Google sx={{ color: '#db4437' }} />
-              </IconButton>
-            </Link>
-          </Box>
+            </Box>
+          </Collapse>
+          <Collapse mountOnEnter in={showSuccess} timeout='auto'>
+            <Alert severity='success'>Registration successful! Please check your email to verify your account.</Alert>
+          </Collapse>
         </CardContent>
       </Card>
+
       <FooterIllustrationsV1 />
     </Box>
   )
