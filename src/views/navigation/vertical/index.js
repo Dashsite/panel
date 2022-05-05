@@ -28,20 +28,20 @@ const navigation = () => {
     {
       title: 'Login',
       icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
+      path: '/login',
+      openInNewTab: false
     },
     {
       title: 'Register',
       icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
+      path: '/register',
+      openInNewTab: false
     },
     {
       title: 'Error',
       icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
+      path: '/error',
+      openInNewTab: false
     },
     {
       sectionTitle: 'User Interface'
