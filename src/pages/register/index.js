@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import Link from 'next/link'
-import router from 'next/router'
 import { getProviders, signIn } from 'next-auth/react'
 import { Alert, Box, Collapse, Divider, Typography, CardContent, Card as MuiCard } from '@mui/material'
 import { styled } from '@mui/material/styles'

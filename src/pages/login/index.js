@@ -1,21 +1,12 @@
-import Link from 'next/link'
 import router from 'next/router'
-import {
-  Alert,
-  Box,
-  Button,
-  Divider,
-  Typography,
-  CardContent,
-  Card as MuiCard,
-  FormControlLabel as MuiFormControlLabel
-} from '@mui/material'
+import Link from 'next/link'
+import { Alert, Box, Button, Divider, Typography, CardContent, Card as MuiCard } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { getProviders, useSession } from 'next-auth/react'
-import { OAuthSignIn, LoginForm } from 'src/views/auth'
+import { OAuthSignIn, LoginForm, LogoHeader } from 'src/views/auth'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -35,23 +26,7 @@ const LoginPage = ({ providers }) => {
       <Box className='content-center'>
         <Card sx={{ zIndex: 1 }}>
           <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
-            <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link passHref href='/'>
-                <img alt='Logo' src='/images/Dashsite_logo.png' width={80} />
-              </Link>
-              <Typography
-                variant='h6'
-                sx={{
-                  ml: 3,
-                  lineHeight: 1,
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  fontSize: '1.5rem !important'
-                }}
-              >
-                {themeConfig.templateName}
-              </Typography>
-            </Box>
+            <LogoHeader />
             <Box sx={{ mb: 6 }}>
               <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
                 Welcome to {themeConfig.templateName}! 👋🏻
@@ -86,21 +61,7 @@ const LoginPage = ({ providers }) => {
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
-          <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img alt='Logo' src='/images/Dashsite_logo.png' width={80} />
-            <Typography
-              variant='h6'
-              sx={{
-                ml: 3,
-                lineHeight: 1,
-                fontWeight: 600,
-                textTransform: 'uppercase',
-                fontSize: '1.5rem !important'
-              }}
-            >
-              {themeConfig.templateName}
-            </Typography>
-          </Box>
+          <LogoHeader />
           <Box sx={{ mb: 6 }}>
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Welcome to {themeConfig.templateName}! 👋🏻
