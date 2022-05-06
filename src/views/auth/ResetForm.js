@@ -16,11 +16,14 @@ import {
 import LoadingButton from '@mui/lab/LoadingButton'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
 const ResetForm = ({ passwordReset, successHandler }) => {
-  const [error, setError] = useState('')
+  const router = useRouter()
+  const [requestError, setRequestError] = useState('')
+  const [validationError, setValidationError] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
@@ -44,9 +47,11 @@ const ResetForm = ({ passwordReset, successHandler }) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          token: router.query.token,
           password
         })
       })
+      if (result.status === 200) successHandler('Password reset was successful!')
     } else {
       result = await fetch('/api/auth/password', {
         method: 'PUT',
@@ -57,34 +62,34 @@ const ResetForm = ({ passwordReset, successHandler }) => {
           email
         })
       })
+      if (result.status === 200) successHandler('Please check your email to reset your password.')
     }
 
     if (result.status === 500) {
-      setError('Something went wrong. Please try again!')
+      setRequestError('Something went wrong. Please try again!')
     }
 
-    if (result.status === 200) {
-      successHandler(true)
+    if (result.status === 400) {
+      setValidationError((await result.json()).error)
     }
-
     setIsLoading(false)
   }
 
   return (
     <>
-      <Collapse in={error.length > 0} timeout='auto'>
+      <Collapse in={validationError || requestError} timeout='auto'>
         <Alert severity='error' sx={{ marginBottom: 4 }}>
           <AlertTitle>Error</AlertTitle>
-          {password ? (
+          {validationError ? (
             <List>
-              {error.split('. ').map((string, index) => (
+              {validationError.split('. ').map((string, index) => (
                 <ListItem dense disableGutters key={index}>
                   • {string}.
                 </ListItem>
               ))}
             </List>
           ) : (
-            error
+            requestError
           )}
         </Alert>
       </Collapse>

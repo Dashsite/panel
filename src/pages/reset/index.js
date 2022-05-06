@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useState } from 'react'
-import { Alert, Box, Button, Collapse, Typography, CardContent, Card as MuiCard } from '@mui/material'
+import { Alert, AlertTitle, Box, Button, Collapse, Typography, CardContent, Card as MuiCard } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/auth/FooterIllustration'
@@ -34,9 +34,7 @@ const ResetPage = ({ isTokenValid }) => {
             </Typography>
             <Collapse mountOnEnter in={showSuccess} timeout='auto'>
               <Alert severity='success'>
-                {isTokenValid === 'authenticated'
-                  ? 'Password reset was successful!'
-                  : 'Please check your email to reset your password.'}
+                {isTokenValid ? 'Password reset was successful!' : 'Please check your email to reset your password.'}
               </Alert>
               <Button
                 variant='contained'
@@ -47,14 +45,14 @@ const ResetPage = ({ isTokenValid }) => {
                   fontWeight: 600,
                   fontSize: '1rem !important'
                 }}
-                onClick={() => router.push('/')}
+                onClick={() => router.push('/login')}
               >
-                Go to Dashboard
+                Go to Login
               </Button>
             </Collapse>
           </Box>
 
-          {isTokenValid ? (
+          {isTokenValid && (
             <Collapse in={!showSuccess}>
               <Typography variant='body2' sx={{ mb: 6 }}>
                 Enter your new password below.
@@ -62,7 +60,31 @@ const ResetPage = ({ isTokenValid }) => {
 
               <ResetForm passwordReset successHandler={setShowSuccess} />
             </Collapse>
-          ) : (
+          )}
+
+          {router.query.token && !isTokenValid && (
+            <>
+              <Alert severity='error'>
+                <AlertTitle>Invalid token</AlertTitle>
+                Your password reset token is invalid or has expired. Please try again.
+              </Alert>
+              <Button
+                variant='contained'
+                color='primary'
+                sx={{
+                  mt: 3,
+                  width: '100%',
+                  fontWeight: 600,
+                  fontSize: '1rem !important'
+                }}
+                onClick={() => router.push('/login')}
+              >
+                Go to Login
+              </Button>
+            </>
+          )}
+
+          {!router.query.token && (
             <Collapse in={!showSuccess}>
               <Typography variant='body2' sx={{ mb: 6 }}>
                 Enter your email address and we'll send you a link to reset your password.

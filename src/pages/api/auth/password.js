@@ -1,20 +1,30 @@
 import bcrypt from 'bcrypt'
-import { getToken } from 'next-auth/jwt'
+import { compile } from 'joi'
 import { nanoid } from 'nanoid'
-import router from 'next/router'
 
 import sendMail from 'src/lib/utils/Nodemailer'
 
 import prisma from 'src/lib/utils/PrismaClient'
 import { resetSchema } from 'src/lib/validations/user'
 
-const secret = process.env.NEXTAUTH_SECRET
+/**
+ * Set new Password for a user
+ * @param {object} req
+ * @description Token in query is required to reset password. If token is valid, user can set new password.
+ *
+ */
+const resetPassword = async req => {
+  const { token, password } = req.body
+  if (!(token && password)) throw new Error()
 
-const resetPassword = async (req, res) => {
-  const token = await getToken({ req, secret })
-  if (!(token && !token.user.disabled)) return res.status(401).end()
+  const resetToken = await prisma.resetToken.findUnique({
+    where: {
+      token: token
+    }
+  })
+  if (resetToken.expires < new Date()) throw new Error()
 
-  const password = req.body.password
+  const email = resetToken.identifier
 
   try {
     const { error } = resetSchema.validate({ password }, { abortEarly: false, errors: { wrap: true } })
@@ -23,11 +33,17 @@ const resetPassword = async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 9)
     await prisma.user.update({
-      where: { id: token.user.id },
+      where: { email },
 
       data: {
         password: passwordHash,
         updatedAt: new Date()
+      }
+    })
+
+    await prisma.resetToken.deleteMany({
+      where: {
+        identifier: email
       }
     })
   } catch (err) {
@@ -35,7 +51,12 @@ const resetPassword = async (req, res) => {
   }
 }
 
-const resetPasswordRequest = async (email, url) => {
+/**
+ * Creates a resetToken and sends an email to the user
+ * @param {string} email - email of the user
+ * @returns
+ */
+const resetPasswordRequest = async email => {
   const resetToken = nanoid(48)
   try {
     // check if user exists
@@ -74,41 +95,53 @@ const resetPasswordRequest = async (email, url) => {
 }
 
 export default async (req, res) => {
+  // POST Request - Sets a new password for a user and deletes all resetTokens for that user
   if (req.method === 'POST') {
     try {
       await resetPassword(req, res)
 
       return res.status(200).end()
     } catch (err) {
-      if (err.status === 400) return res.status(400).json({ message: err.message })
+      if (err.status === 400) return res.status(400).json({ error: err.message })
 
       return res.status(500).end()
     }
   }
+
+  // PUT Request - Creates a new resetToken and sends an email to the user
   if (req.method === 'PUT') {
     try {
       await resetPasswordRequest(req.body.email)
 
       return res.status(200).end()
     } catch (err) {
-      console.log(err)
-
       return res.status(500).end()
     }
   }
 
+  // GET Request - Checks if a resetToken is valid and not expired
   if (req.method === 'GET') {
     const resetToken = req.query.token
     if (!resetToken) return res.status(400).end()
 
-    //check if resetToken is valid and not expired
     const resetTokenDB = await prisma.resetToken.findUnique({
       where: {
         token: resetToken
       }
     })
 
-    if (!resetTokenDB || resetTokenDB.expires < new Date()) return res.status(401).end()
+    if (!resetTokenDB) return res.status(401).end()
+
+    // Check if token is expired - if so, delete it
+    if (resetTokenDB.expires < new Date()) {
+      await prisma.resetToken.delete({
+        where: {
+          identifier: resetTokenDB.identifier
+        }
+      })
+
+      return res.status(401).end()
+    }
 
     return res.status(200).end()
   }

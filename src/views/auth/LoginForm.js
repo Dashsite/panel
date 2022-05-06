@@ -42,7 +42,6 @@ const LoginForm = ({}) => {
       callbackUrl: `${window.location.origin}/dashboard`,
       redirect: false
     })
-    console.log('result', result)
 
     if (result.status === 200) {
       router.push('/')
