@@ -38,7 +38,7 @@ const ResetForm = ({ passwordReset, successHandler }) => {
       return
     }
     if (passwordReset) {
-      result = await fetch('/api/auth/reset', {
+      result = await fetch('/api/auth/password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -48,21 +48,26 @@ const ResetForm = ({ passwordReset, successHandler }) => {
         })
       })
     } else {
-      result = await signIn('reset', {
-        email,
-        callbackUrl: `${window.location.origin}/reset`,
-        redirect: false
+      result = await fetch('/api/auth/password', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email
+        })
       })
+    }
+
+    console.log(result)
+
+    if (result.status === 500) {
+      setError('Something went wrong. Please try again!')
     }
 
     if (result.status === 200) {
       successHandler(true)
-
-      return
     }
-
-    const errorMessage = (await result.json()).error
-    setError(errorMessage)
 
     setIsLoading(false)
   }
@@ -72,13 +77,17 @@ const ResetForm = ({ passwordReset, successHandler }) => {
       <Collapse in={error.length > 0} timeout='auto'>
         <Alert severity='error' sx={{ marginBottom: 4 }}>
           <AlertTitle>Error</AlertTitle>
-          <List>
-            {error.split('. ').map((string, index) => (
-              <ListItem dense disableGutters key={index}>
-                • {string}.
-              </ListItem>
-            ))}
-          </List>
+          {password ? (
+            <List>
+              {error.split('. ').map((string, index) => (
+                <ListItem dense disableGutters key={index}>
+                  • {string}.
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            error
+          )}
         </Alert>
       </Collapse>
       <form

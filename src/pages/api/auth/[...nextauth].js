@@ -13,24 +13,11 @@ export default NextAuth({
       id: 'verify',
       name: 'verify',
       server: {
-        host: 'smtp.mailtrap.io',
-        port: 2525,
+        host: process.env.EMAIL_SERVER_HOST,
+        port: process.env.EMAIL_SERVER_PORT,
         auth: {
-          user: '1ea393d13c711a',
-          pass: '4f356815afbe06'
-        }
-      },
-      from: process.env.EMAIL_FROM
-    }),
-    EmailProvider({
-      id: 'reset',
-      name: 'reset',
-      server: {
-        host: 'smtp.mailtrap.io',
-        port: 2525,
-        auth: {
-          user: '1ea393d13c711a',
-          pass: '4f356815afbe06'
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD
         }
       },
       from: process.env.EMAIL_FROM
