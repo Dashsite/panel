@@ -22,6 +22,19 @@ export default NextAuth({
       },
       from: process.env.EMAIL_FROM
     }),
+    EmailProvider({
+      id: 'reset',
+      name: 'reset',
+      server: {
+        host: 'smtp.mailtrap.io',
+        port: 2525,
+        auth: {
+          user: '1ea393d13c711a',
+          pass: '4f356815afbe06'
+        }
+      },
+      from: process.env.EMAIL_FROM
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
@@ -100,8 +113,7 @@ export default NextAuth({
     updateAge: 24 * 60 * 60 // 24 hours
   },
   pages: {
-    signIn: '/login',
-    verifyRequest: '/verify'
+    signIn: '/login'
   }
 })
 

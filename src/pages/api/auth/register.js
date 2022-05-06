@@ -15,7 +15,7 @@ export default async (req, res) => {
     )
     if (error) return res.status(400).json({ error: error.message })
 
-    const passwordHash = await bcrypt.hash(password, 5)
+    const passwordHash = await bcrypt.hash(password, 9)
     await prisma.user.create({
       data: {
         name: username,

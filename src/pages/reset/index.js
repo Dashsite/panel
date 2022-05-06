@@ -1,11 +1,11 @@
 import router from 'next/router'
 import Link from 'next/link'
 import { useState } from 'react'
-import { Alert, Box, Collapse, Typography, CardContent, Card as MuiCard } from '@mui/material'
+import { Alert, Box, Button, Collapse, Typography, CardContent, Card as MuiCard } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/auth/FooterIllustration'
-import { getProviders, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { ResetForm, LogoHeader } from 'src/views/auth'
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -39,7 +39,24 @@ const ResetPage = () => {
               Password Reset ♻️
             </Typography>
             <Collapse mountOnEnter in={showSuccess} timeout='auto'>
-              <Alert severity='success'>Please check your email to reset your password.</Alert>
+              <Alert severity='success'>
+                {status === 'authenticated'
+                  ? 'Password reset was successful!'
+                  : 'Please check your email to reset your password.'}
+              </Alert>
+              <Button
+                variant='contained'
+                color='primary'
+                sx={{
+                  mt: 3,
+                  width: '100%',
+                  fontWeight: 600,
+                  fontSize: '1rem !important'
+                }}
+                onClick={() => router.push('/')}
+              >
+                Go to Dashboard
+              </Button>
             </Collapse>
           </Box>
 
