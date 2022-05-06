@@ -1,4 +1,4 @@
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Alert, Box, Button, Collapse, Typography, CardContent, Card as MuiCard } from '@mui/material'
@@ -18,15 +18,9 @@ const LinkStyled = styled('a')(({ theme }) => ({
   color: theme.palette.primary.main
 }))
 
-const ResetPage = () => {
-  const { data, status } = useSession()
+const ResetPage = ({ isTokenValid }) => {
+  const router = useRouter()
   const [showSuccess, setShowSuccess] = useState(false)
-
-  if (!status === 'authenticated') {
-    console.log(data)
-
-    return
-  }
 
   return (
     <Box className='content-center'>
@@ -40,7 +34,7 @@ const ResetPage = () => {
             </Typography>
             <Collapse mountOnEnter in={showSuccess} timeout='auto'>
               <Alert severity='success'>
-                {status === 'authenticated'
+                {isTokenValid === 'authenticated'
                   ? 'Password reset was successful!'
                   : 'Please check your email to reset your password.'}
               </Alert>
@@ -60,7 +54,7 @@ const ResetPage = () => {
             </Collapse>
           </Box>
 
-          {status === 'authenticated' ? (
+          {isTokenValid ? (
             <Collapse in={!showSuccess}>
               <Typography variant='body2' sx={{ mb: 6 }}>
                 Enter your new password below.
@@ -96,3 +90,22 @@ const ResetPage = () => {
 ResetPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
 export default ResetPage
+
+export async function getServerSideProps(context) {
+  // get url paramter
+  const token = context.query.token
+  if (!token) return { props: { token: false } }
+
+  const result = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/password?token=${token}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  return {
+    props: {
+      isTokenValid: result.status === 200
+    }
+  }
+}

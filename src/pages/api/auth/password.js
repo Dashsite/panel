@@ -38,6 +38,15 @@ const resetPassword = async (req, res) => {
 const resetPasswordRequest = async (email, url) => {
   const resetToken = nanoid(48)
   try {
+    // check if user exists
+    const user = await prisma.user.findUnique({
+      where: {
+        email
+      }
+    })
+
+    if (!user) return
+
     // create resetToken and send email
     const resetTokenDB = await prisma.resetToken.create({
       data: {
@@ -59,8 +68,6 @@ const resetPasswordRequest = async (email, url) => {
   `
 
     await sendMail(email, subject, text, html)
-
-    console.log('HelloWorld1')
   } catch (err) {
     throw err
   }
@@ -88,6 +95,22 @@ export default async (req, res) => {
 
       return res.status(500).end()
     }
+  }
+
+  if (req.method === 'GET') {
+    const resetToken = req.query.token
+    if (!resetToken) return res.status(400).end()
+
+    //check if resetToken is valid and not expired
+    const resetTokenDB = await prisma.resetToken.findUnique({
+      where: {
+        token: resetToken
+      }
+    })
+
+    if (!resetTokenDB || resetTokenDB.expires < new Date()) return res.status(401).end()
+
+    return res.status(200).end()
   }
 
   return res.status(405).end()

@@ -59,8 +59,6 @@ const ResetForm = ({ passwordReset, successHandler }) => {
       })
     }
 
-    console.log(result)
-
     if (result.status === 500) {
       setError('Something went wrong. Please try again!')
     }

@@ -103,7 +103,7 @@ RegisterPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
 export default RegisterPage
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   const providers = await getProviders()
 
   return {
