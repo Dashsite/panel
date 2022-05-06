@@ -1,12 +1,14 @@
 import { useState } from 'react'
+import router from 'next/router'
 import Link from 'next/link'
-import { getProviders, signIn } from 'next-auth/react'
-import { Alert, Box, Collapse, Divider, Typography, CardContent, Card as MuiCard } from '@mui/material'
+import { getProviders } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
+import { Alert, Box, Button, Collapse, Divider, Typography, CardContent, Card as MuiCard } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/auth/FooterIllustration'
-import { RegisterForm, OAuthSignIn } from 'src/views/auth'
+import { RegisterForm, OAuthSignIn, LogoHeader } from 'src/views/auth'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -20,30 +22,51 @@ const LinkStyled = styled('a')(({ theme }) => ({
 }))
 
 const RegisterPage = ({ providers }) => {
+  const { status } = useSession()
   const [registerSuccess, setRegisterSuccess] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+
+  if (status === 'authenticated') {
+    return (
+      <Box className='content-center'>
+        <Card sx={{ zIndex: 1 }}>
+          <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
+            <LogoHeader />
+            <Box sx={{ mb: 6 }}>
+              <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
+                Welcome to {themeConfig.templateName}! 👋🏻
+              </Typography>
+
+              <Alert severity='success' sx={{ mt: 8 }}>
+                You are already logged in!
+              </Alert>
+            </Box>
+            <Box>
+              <Button
+                variant='contained'
+                color='primary'
+                sx={{
+                  mt: 3,
+                  width: '100%',
+                  fontWeight: 600,
+                  fontSize: '1rem !important'
+                }}
+                onClick={() => router.push('/')}
+              >
+                Go to Dashboard
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+    )
+  }
 
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
-          <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Link passHref href='/'>
-              <img alt='Logo' src='/images/Dashsite_logo.png' width={80} />
-            </Link>
-            <Typography
-              variant='h6'
-              sx={{
-                ml: 3,
-                lineHeight: 1,
-                fontWeight: 600,
-                textTransform: 'uppercase',
-                fontSize: '1.5rem !important'
-              }}
-            >
-              {themeConfig.templateName}
-            </Typography>
-          </Box>
+          <LogoHeader />
           <Box sx={{ mb: 6 }}>
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Adventure starts here 🚀
