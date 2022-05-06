@@ -1,16 +1,12 @@
 import { useState } from 'react'
+import Link from 'next/link'
+import router from 'next/router'
+import { getProviders, signIn } from 'next-auth/react'
 import { Alert, Box, Collapse, Divider, Typography, CardContent, Card as MuiCard } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import { getProviders, signIn } from 'next-auth/react'
-import Link from 'next/link'
-
-// import Github from 'mdi-material-ui/Github'
-// import Twitter from 'mdi-material-ui/Twitter'
-// import Facebook from 'mdi-material-ui/Facebook'
-
 import { RegisterForm, OAuthSignIn } from 'src/views/auth'
 
 // ** Styled Components
@@ -33,7 +29,9 @@ const RegisterPage = ({ providers }) => {
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img alt='Logo' src='/images/Dashsite_logo.png' width={80} />
+            <Link passHref href='/'>
+              <img alt='Logo' src='/images/Dashsite_logo.png' width={80} />
+            </Link>
             <Typography
               variant='h6'
               sx={{
