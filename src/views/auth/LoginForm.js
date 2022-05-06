@@ -99,8 +99,8 @@ const LoginForm = ({}) => {
           />
         </FormControl>
         <Box sx={{ mb: 3, mt: 3, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'right' }}>
-          <Link passHref href='/'>
-            <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
+          <Link passHref href='/reset'>
+            <LinkStyled>Forgot Password?</LinkStyled>
           </Link>
         </Box>
         {/* // make button default enter key */}
