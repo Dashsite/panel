@@ -4,7 +4,7 @@ import { Alert, Box, Button, Divider, Typography, CardContent, Card as MuiCard }
 import { styled } from '@mui/material/styles'
 import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
-import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import FooterIllustrationsV1 from 'src/views/auth/FooterIllustration'
 import { getProviders, useSession } from 'next-auth/react'
 import { OAuthSignIn, LoginForm, LogoHeader } from 'src/views/auth'
 
