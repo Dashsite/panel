@@ -2,6 +2,9 @@ import bcrypt from 'bcrypt'
 import prisma from 'src/lib/utils/PrismaClient'
 import { registerSchema } from 'src/lib/validations/user'
 
+/**
+ * Register a new user with the provided email and password
+ */
 export default async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
 

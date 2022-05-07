@@ -2,6 +2,9 @@ import { Box, Typography } from '@mui/material'
 import Link from 'next/link'
 import themeConfig from 'src/configs/themeConfig'
 
+/**
+ * Component that renders the logo and the title of the application.
+ */
 const LogoHeader = () => (
   <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
     <Link passHref href='/'>

@@ -1,4 +1,5 @@
 // ** React Imports
+import PropTypes from 'prop-types'
 import { Fragment } from 'react'
 
 // ** MUI Components
@@ -25,15 +26,13 @@ const Tree2Img = styled('img')(() => ({
   position: 'absolute'
 }))
 
-const FooterIllustrationsV1 = props => {
-  // ** Props
-  const { image1, image2 } = props
-
-  // ** Hook
+/**
+ * Component that renders images that are used as a background
+ */
+const FooterIllustrationsV1 = ({ image1, image2 }) => {
   const theme = useTheme()
-
-  // ** Vars
   const hidden = useMediaQuery(theme.breakpoints.down('md'))
+
   if (!hidden) {
     return (
       <Fragment>
@@ -45,6 +44,11 @@ const FooterIllustrationsV1 = props => {
   } else {
     return null
   }
+}
+
+FooterIllustrationsV1.propTypes = {
+  image1: PropTypes.node,
+  image2: PropTypes.node
 }
 
 export default FooterIllustrationsV1

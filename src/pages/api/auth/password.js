@@ -22,14 +22,14 @@ const resetPassword = async req => {
       token: token
     }
   })
-  if (resetToken.expires < new Date()) throw new Error()
+  if (resetToken.expires < new Date()) return false
 
   const email = resetToken.identifier
 
   try {
     const { error } = resetSchema.validate({ password }, { abortEarly: false, errors: { wrap: true } })
 
-    if (error) throw { status: 400, message: error.message }
+    if (error) return { status: 400, message: error.message }
 
     const passwordHash = await bcrypt.hash(password, 9)
     await prisma.user.update({
@@ -47,7 +47,7 @@ const resetPassword = async req => {
       }
     })
   } catch (err) {
-    throw err
+    return false
   }
 }
 
@@ -66,7 +66,7 @@ const resetPasswordRequest = async email => {
       }
     })
 
-    if (!user) return
+    if (!user) return false
 
     // create resetToken and send email
     const resetTokenDB = await prisma.resetToken.create({
@@ -89,34 +89,28 @@ const resetPasswordRequest = async email => {
   `
 
     await sendMail(email, subject, text, html)
+
+    return true
   } catch (err) {
-    throw err
+    throw false
   }
 }
 
 export default async (req, res) => {
   // POST Request - Sets a new password for a user and deletes all resetTokens for that user
   if (req.method === 'POST') {
-    try {
-      await resetPassword(req, res)
+    const result = await resetPassword(req, res)
 
-      return res.status(200).end()
-    } catch (err) {
-      if (err.status === 400) return res.status(400).json({ error: err.message })
+    if (result.status === 400) return res.status(400).json({ error: err.message })
 
-      return res.status(500).end()
-    }
+    return result ? res.status(200).end() : res.status(500).end()
   }
 
   // PUT Request - Creates a new resetToken and sends an email to the user
   if (req.method === 'PUT') {
-    try {
-      await resetPasswordRequest(req.body.email)
+    const result = await resetPasswordRequest(req.body.email)
 
-      return res.status(200).end()
-    } catch (err) {
-      return res.status(500).end()
-    }
+    return result ? res.status(200).end() : res.status(500).end()
   }
 
   // GET Request - Checks if a resetToken is valid and not expired

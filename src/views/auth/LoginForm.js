@@ -25,7 +25,10 @@ const LinkStyled = styled('a')(({ theme }) => ({
   color: theme.palette.primary.main
 }))
 
-const LoginForm = ({}) => {
+/**
+ * Component that renders the login form and handles the login process.
+ */
+const LoginForm = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)

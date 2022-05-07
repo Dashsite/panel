@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
 import Link from 'next/link'
 
@@ -38,6 +39,9 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
+/**
+ * Component that renders the Register form and handles the registration process.
+ */
 const RegisterForm = ({ successHandler }) => {
   const [error, setError] = useState('')
 
@@ -183,6 +187,10 @@ const RegisterForm = ({ successHandler }) => {
       </form>
     </>
   )
+}
+
+RegisterForm.propTypes = {
+  successHandler: PropTypes.func.isRequired
 }
 
 export default RegisterForm

@@ -10,6 +10,10 @@ import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
+/**
+ * Function that returns the navigation items.
+ * @returns {Array} An array of menu items.
+ */
 const navigation = () => {
   return [
     {

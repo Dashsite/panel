@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
 import {
   Box,
@@ -20,6 +21,9 @@ import { useRouter } from 'next/router'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
+/**
+ * Component that renders the Reset form and handles the reset process.
+ */
 const ResetForm = ({ passwordReset, successHandler }) => {
   const router = useRouter()
   const [requestError, setRequestError] = useState('')
@@ -182,6 +186,11 @@ const ResetForm = ({ passwordReset, successHandler }) => {
       </form>
     </>
   )
+}
+
+ResetForm.propTypes = {
+  passwordReset: PropTypes.bool.isRequired,
+  successHandler: PropTypes.func.isRequired
 }
 
 export default ResetForm

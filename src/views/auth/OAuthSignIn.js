@@ -1,9 +1,13 @@
+import PropTypes from 'prop-types'
 import { Box, IconButton } from '@mui/material'
 import Link from 'next/link'
 import Google from 'mdi-material-ui/Google'
 
 import { signIn } from 'next-auth/react'
 
+/**
+ * Component that renders all OAuth sign in buttons.
+ */
 const OAuthSignIn = ({ providers }) => {
   return (
     <>
@@ -16,6 +20,10 @@ const OAuthSignIn = ({ providers }) => {
       </Box>
     </>
   )
+}
+
+OAuthSignIn.propTypes = {
+  providers: PropTypes.object.isRequired
 }
 
 export default OAuthSignIn

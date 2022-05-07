@@ -9,6 +9,14 @@ const transporter = nodemailer.createTransport({
   }
 })
 
+/**
+ * Send an email using the nodemailer transporter.
+ * @param {string} email
+ * @param {string} subject
+ * @param {string} text
+ * @param {string} html
+ * @returns {Promise} A promise that resolves when the email is sent.
+ */
 const sendMail = async (email, subject, text, html) => {
   new Promise((resolve, reject) => {
     transporter.sendMail(
