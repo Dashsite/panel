@@ -47,7 +47,7 @@ const VerticalNavHeader = props => {
       ) : (
         <Link href='/' passHref>
           <StyledLink>
-            <img width={45} src='/images/Dashsite_logo.png' />
+            <img alt='Website Logo' width={45} src='/images/Dashsite_logo.png' />
             <HeaderTitle variant='h6' sx={{ ml: 3 }}>
               {themeConfig.templateName}
             </HeaderTitle>

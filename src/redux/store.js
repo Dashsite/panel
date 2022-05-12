@@ -4,7 +4,7 @@ import { createDriver } from '@redux-requests/axios'
 import { handleRequests } from '@redux-requests/core'
 import rootReducers from './reducers'
 
-import { axiosInstance } from 'src/configs/axiosInstance'
+import axiosInstance from 'src/configs/axiosInstance'
 
 const setupStore = () => {
   const { requestsReducer, requestsMiddleware } = handleRequests({
