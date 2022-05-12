@@ -24,7 +24,7 @@ const navigation = () => {
     {
       title: 'Account Settings',
       icon: AccountCogOutline,
-      path: '/account-settings'
+      path: '/demo/account-settings'
     },
     {
       sectionTitle: 'Pages'
@@ -53,27 +53,27 @@ const navigation = () => {
     {
       title: 'Typography',
       icon: FormatLetterCase,
-      path: '/typography'
+      path: '/demo/typography'
     },
     {
       title: 'Icons',
-      path: '/icons',
+      path: '/demo/icons',
       icon: GoogleCirclesExtended
     },
     {
       title: 'Cards',
       icon: CreditCardOutline,
-      path: '/cards'
+      path: '/demo/cards'
     },
     {
       title: 'Tables',
       icon: Table,
-      path: '/tables'
+      path: '/demo/tables'
     },
     {
       icon: CubeOutline,
       title: 'Form Layouts',
-      path: '/form-layouts'
+      path: '/demo/form-layouts'
     }
   ]
 }

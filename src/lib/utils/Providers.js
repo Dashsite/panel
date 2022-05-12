@@ -23,7 +23,7 @@ const Providers = ({ children, emotionCache, session }) => {
 Providers.propTypes = {
   children: PropTypes.node.isRequired,
   emotionCache: PropTypes.object.isRequired,
-  session: PropTypes.any.isRequired
+  session: PropTypes.any
 }
 
 export default Providers
