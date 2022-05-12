@@ -100,7 +100,8 @@ export default NextAuth({
     updateAge: 24 * 60 * 60 // 24 hours
   },
   pages: {
-    signIn: '/login'
+    signIn: '/auth/login',
+    verifyRequest: '/auth/verify'
   }
 })
 

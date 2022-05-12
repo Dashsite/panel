@@ -32,13 +32,13 @@ const navigation = () => {
     {
       title: 'Login',
       icon: Login,
-      path: '/login',
+      path: '/auth/login',
       openInNewTab: false
     },
     {
       title: 'Register',
       icon: AccountPlusOutline,
-      path: '/register',
+      path: '/auth/register',
       openInNewTab: false
     },
     {
