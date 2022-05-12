@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Alert, Box, Button, Typography, CardContent, Card as MuiCard } from '@mui/material'
 
@@ -16,7 +17,11 @@ const VerifyEmailPage = () => {
   const router = useRouter()
   const { status } = useSession()
 
-  console.log(router)
+  useEffect(() => {
+    if (status !== 'authenticated') {
+      router.push('/auth/login')
+    }
+  }, [status, router])
 
   if (status === 'authenticated') {
     return (
