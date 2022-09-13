@@ -9,125 +9,134 @@ import { useSession } from 'next-auth/react'
 import { ResetForm, LogoHeader } from 'src/views/auth'
 
 const Card = styled(MuiCard)(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: { width: '28rem' }
+    [theme.breakpoints.up('sm')]: { width: '28rem' },
 }))
 
 const LinkStyled = styled('a')(({ theme }) => ({
-  fontSize: '0.875rem',
-  textDecoration: 'none',
-  color: theme.palette.primary.main
+    fontSize: '0.875rem',
+    textDecoration: 'none',
+    color: theme.palette.primary.main,
 }))
 
 const ResetPage = ({ isTokenValid }) => {
-  const router = useRouter()
-  const [showSuccess, setShowSuccess] = useState(false)
+    const router = useRouter()
+    const [showSuccess, setShowSuccess] = useState(false)
 
-  return (
-    <Box className='content-center'>
-      <Card sx={{ zIndex: 1 }}>
-        <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
-          <LogoHeader />
+    return (
+        <Box className='content-center'>
+            <Card sx={{ zIndex: 1 }}>
+                <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
+                    <LogoHeader />
 
-          <Box sx={{ mb: 0 }}>
-            <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
-              Password Reset ♻️
-            </Typography>
-            <Collapse mountOnEnter in={showSuccess} timeout='auto'>
-              <Alert severity='success'>
-                {isTokenValid ? 'Password reset was successful!' : 'Please check your email to reset your password.'}
-              </Alert>
-              <Button
-                variant='contained'
-                color='primary'
-                sx={{
-                  mt: 3,
-                  width: '100%',
-                  fontWeight: 600,
-                  fontSize: '1rem !important'
-                }}
-                onClick={() => router.push('/login')}
-              >
-                Go to Login
-              </Button>
-            </Collapse>
-          </Box>
+                    <Box sx={{ mb: 0 }}>
+                        <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
+                            Password Reset ♻️
+                        </Typography>
+                        <Collapse mountOnEnter in={showSuccess} timeout='auto'>
+                            <Alert severity='success'>
+                                {isTokenValid
+                                    ? 'Password reset was successful!'
+                                    : 'Please check your email to reset your password.'}
+                            </Alert>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                sx={{
+                                    mt: 3,
+                                    width: '100%',
+                                    fontWeight: 600,
+                                    fontSize: '1rem !important',
+                                }}
+                                onClick={() => router.push('/login')}
+                            >
+                                Go to Login
+                            </Button>
+                        </Collapse>
+                    </Box>
 
-          {isTokenValid && (
-            <Collapse in={!showSuccess}>
-              <Typography variant='body2' sx={{ mb: 6 }}>
-                Enter your new password below.
-              </Typography>
+                    {isTokenValid && (
+                        <Collapse in={!showSuccess}>
+                            <Typography variant='body2' sx={{ mb: 6 }}>
+                                Enter your new password below.
+                            </Typography>
 
-              <ResetForm passwordReset successHandler={setShowSuccess} />
-            </Collapse>
-          )}
+                            <ResetForm passwordReset successHandler={setShowSuccess} />
+                        </Collapse>
+                    )}
 
-          {router.query.token && !isTokenValid && (
-            <>
-              <Alert severity='error'>
-                <AlertTitle>Invalid token</AlertTitle>
-                Your password reset token is invalid or has expired. Please try again.
-              </Alert>
-              <Button
-                variant='contained'
-                color='primary'
-                sx={{
-                  mt: 3,
-                  width: '100%',
-                  fontWeight: 600,
-                  fontSize: '1rem !important'
-                }}
-                onClick={() => router.push('/login')}
-              >
-                Go to Login
-              </Button>
-            </>
-          )}
+                    {router.query.token && !isTokenValid && (
+                        <>
+                            <Alert severity='error'>
+                                <AlertTitle>Invalid token</AlertTitle>
+                                Your password reset token is invalid or has expired. Please try again.
+                            </Alert>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                sx={{
+                                    mt: 3,
+                                    width: '100%',
+                                    fontWeight: 600,
+                                    fontSize: '1rem !important',
+                                }}
+                                onClick={() => router.push('/login')}
+                            >
+                                Go to Login
+                            </Button>
+                        </>
+                    )}
 
-          {!router.query.token && (
-            <Collapse in={!showSuccess}>
-              <Typography variant='body2' sx={{ mb: 6 }}>
-                Enter your email address and we'll send you a link to reset your password.
-              </Typography>
+                    {!router.query.token && (
+                        <Collapse in={!showSuccess}>
+                            <Typography variant='body2' sx={{ mb: 6 }}>
+                                Enter your email address and we'll send you a link to reset your password.
+                            </Typography>
 
-              <ResetForm successHandler={setShowSuccess} />
-              <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Typography variant='body2' sx={{ marginRight: 2 }}>
-                  Remember your password?
-                </Typography>
-                <Typography variant='body2'>
-                  <Link passHref href='/login'>
-                    <LinkStyled>Login instead</LinkStyled>
-                  </Link>
-                </Typography>
-              </Box>
-            </Collapse>
-          )}
-        </CardContent>
-      </Card>
-      <FooterIllustrationsV1 />
-    </Box>
-  )
+                            <ResetForm successHandler={setShowSuccess} />
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Typography variant='body2' sx={{ marginRight: 2 }}>
+                                    Remember your password?
+                                </Typography>
+                                <Typography variant='body2'>
+                                    <Link passHref href='/auth/login'>
+                                        <LinkStyled>Login instead</LinkStyled>
+                                    </Link>
+                                </Typography>
+                            </Box>
+                        </Collapse>
+                    )}
+                </CardContent>
+            </Card>
+            <FooterIllustrationsV1 />
+        </Box>
+    )
 }
 ResetPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
 export default ResetPage
 
 export async function getServerSideProps(context) {
-  // get url paramter
-  const token = context.query.token
-  if (!token) return { props: { token: false } }
+    // get url paramter
+    const token = context.query.token
+    if (!token) return { props: { token: false } }
 
-  const result = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/password?token=${token}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
+    const result = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/password?token=${token}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
 
-  return {
-    props: {
-      isTokenValid: result.status === 200
+    return {
+        props: {
+            isTokenValid: result.status === 200,
+        },
     }
-  }
 }

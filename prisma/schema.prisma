@@ -91,7 +91,7 @@ model User {
   sessions         Session[]
   billing_adresses billing_adresses[]
   payments         payments[]
-  isAdmin          Boolean?           @default(false)
+  role             String?            @default("user") @db.VarChar(30)
 }
 
 model VerificationToken {
