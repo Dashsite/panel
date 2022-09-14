@@ -9,7 +9,7 @@ import { resetSchema } from 'src/lib/validations/user'
 
 /**
  * Set new Password for a user
- * @param {object} req
+ * @param {import('next').NextApiRequest} req
  * @description Token in query is required to reset password. If token is valid, user can set new password.
  *
  */
@@ -96,6 +96,12 @@ const resetPasswordRequest = async email => {
     }
 }
 
+/**
+ * @param {import('next').NextApiRequest} req
+ * @param {import('next').NextApiResponse} res
+ * @returns {Promise<void>}
+ *
+ */
 export default async (req, res) => {
     // POST Request - Sets a new password for a user and deletes all resetTokens for that user
     if (req.method === 'POST') {

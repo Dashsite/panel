@@ -1,5 +1,11 @@
 import prisma from 'src/lib/utils/PrismaClient'
 
+/**
+ * @param {import('next').NextApiRequest} req
+ * @param {import('next').NextApiResponse} res
+ * @returns {Promise<void>}
+ *
+ */
 export default async (req, res) => {
     switch (req.method) {
         case 'GET':
