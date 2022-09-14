@@ -160,3 +160,10 @@ model pterodactyl_product {
 
   @@index([product_categories_id], map: "product_categories_pterodactyl_product")
 }
+
+generator jsonSchema {
+  provider                 = "prisma-json-schema-generator"
+  output                   = "../prisma/schema.json"
+  persistOriginalType      = "true"
+  keepRelationScalarFields = "true"
+}

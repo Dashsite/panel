@@ -1,0 +1,583 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "billing_adresses": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "user_id": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "forname": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "surname": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "company_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "adress_line_1": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "adress_line_2": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "postalcode": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "country": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "state": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "phonenumber": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "city": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        }
+      }
+    },
+    "payment_providers": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "name": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "payments": {
+          "type": "array",
+          "originalType": "payments",
+          "items": {
+            "$ref": "#/definitions/payments"
+          }
+        }
+      }
+    },
+    "payments": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "User_id": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "payment_providers_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "provider_payment_id": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "product_type": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "product_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "tax_value": {
+          "type": "number",
+          "originalType": "Decimal"
+        },
+        "tax_percent": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "total_price": {
+          "type": "number",
+          "originalType": "Decimal"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "payment_providers": {
+          "$ref": "#/definitions/payment_providers"
+        }
+      }
+    },
+    "Account": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "userId": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "type": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "provider": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "providerAccountId": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "refresh_token": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "access_token": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "expires_at": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "originalType": "Int"
+        },
+        "token_type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "scope": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "id_token": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "session_state": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        }
+      }
+    },
+    "Session": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "sessionToken": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "userId": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "expires": {
+          "type": "string",
+          "originalType": "DateTime",
+          "format": "date-time"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "email": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "emailVerified": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "DateTime",
+          "format": "date-time"
+        },
+        "image": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "createdAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "DateTime",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "DateTime",
+          "format": "date-time"
+        },
+        "disabled": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "originalType": "Boolean"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "password": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "accounts": {
+          "type": "array",
+          "originalType": "Account",
+          "items": {
+            "$ref": "#/definitions/Account"
+          }
+        },
+        "sessions": {
+          "type": "array",
+          "originalType": "Session",
+          "items": {
+            "$ref": "#/definitions/Session"
+          }
+        },
+        "billing_adresses": {
+          "type": "array",
+          "originalType": "billing_adresses",
+          "items": {
+            "$ref": "#/definitions/billing_adresses"
+          }
+        },
+        "payments": {
+          "type": "array",
+          "originalType": "payments",
+          "items": {
+            "$ref": "#/definitions/payments"
+          }
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String",
+          "default": "user"
+        }
+      }
+    },
+    "VerificationToken": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "token": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "expires": {
+          "type": "string",
+          "originalType": "DateTime",
+          "format": "date-time"
+        }
+      }
+    },
+    "ResetToken": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "token": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "expires": {
+          "type": "string",
+          "originalType": "DateTime",
+          "format": "date-time"
+        }
+      }
+    },
+    "product_categories": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "name": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "proxmox_product": {
+          "type": "array",
+          "originalType": "proxmox_product",
+          "items": {
+            "$ref": "#/definitions/proxmox_product"
+          }
+        },
+        "pterodactyl_product": {
+          "type": "array",
+          "originalType": "pterodactyl_product",
+          "items": {
+            "$ref": "#/definitions/pterodactyl_product"
+          }
+        }
+      }
+    },
+    "promox_hosts": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "name": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "max_cpu": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "max_ram": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "max_disk": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "proxmox_product": {
+          "type": "array",
+          "originalType": "proxmox_product",
+          "items": {
+            "$ref": "#/definitions/proxmox_product"
+          }
+        }
+      }
+    },
+    "proxmox_product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "promox_hosts_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "product_categories_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "price_per_hour": {
+          "type": "number",
+          "originalType": "Decimal"
+        },
+        "name": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "cpu_cores": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "memory": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "minimum_memory": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "disk_size": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "cpu_bllooning": {
+          "type": "boolean",
+          "originalType": "Boolean"
+        },
+        "product_categories": {
+          "$ref": "#/definitions/product_categories"
+        },
+        "promox_hosts": {
+          "$ref": "#/definitions/promox_hosts"
+        }
+      }
+    },
+    "pterodactyl_product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "product_categories_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "name": {
+          "type": "string",
+          "originalType": "Bytes"
+        },
+        "price_per_hour": {
+          "type": "number",
+          "originalType": "Decimal"
+        },
+        "memory": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "cpu": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "disk_storage": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "block_io_weight": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "db_limit": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "allocation_limit": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "backup_limit": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "product_categories": {
+          "$ref": "#/definitions/product_categories"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "billing_adresses": {
+      "$ref": "#/definitions/billing_adresses"
+    },
+    "payment_providers": {
+      "$ref": "#/definitions/payment_providers"
+    },
+    "payments": {
+      "$ref": "#/definitions/payments"
+    },
+    "account": {
+      "$ref": "#/definitions/Account"
+    },
+    "session": {
+      "$ref": "#/definitions/Session"
+    },
+    "user": {
+      "$ref": "#/definitions/User"
+    },
+    "verificationToken": {
+      "$ref": "#/definitions/VerificationToken"
+    },
+    "resetToken": {
+      "$ref": "#/definitions/ResetToken"
+    },
+    "product_categories": {
+      "$ref": "#/definitions/product_categories"
+    },
+    "promox_hosts": {
+      "$ref": "#/definitions/promox_hosts"
+    },
+    "proxmox_product": {
+      "$ref": "#/definitions/proxmox_product"
+    },
+    "pterodactyl_product": {
+      "$ref": "#/definitions/pterodactyl_product"
+    }
+  }
+}
