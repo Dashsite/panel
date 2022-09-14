@@ -34,6 +34,7 @@
     "nanoid": "^3.3.4",
     "next": "12.3.0",
     "next-auth": "^4.10.3",
+    "next-swagger-doc": "^0.3.6",
     "nodemailer": "^6.7.8",
     "nprogress": "^0.2.0",
     "prisma": "^4.3.1",
@@ -44,7 +45,9 @@
     "react-perfect-scrollbar": "^1.5.8",
     "react-popper": "^2.3.0",
     "react-redux": "^8.0.2",
-    "redux": "^4.2.0"
+    "redux": "^4.2.0",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-react": "^4.14.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.18.9",
