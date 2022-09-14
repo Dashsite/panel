@@ -25,6 +25,10 @@ if (themeConfig.routingLoader) {
 const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps: { session, ...pageProps } }) => {
     const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
+    if (Component.blank === true) {
+        return getLayout(<Component {...pageProps} />)
+    }
+
     return (
         <Providers emotionCache={emotionCache} session={session}>
             {getLayout(
