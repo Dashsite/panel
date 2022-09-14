@@ -103,8 +103,10 @@ const resetPasswordRequest = async email => {
  *
  */
 export default async (req, res) => {
+    const { method } = req
+
     // POST Request - Sets a new password for a user and deletes all resetTokens for that user
-    if (req.method === 'POST') {
+    if (method === 'POST') {
         const result = await resetPassword(req, res)
 
         if (result.status === 400) return res.status(400).json({ error: err.message })
@@ -113,14 +115,14 @@ export default async (req, res) => {
     }
 
     // PUT Request - Creates a new resetToken and sends an email to the user
-    if (req.method === 'PUT') {
+    if (method === 'PUT') {
         const result = await resetPasswordRequest(req.body.email)
 
         return result ? res.status(200).end() : res.status(500).end()
     }
 
     // GET Request - Checks if a resetToken is valid and not expired
-    if (req.method === 'GET') {
+    if (method === 'GET') {
         const resetToken = req.query.token
         if (!resetToken) return res.status(400).end()
 
