@@ -1,4 +1,5 @@
 import prisma from 'src/lib/utils/PrismaClient'
+import { getToken } from 'next-auth/jwt'
 
 /**
  * @openapi
@@ -17,28 +18,30 @@ import prisma from 'src/lib/utils/PrismaClient'
  */
 
 export default async (req, res) => {
-    const {
-        body: { token },
-        method,
-    } = req
-
+    const { method } = req
     if (method !== 'GET') return res.status(405).end()
 
-    // get user from token
-    const user = await prisma.user.findUnique({
-        where: {
-            id: token.id,
-        },
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            emailVerified: true,
-            image: true,
-            role: true,
-            createdAt: true,
-            updatedAt: true,
-        },
-    })
-    res.status(200).json(user)
+    const token = await getToken({ req })
+
+    try {
+        // get user from token
+        const user = await prisma.user.findUnique({
+            where: {
+                id: token.user.id,
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                emailVerified: true,
+                image: true,
+                role: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        })
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
 }
