@@ -1,9 +1,24 @@
 import prisma from 'src/lib/utils/PrismaClient'
 
+/**
+ * @openapi
+ * /api/account/email:
+ *   put:
+ *     description: Update the email address
+ *     responses:
+ *       200:
+ *         description: Email address updated
+ *     tags:
+ *      - Account
+ *
+ * @param {import('next').NextApiRequest} req
+ * @param {import('next').NextApiResponse} res
+ * @returns {Promise<void>}
+ */
 export default async (req, res) => {
     // Update Email Address
     const {
-        body: { token, email, password },
+        body: { token, email },
         method,
     } = req
     if (method !== 'PUT') return res.status(405).end()
