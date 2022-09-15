@@ -3,7 +3,14 @@ import { joiPasswordExtendCore } from 'joi-password'
 
 const JoiPassword = Joi.extend(joiPasswordExtendCore)
 
-const email = Joi.string().email().required().messages({ 'string.email': 'Email is not valid' })
+const email = Joi.string().email().messages({ 'string.email': 'Email is not valid' }).label('Email')
+
+const username = Joi.string().min(3).max(30).alphanum().label('Username')
+
+const userDataSchema = Joi.object({
+    username: username.required(),
+    email: email.required(),
+})
 
 const passwordValidation = JoiPassword.string()
     .min(8)
@@ -13,6 +20,7 @@ const passwordValidation = JoiPassword.string()
     .minOfNumeric(1)
     .noWhiteSpaces()
     .required()
+    .label('Password')
     .messages({
         'password.minOfUppercase': 'Password must contain at least one uppercase letter',
         'password.minOfLowercase': 'Password must contain at least one lowercase letter',
@@ -23,8 +31,8 @@ const passwordValidation = JoiPassword.string()
     })
 
 const registerSchema = Joi.object().keys({
-    username: Joi.string().required().min(3).max(30),
-    email: email,
+    username: username.required(),
+    email: email.required(),
     password: passwordValidation,
 })
 
@@ -32,4 +40,4 @@ const resetSchema = Joi.object().keys({
     password: passwordValidation,
 })
 
-export { registerSchema, resetSchema, email }
+export { registerSchema, resetSchema, email, username, userDataSchema }
