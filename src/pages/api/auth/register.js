@@ -1,8 +1,17 @@
 import bcrypt from 'bcrypt'
 import prisma from 'src/lib/utils/PrismaClient'
+import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { registerSchema } from 'src/lib/validations/user'
 
 /**
+ *
+@openapi
+/auth/register:
+ post:
+   summary: Register as user
+   tags:
+     - Auth
+ *
  * @param {import('next').NextApiRequest} req
  * @param {import('next').NextApiResponse} res
  * @returns {Promise<void>}
@@ -17,11 +26,10 @@ export default async (req, res) => {
 
     try {
         // validate the data using the schema in src/lib/validations/user.js
-        const { error } = registerSchema.validate(
-            { username, email, password },
-            { abortEarly: false, errors: { wrap: true } }
-        )
-        if (error) return res.status(400).json({ error: error.message })
+        const { error } = registerSchema.validate({ ...req.body }, validationOptions)
+        if (error) return res.status(400).json({ error: validationFormatter(error) })
+
+        console.log(validationFormatter(error))
 
         const passwordHash = await bcrypt.hash(password, 9)
         await prisma.user.create({
