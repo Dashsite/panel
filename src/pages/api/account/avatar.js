@@ -31,16 +31,11 @@ handler.post(
         form.parse(req, async (err, fields, files) => {
             if (err) {
                 fs.unlinkSync(path)
-
                 return res.status(500).json()
             }
 
             // save image path to account db avatar url
             const { path } = files.image
-
-            console.log(path)
-
-            // concat app url to image path
             const avatarUrl = `${process.env.APP_URL}/${path}`
 
             try {
