@@ -71,15 +71,15 @@ CREATE TABLE `ResetToken` (
 
 -- CreateTable
 CREATE TABLE `product_categories` (
-    `id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `promox_hosts` (
-    `id` INTEGER NOT NULL,
+CREATE TABLE `proxmox_hosts` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     `max_cpu` INTEGER NOT NULL,
     `max_ram` INTEGER NOT NULL,
@@ -90,8 +90,8 @@ CREATE TABLE `promox_hosts` (
 
 -- CreateTable
 CREATE TABLE `proxmox_product` (
-    `id` INTEGER NOT NULL,
-    `promox_hosts_id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `proxmox_hosts_id` INTEGER NOT NULL,
     `product_categories_id` INTEGER NOT NULL,
     `price_per_hour` DECIMAL(10, 4) NOT NULL,
     `name` VARCHAR(255) NOT NULL,
@@ -102,13 +102,13 @@ CREATE TABLE `proxmox_product` (
     `cpu_bllooning` BOOLEAN NOT NULL,
 
     INDEX `product_categories_proxmox_product`(`product_categories_id`),
-    INDEX `promox_hosts_proxmox_product`(`promox_hosts_id`),
+    INDEX `proxmox_hosts_proxmox_product`(`proxmox_hosts_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `pterodactyl_product` (
-    `id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `product_categories_id` INTEGER NOT NULL,
     `name` VARBINARY(255) NOT NULL,
     `price_per_hour` DECIMAL(10, 4) NOT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE `pterodactyl_product` (
 ALTER TABLE `proxmox_product` ADD CONSTRAINT `product_categories_proxmox_product` FOREIGN KEY (`product_categories_id`) REFERENCES `product_categories`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE `proxmox_product` ADD CONSTRAINT `promox_hosts_proxmox_product` FOREIGN KEY (`promox_hosts_id`) REFERENCES `promox_hosts`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `proxmox_product` ADD CONSTRAINT `proxmox_hosts_proxmox_product` FOREIGN KEY (`proxmox_hosts_id`) REFERENCES `proxmox_hosts`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `pterodactyl_product` ADD CONSTRAINT `product_categories_pterodactyl_product` FOREIGN KEY (`product_categories_id`) REFERENCES `product_categories`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

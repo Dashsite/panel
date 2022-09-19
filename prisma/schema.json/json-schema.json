@@ -5,21 +5,21 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "integer",
-          "originalType": "Int"
+          "type": "string",
+          "originalType": "String"
         },
         "user_id": {
           "type": "string",
           "originalType": "String"
         },
-        "forname": {
+        "firstname": {
           "type": [
             "string",
             "null"
           ],
           "originalType": "String"
         },
-        "surname": {
+        "lastname": {
           "type": [
             "string",
             "null"
@@ -44,7 +44,7 @@
           ],
           "originalType": "String"
         },
-        "postalcode": {
+        "zipcode": {
           "type": "string",
           "originalType": "String"
         },
@@ -53,15 +53,35 @@
           "originalType": "String"
         },
         "state": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "originalType": "String"
         },
-        "phonenumber": {
-          "type": "string",
+        "phone": {
+          "type": [
+            "string",
+            "null"
+          ],
           "originalType": "String"
         },
         "city": {
           "type": "string",
+          "originalType": "String"
+        },
+        "tax_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "invoice_email": {
+          "type": [
+            "string",
+            "null"
+          ],
           "originalType": "String"
         },
         "user": {
@@ -93,8 +113,8 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "integer",
-          "originalType": "Int"
+          "type": "string",
+          "originalType": "String"
         },
         "User_id": {
           "type": "string",
@@ -405,7 +425,7 @@
         }
       }
     },
-    "promox_hosts": {
+    "proxmox_hosts": {
       "type": "object",
       "properties": {
         "id": {
@@ -444,7 +464,7 @@
           "type": "integer",
           "originalType": "Int"
         },
-        "promox_hosts_id": {
+        "proxmox_hosts_id": {
           "type": "integer",
           "originalType": "Int"
         },
@@ -483,8 +503,8 @@
         "product_categories": {
           "$ref": "#/definitions/product_categories"
         },
-        "promox_hosts": {
-          "$ref": "#/definitions/promox_hosts"
+        "proxmox_hosts": {
+          "$ref": "#/definitions/proxmox_hosts"
         }
       }
     },
@@ -570,8 +590,8 @@
     "product_categories": {
       "$ref": "#/definitions/product_categories"
     },
-    "promox_hosts": {
-      "$ref": "#/definitions/promox_hosts"
+    "proxmox_hosts": {
+      "$ref": "#/definitions/proxmox_hosts"
     },
     "proxmox_product": {
       "$ref": "#/definitions/proxmox_product"

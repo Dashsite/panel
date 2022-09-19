@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE `billing_adresses` (
-    `id` INTEGER NOT NULL,
-    `user_id` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(255) NOT NULL,
+    `user_id` VARCHAR(255) NOT NULL,
     `forname` VARCHAR(255) NULL,
     `surname` VARCHAR(255) NULL,
     `company_name` VARCHAR(255) NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `game_server_systems` (
 
 -- CreateTable
 CREATE TABLE `payment_providers` (
-    `id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -48,8 +48,8 @@ CREATE TABLE `payment_providers` (
 
 -- CreateTable
 CREATE TABLE `payments` (
-    `id` INTEGER NOT NULL,
-    `User_id` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(255) NOT NULL,
+    `User_id` VARCHAR(255) NOT NULL,
     `payment_providers_id` INTEGER NOT NULL,
     `provider_payment_id` VARCHAR(255) NOT NULL,
     `product_type` VARCHAR(255) NOT NULL,
@@ -112,18 +112,18 @@ CREATE TABLE `vps_systems` (
 
 -- CreateTable
 CREATE TABLE `Account` (
-    `id` VARCHAR(191) NOT NULL,
-    `userId` VARCHAR(191) NOT NULL,
-    `type` VARCHAR(191) NOT NULL,
-    `provider` VARCHAR(191) NOT NULL,
-    `providerAccountId` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(255) NOT NULL,
+    `userId` VARCHAR(255) NOT NULL,
+    `type` VARCHAR(255) NOT NULL,
+    `provider` VARCHAR(255) NOT NULL,
+    `providerAccountId` VARCHAR(255) NOT NULL,
     `refresh_token` TEXT NULL,
     `access_token` TEXT NULL,
     `expires_at` INTEGER NULL,
-    `token_type` VARCHAR(191) NULL,
-    `scope` VARCHAR(191) NULL,
+    `token_type` VARCHAR(255) NULL,
+    `scope` VARCHAR(255) NULL,
     `id_token` TEXT NULL,
-    `session_state` VARCHAR(191) NULL,
+    `session_state` VARCHAR(255) NULL,
 
     UNIQUE INDEX `Account_provider_providerAccountId_key`(`provider`, `providerAccountId`),
     PRIMARY KEY (`id`)
@@ -131,9 +131,9 @@ CREATE TABLE `Account` (
 
 -- CreateTable
 CREATE TABLE `Session` (
-    `id` VARCHAR(191) NOT NULL,
-    `sessionToken` VARCHAR(191) NOT NULL,
-    `userId` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(255) NOT NULL,
+    `sessionToken` VARCHAR(255) NOT NULL,
+    `userId` VARCHAR(255) NOT NULL,
     `expires` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Session_sessionToken_key`(`sessionToken`),
@@ -142,11 +142,11 @@ CREATE TABLE `Session` (
 
 -- CreateTable
 CREATE TABLE `User` (
-    `id` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NULL,
-    `email` VARCHAR(191) NULL,
+    `id` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(255) NULL,
+    `email` VARCHAR(255) NULL,
     `emailVerified` DATETIME(3) NULL,
-    `image` VARCHAR(191) NULL,
+    `image` VARCHAR(255) NULL,
     `username` VARCHAR(255) NOT NULL,
     `creation_date` TIMESTAMP(0) NOT NULL,
     `disabled` BOOLEAN NOT NULL,
@@ -158,8 +158,8 @@ CREATE TABLE `User` (
 
 -- CreateTable
 CREATE TABLE `VerificationToken` (
-    `identifier` VARCHAR(191) NOT NULL,
-    `token` VARCHAR(191) NOT NULL,
+    `identifier` VARCHAR(255) NOT NULL,
+    `token` VARCHAR(255) NOT NULL,
     `expires` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `VerificationToken_token_key`(`token`),
