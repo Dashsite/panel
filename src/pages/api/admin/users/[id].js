@@ -1,22 +1,22 @@
 import prisma from 'src/lib/utils/PrismaClient'
+import nextConnect from 'next-connect'
+import { userDataSchema, registerSchema } from 'src/lib/validations/user'
+import { validationFormatter, validationOptions } from 'src/lib/validations'
 
-/**
- * @param {import('next').NextApiRequest} req
- * @param {import('next').NextApiResponse} res
- * @returns {Promise<void>}
- *
- */
-export default async (req, res) => {
-    const {
-        query: { id },
-        method,
-    } = req
+const handler = nextConnect()
 
-    switch (method) {
-        case 'GET':
-            const user = await prisma.user.findUnique({
+handler.get(
+    /**
+     * @param {import('next').NextApiRequest} req
+     * @param {import('next').NextApiResponse} res
+     * @returns {Promise<void>}
+     *
+     */
+    async (req, res) => {
+        try {
+            const users = await prisma.user.findUnique({
                 where: {
-                    id: id,
+                    id: req.query.id,
                 },
                 select: {
                     id: true,
@@ -30,14 +30,103 @@ export default async (req, res) => {
                     updatedAt: true,
                 },
             })
-            res.status(200).json(user)
 
-            break
-        case 'PUT':
-            // Update or create data in your database
-            break
-        default:
-            res.setHeader('Allow', ['GET', 'PUT'])
-            res.status(405).end(`Method ${method} Not Allowed`)
+            return res.status(200).json(users)
+        } catch (error) {
+            return res.status(500).json({ error: error.message })
+        }
     }
-}
+)
+
+handler.delete(
+    /**
+     * @param {import('next').NextApiRequest} req
+     * @param {import('next').NextApiResponse} res
+     * @returns {Promise<void>}
+     *
+     */
+    async (req, res) => {
+        try {
+            const user = await prisma.user.delete({
+                where: {
+                    id: req.query.id,
+                },
+            })
+
+            return res.status(200).json(user)
+        } catch (error) {
+            return res.status(500).json({ error: error.message })
+        }
+    }
+)
+
+handler.patch(
+    /**
+     * @param {import('next').NextApiRequest} req
+     * @param {import('next').NextApiResponse} res
+     * @returns {Promise<void>}
+     *
+     */
+    async (req, res) => {
+        const { name, email, role, disabled } = req.body
+
+        // validate email and name
+        const { error } = userDataSchema.validate({ ...req.body }, validationOptions)
+        if (error) return res.status(400).json({ error: validationFormatter(error) })
+
+        try {
+            const user = await prisma.user.update({
+                where: {
+                    id: req.query.id,
+                },
+                data: {
+                    name,
+                    email,
+                    role,
+                    disabled,
+                },
+            })
+            return res.status(200).json(user)
+        } catch (error) {
+            return res.status(500).json({ error: error.message })
+        }
+    }
+)
+
+handler.post(
+    /**
+     * @param {import('next').NextApiRequest} req
+     * @param {import('next').NextApiResponse} res
+     * @returns {Promise<void>}
+     *
+     */
+    async (req, res) => {
+        const { name, email, password } = req.body
+
+        // validate email and name
+        const { error } = registerSchema.validate({ ...req.body }, validationOptions)
+        if (error) return res.status(400).json({ error: validationFormatter(error) })
+
+        // forward to auth/register route
+        const response = await fetch(`${process.env.APP_URL}/api/auth/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password,
+            }),
+        })
+        const jsonReponse = await response.json()
+
+        if (jsonReponse === 200) {
+            return res.status(200).json(user)
+        }
+
+        return res.status(500).json(jsonReponse.error)
+    }
+)
+
+export default handler
