@@ -30,13 +30,13 @@ const passwordValidation = JoiPassword.string()
         'string.max': 'Password must be at most 70 characters long',
     })
 
-const registerSchema = Joi.object().keys({
+const registerSchema = Joi.object({
     username: username.required(),
     email: email.required(),
     password: passwordValidation,
 })
 
-const resetSchema = Joi.object().keys({
+const resetSchema = Joi.object({
     password: passwordValidation,
 })
 
