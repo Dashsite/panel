@@ -78,10 +78,7 @@
           "originalType": "String"
         },
         "invoice_email": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": "string",
           "originalType": "String"
         },
         "user": {

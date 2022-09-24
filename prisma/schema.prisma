@@ -51,7 +51,7 @@ model payments {
 }
 
 model Account {
-  id                String  @id @default(cuid()) @db.VarChar(255)
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -87,7 +87,7 @@ model User {
   createdAt        DateTime?          @db.Timestamp(0)
   updatedAt        DateTime?          @db.Timestamp(0)
   disabled         Boolean?
-  name             String?            @db.VarChar(255)
+  name             String?            @db.VarChar(191)
   password         String?            @db.VarChar(255)
   accounts         Account[]
   sessions         Session[]
@@ -114,14 +114,14 @@ model ResetToken {
 
 model product_categories {
   id                  Int                   @id @default(autoincrement())
-  name                String                @db.VarChar(255)
+  name                String                @db.VarChar(191)
   proxmox_product     proxmox_product[]
   pterodactyl_product pterodactyl_product[]
 }
 
 model proxmox_hosts {
   id              Int               @id @default(autoincrement())
-  name            String            @db.VarChar(255)
+  name            String            @db.VarChar(191)
   max_cpu         Int
   max_ram         Int
   max_disk        Int
@@ -133,7 +133,7 @@ model proxmox_product {
   proxmox_hosts_id      Int
   product_categories_id Int
   price_per_hour        Decimal            @db.Decimal(10, 4)
-  name                  String             @db.VarChar(255)
+  name                  String             @db.VarChar(191)
   cpu_cores             Int
   memory                Int
   minimum_memory        Int
@@ -147,7 +147,7 @@ model proxmox_product {
 }
 
 model pterodactyl_product {
-  id                    Int                @id
+  id                    Int                @id @default(autoincrement())
   product_categories_id Int
   name                  Bytes              @db.VarBinary(255)
   price_per_hour        Decimal            @db.Decimal(10, 4)
