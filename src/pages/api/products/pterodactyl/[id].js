@@ -1,5 +1,7 @@
 import prisma from 'src/lib/utils/PrismaClient'
-import nextConnect from 'next-connect'
+import nextConnect from 'src/middleware'
+import { validationFormatter, validationOptions } from 'src/lib/validations'
+import { pterodactylProductSchema } from 'src/lib/validations/products'
 
 const handler = nextConnect()
 
@@ -13,7 +15,7 @@ handler.get(
     async (req, res) => {
         try {
             // get all pterodactyl products
-            const products = await prisma.pterodactyl_product.findMany({})
+            const products = await prisma.pterodactyl_product.findMany()
             return res.status(200).json(products)
         } catch (error) {
             //return error when in debug mode
