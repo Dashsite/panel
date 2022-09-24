@@ -1,5 +1,5 @@
 import prisma from 'src/lib/utils/PrismaClient'
-import nextConnect from 'next-connect'
+import nextConnect from 'src/middleware'
 
 const handler = nextConnect()
 
