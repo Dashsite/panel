@@ -120,12 +120,15 @@ model product_categories {
 }
 
 model proxmox_hosts {
-  id              Int               @id @default(autoincrement())
-  name            String            @db.VarChar(191)
-  max_cpu         Int
-  max_ram         Int
-  max_disk        Int
-  proxmox_product proxmox_product[]
+  id               Int               @id @default(autoincrement())
+  name             String            @db.VarChar(191)
+  ipv4_adresses    String            @db.Text
+  hostname         String            @db.VarChar(191)
+  bridge_interface String            @db.VarChar(191)
+  max_cpu          Int
+  max_ram          Int
+  max_disk         Int
+  proxmox_product  proxmox_product[]
 }
 
 model proxmox_product {
@@ -165,7 +168,7 @@ model pterodactyl_product {
 
 generator jsonSchema {
   provider                 = "prisma-json-schema-generator"
-  output                   = "../prisma/schema.json"
+  output                   = "../prisma/json"
   persistOriginalType      = "true"
   keepRelationScalarFields = "true"
 }
