@@ -59,7 +59,11 @@ handler.post(
             return res.status(200).json(user)
         }
 
-        return res.status(500).json(jsonReponse.error)
+        //return error when in debug mode
+        if (process.env.NODE_ENV === 'development') {
+            return res.status(500).json({ error: error.message })
+        }
+        return res.status(500).json({ error: 'Internal server error' })
     }
 )
 

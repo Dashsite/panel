@@ -29,7 +29,11 @@ handler.get(
 
             return res.status(200).json(addresses)
         } catch (error) {
-            return res.status(500).json({ error: error.message })
+            //return error when in debug mode
+            if (process.env.NODE_ENV === 'development') {
+                return res.status(500).json({ error: error.message })
+            }
+            return res.status(500).json({ error: 'Internal server error' })
         }
     }
 )
@@ -89,8 +93,11 @@ handler.post(
 
             return res.status(200).json(address)
         } catch (error) {
-            console.error(error)
-            return res.status(500).json(error.message)
+            //return error when in debug mode
+            if (process.env.NODE_ENV === 'development') {
+                return res.status(500).json({ error: error.message })
+            }
+            return res.status(500).json({ error: 'Internal server error' })
         }
     }
 )
@@ -114,7 +121,11 @@ handler.delete(
 
             return res.status(200).json(count)
         } catch (error) {
-            return res.status(500).end()
+            //return error when in debug mode
+            if (process.env.NODE_ENV === 'development') {
+                return res.status(500).json({ error: error.message })
+            }
+            return res.status(500).json({ error: 'Internal server error' })
         }
     }
 )

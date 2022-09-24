@@ -35,7 +35,11 @@ handler.post(
             return res.status(200).end()
         } catch (err) {
             if (err.code === 'P2002') return res.status(409).json({ error: 'Email already exists' })
-            return res.status(500).json({ error: err.message })
+            //return error when in debug mode
+            if (process.env.NODE_ENV === 'development') {
+                return res.status(500).json({ error: error.message })
+            }
+            return res.status(500).json({ error: 'Internal server error' })
         }
     }
 )

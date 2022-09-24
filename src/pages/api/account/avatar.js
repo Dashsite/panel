@@ -50,7 +50,12 @@ handler.post(
             } catch (error) {
                 // delete image from uploads folder
                 fs.unlinkSync(path)
-                res.status(500).json()
+
+                //return error when in debug mode
+                if (process.env.NODE_ENV === 'development') {
+                    return res.status(500).json({ error: error.message })
+                }
+                return res.status(500).json({ error: 'Internal server error' })
             }
 
             res.setHeader('Location', avatarUrl).status(201).end()

@@ -34,7 +34,11 @@ handler.get(
             })
             res.status(200).json(user)
         } catch (error) {
-            res.status(500).json({ error: error.message })
+            //return error when in debug mode
+            if (process.env.NODE_ENV === 'development') {
+                return res.status(500).json({ error: error.message })
+            }
+            return res.status(500).json({ error: 'Internal server error' })
         }
     }
 )
@@ -73,7 +77,11 @@ handler.patch(
 
             res.status(200).end()
         } catch (error) {
-            res.status(500).json({ error: error.message })
+            //return error when in debug mode
+            if (process.env.NODE_ENV === 'development') {
+                return res.status(500).json({ error: error.message })
+            }
+            return res.status(500).json({ error: 'Internal server error' })
         }
     }
 )
