@@ -1,10 +1,8 @@
-import nextConnect from 'src/lib/utils/nextConnect'
+import nextConnect from 'src/middleware'
 import formidable from 'formidable-serverless'
 
 import prisma from 'src/lib/utils/PrismaClient'
-import { uuid } from 'uuidv4'
 import fs from 'fs'
-import { getToken } from 'next-auth/jwt'
 
 export const config = {
     api: {
@@ -23,8 +21,6 @@ handler.post(
      */
 
     async (req, res) => {
-        const token = await getToken({ req })
-
         const form = new formidable.IncomingForm()
         form.uploadDir = './public/uploads/avatars'
         form.keepExtensions = true
@@ -41,7 +37,7 @@ handler.post(
             try {
                 await prisma.user.update({
                     where: {
-                        id: token.user.id,
+                        id: req.session.user.id,
                     },
                     data: {
                         image: avatarUrl,

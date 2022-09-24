@@ -1,6 +1,5 @@
-import { getToken } from 'next-auth/jwt'
 import prisma from 'src/lib/utils/PrismaClient'
-import nextConnect from 'src/lib/utils/nextConnect'
+import nextConnect from 'src/middleware'
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { addressSchema } from 'src/lib/validations/address'
 
@@ -14,11 +13,10 @@ handler.get(
      *
      */
     async (req, res) => {
-        const token = await getToken({ req })
         try {
             const addresses = await prisma.billing_adresses.findMany({
                 where: {
-                    user_id: token.user.id,
+                    user_id: req.session.user.id,
                 },
             })
 
@@ -61,8 +59,6 @@ handler.post(
             invoice_email,
         } = req.body
 
-        const token = await getToken({ req })
-
         const { error } = addressSchema.validate(req.body, validationOptions)
         if (error) return res.status(400).json(validationFormatter(error))
 
@@ -72,7 +68,7 @@ handler.post(
         try {
             const address = await prisma.billing_adresses.create({
                 data: {
-                    user_id: token.user.id,
+                    user_id: req.session.user.id,
                     firstname,
                     lastname,
                     company_name,
@@ -110,11 +106,10 @@ handler.delete(
      *
      */
     async (req, res) => {
-        const token = await getToken({ req })
         try {
             const count = await prisma.billing_adresses.deleteMany({
                 where: {
-                    user_id: token.user.id,
+                    user_id: req.session.user.id,
                 },
             })
             if (!count) return res.status(404).end()

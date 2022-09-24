@@ -1,6 +1,5 @@
 import prisma from 'src/lib/utils/PrismaClient'
-import nextConnect from 'src/lib/utils/nextConnect'
-import { getToken } from 'next-auth/jwt'
+import nextConnect from 'src/middleware'
 import { userDataSchema } from 'src/lib/validations/user'
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 
@@ -13,13 +12,11 @@ handler.get(
      * @returns {Promise<void>}
      */
     async (req, res) => {
-        const token = await getToken({ req })
-
         try {
             // get user from token
             const user = await prisma.user.findUnique({
                 where: {
-                    id: token.user.id,
+                    id: req.session.user.id,
                 },
                 select: {
                     id: true,
@@ -51,7 +48,6 @@ handler.patch(
      */
     async (req, res) => {
         const { username, email } = req.body
-        const token = await getToken({ req })
 
         //Validate Username and email
         const { error } = userDataSchema.validate({ ...req.body }, validationOptions)
@@ -67,7 +63,7 @@ handler.patch(
             // update user email address
             await prisma.user.update({
                 where: {
-                    id: token.user.id,
+                    id: req.session.user.id,
                 },
                 data: {
                     name: username,

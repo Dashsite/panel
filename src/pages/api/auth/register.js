@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import prisma from 'src/lib/utils/PrismaClient'
-import nextConnect from 'src/lib/utils/nextConnect'
+import nextConnect from 'src/middleware'
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { registerSchema } from 'src/lib/validations/user'
 
