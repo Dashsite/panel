@@ -21,21 +21,21 @@ handler.post(
      */
 
     async (req, res) => {
-        const form = new formidable.IncomingForm()
+        const form = formidable({})
         form.uploadDir = './public/uploads/avatars'
         form.keepExtensions = true
-        form.parse(req, async (err, fields, files) => {
+        form.parse(req, (err, fields, files) => {
             if (err) {
                 fs.unlinkSync(path)
                 return res.status(500).json()
             }
 
             // save image path to account db avatar url
-            const { path } = files.image
+            const path = files.image.path.replace(/\\/g, '/')
             const avatarUrl = `${process.env.APP_URL}/${path}`
 
             try {
-                await prisma.user.update({
+                prisma.user.update({
                     where: {
                         id: req.session.user.id,
                     },

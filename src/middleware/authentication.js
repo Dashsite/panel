@@ -8,7 +8,6 @@ import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]'
 export default async (req, res, next) => {
     const pathname = req.url
 
-    console.log(req.headers)
     // if its an admin or user route check for authentication
     if (isAdminRoute(pathname) || isUserRoute(pathname)) {
         // get the user session
