@@ -493,7 +493,7 @@
           "type": "integer",
           "originalType": "Int"
         },
-        "cpu_bllooning": {
+        "cpu_ballooning": {
           "type": "boolean",
           "originalType": "Boolean"
         },
@@ -518,7 +518,7 @@
         },
         "name": {
           "type": "string",
-          "originalType": "Bytes"
+          "originalType": "String"
         },
         "price_per_hour": {
           "type": "number",

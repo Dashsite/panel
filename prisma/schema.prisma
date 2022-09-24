@@ -149,7 +149,7 @@ model proxmox_product {
 model pterodactyl_product {
   id                    Int                @id @default(autoincrement())
   product_categories_id Int
-  name                  String             @db.VarChar(255)
+  name                  String             @db.VarChar(191)
   price_per_hour        Decimal            @db.Decimal(10, 4)
   memory                Int
   cpu                   Int
