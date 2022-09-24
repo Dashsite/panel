@@ -138,7 +138,7 @@ model proxmox_product {
   memory                Int
   minimum_memory        Int
   disk_size             Int
-  cpu_bllooning         Boolean
+  cpu_ballooning        Boolean
   product_categories    product_categories @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_proxmox_product")
   proxmox_hosts         proxmox_hosts      @relation(fields: [proxmox_hosts_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proxmox_hosts_proxmox_product")
 

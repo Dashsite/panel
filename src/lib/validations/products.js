@@ -14,7 +14,7 @@ const proxmoxProductSchema = Joi.object({
     memory: Joi.number().required(),
     minimum_memory: Joi.number().required(),
     disk_size: Joi.number().required(),
-    cpu_balooning: Joi.boolean().required(),
+    cpu_ballooning: Joi.boolean().required(),
 })
 
 const pterodactylProductSchema = Joi.object({
