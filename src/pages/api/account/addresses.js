@@ -21,6 +21,12 @@ handler.get(
                     user_id: token.user.id,
                 },
             })
+
+            // format invoice_emails to array. String is separated by semi-colon
+            addresses.forEach(address => {
+                address.invoice_email = address.invoice_email.split(';')
+            })
+
             return res.status(200).json(addresses)
         } catch (error) {
             return res.status(500).json({ error: error.message })
@@ -47,12 +53,17 @@ handler.post(
             state,
             phone,
             city,
+            tax_id,
+            invoice_email,
         } = req.body
 
         const token = await getToken({ req })
 
         const { error } = addressSchema.validate(req.body, validationOptions)
         if (error) return res.status(400).json(validationFormatter(error))
+
+        // format invoice_email array to string seperated by semicolon
+        const invoice_email_string = invoice_email.join(';')
 
         try {
             const address = await prisma.billing_adresses.create({
@@ -68,8 +79,14 @@ handler.post(
                     state,
                     phone,
                     city,
+                    tax_id,
+                    invoice_email: invoice_email_string,
                 },
             })
+
+            // format invoice_emails to array. String is separated by semi-colon
+            address.invoice_email = address.invoice_email.split(';')
+
             return res.status(200).json(address)
         } catch (error) {
             console.error(error)

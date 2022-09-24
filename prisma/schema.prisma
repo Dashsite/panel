@@ -21,7 +21,7 @@ model billing_adresses {
   phone         String? @db.VarChar(255)
   city          String  @db.VarChar(255)
   tax_id        String? @db.VarChar(255)
-  invoice_email String? @db.VarChar(255)
+  invoice_email String  @db.Text
   user          User    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_BILLING_ADRESSES")
 
   @@index([user_id], map: "User_BILLING_ADRESSES")

@@ -25,7 +25,12 @@ const addressSchema = Joi.object().keys({
     phone: Joi.string().min(2).max(40).label('Phone'),
     city: Joi.string().required().alphanum().min(2).max(40).label('City'),
     tax_id: Joi.string().min(2).max(100).label('Tax ID'),
-    invoice_email: Joi.string().email().label('Email').messages({ 'string.email': 'Email is not valid' }),
+    invoice_email: Joi.array()
+        .required()
+        .min(1)
+        .max(5)
+        .items(Joi.string().email().messages({ 'string.invoice_email': 'Email is not valid' }))
+        .label('invoice_email'),
 })
 
 export { addressSchema }
