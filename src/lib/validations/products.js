@@ -19,7 +19,8 @@ const proxmoxProductSchema = Joi.object({
 
 const pterodactylProductSchema = Joi.object({
     name: Joi.string().required(),
-    price_per_hour: Joi.number().required(),
+    product_categories_id: Joi.number().required(),
+    price_per_hour: Joi.number().required().positive().integer(),
     memory: Joi.number().required(),
     cpu: Joi.number().required(),
     disk_storage: Joi.number().required(),
@@ -29,4 +30,4 @@ const pterodactylProductSchema = Joi.object({
     backup_limit: Joi.number().required(),
 })
 
-export {}
+export { proxmoxHostSchema, proxmoxProductSchema, pterodactylProductSchema }

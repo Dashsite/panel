@@ -1,6 +1,6 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'next-connect'
-import { userDataSchema, registerSchema } from 'src/lib/validations/user'
+import { userDataSchema } from 'src/lib/validations/user'
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 
 const handler = nextConnect()
