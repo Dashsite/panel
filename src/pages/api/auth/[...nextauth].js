@@ -6,7 +6,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import bcrypt from 'bcrypt'
 import prisma from 'src/lib/utils/PrismaClient'
 
-export default NextAuth({
+export const nextAuthOptions = {
     adapter: PrismaAdapter(prisma),
     providers: [
         EmailProvider({
@@ -82,28 +82,18 @@ export default NextAuth({
             })
         },
     },
-    jwt: { encryption: true },
     callbacks: {
-        jwt: async ({ token, user }) => {
-            user &&
-                (token.user = {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    image: user.image,
-                    role: user.role,
-                })
-
-            return token
+        async signIn({ user, account, profile, email, credentials }) {
+            return true
         },
-        session: async ({ session, token }) => {
-            session.user = token.user
-
+        async session({ session, user }) {
+            session.user.role = user.role
+            session.user.id = user.id
             return session
         },
     },
     session: {
-        strategy: 'jwt',
+        strategy: 'database',
         maxAge: 30 * 24 * 60 * 60, // 30 days
         updateAge: 24 * 60 * 60, // 24 hours
     },
@@ -111,7 +101,10 @@ export default NextAuth({
         signIn: '/auth/login',
         verifyRequest: '/auth/verify',
     },
-})
+    debug: true,
+}
+
+export default NextAuth(nextAuthOptions)
 
 const confirmPasswordHash = (plainPassword, hashedPassword) => {
     return new Promise(resolve => {
