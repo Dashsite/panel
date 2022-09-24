@@ -1,5 +1,7 @@
 import Joi from 'Joi'
 
+const alphanumWithSpaces = /^[\w\-\s]+$/
+
 const proxmoxHostSchema = Joi.object({
     name: Joi.string().required(),
     max_cpu: Joi.number().required(),
@@ -20,7 +22,7 @@ const proxmoxProductSchema = Joi.object({
 const pterodactylProductSchema = Joi.object({
     name: Joi.string().required(),
     product_categories_id: Joi.number().required(),
-    price_per_hour: Joi.number().required().positive().integer(),
+    price_per_hour: Joi.number().required().positive().precision(2),
     memory: Joi.number().required(),
     cpu: Joi.number().required(),
     disk_storage: Joi.number().required(),
@@ -30,4 +32,8 @@ const pterodactylProductSchema = Joi.object({
     backup_limit: Joi.number().required(),
 })
 
-export { proxmoxHostSchema, proxmoxProductSchema, pterodactylProductSchema }
+const productCategoriesSchema = Joi.object({
+    name: Joi.string().required().regex(alphanumWithSpaces).min(2).max(255),
+})
+
+export { proxmoxHostSchema, proxmoxProductSchema, pterodactylProductSchema, productCategoriesSchema }
