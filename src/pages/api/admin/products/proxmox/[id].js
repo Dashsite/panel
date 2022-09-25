@@ -1,11 +1,11 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
 import { validationFormatter, validationOptions } from 'src/lib/validations'
-import { pterodactylProductSchema } from 'src/lib/validations/products'
+import { proxmoxProductSchema } from 'src/lib/validations/products'
 
 const handler = nextConnect()
 
-handler.put(
+handler.patch(
     /**
      * @param {import('next').NextApiRequest} req
      * @param {import('next').NextApiResponse} res
@@ -13,43 +13,26 @@ handler.put(
      *
      */
     async (req, res) => {
-        const {
-            product_categories_id,
-            name,
-            price_per_hour,
-            memory,
-            cpu,
-            disk_storage,
-            block_io_weight,
-            db_limit,
-            allocation_limit,
-            backup_limit,
-        } = req.body
-
-        // validate body
-        const { error } = pterodactylProductSchema.validate({ ...req.body }, validationOptions)
-        if (error) return res.status(400).json({ error: validationFormatter(error) })
+        const { id } = req.query
+        const { price_per_hour, name, cpu_cores, memory, minimum_memory, disk_size, cpu_ballooning } = req.body
 
         try {
-            // update product
-            const product = await prisma.pterodactyl_product.update({
+            // update proxmox product by id with new data from body that is not undefined
+            const proxmoxProduct = await prisma.proxmox_product.update({
                 where: {
-                    id: req.query.id,
+                    id: Number(id),
                 },
                 data: {
-                    product_categories_id,
-                    name,
                     price_per_hour,
+                    name,
+                    cpu_cores,
                     memory,
-                    cpu,
-                    disk_storage,
-                    block_io_weight,
-                    db_limit,
-                    allocation_limit,
-                    backup_limit,
+                    minimum_memory,
+                    disk_size,
+                    cpu_ballooning,
                 },
             })
-            return res.status(200).json(product)
+            return res.status(200).json(proxmoxProduct)
         } catch (error) {
             //return error when in debug mode
             if (process.env.NODE_ENV === 'development') {
@@ -68,11 +51,13 @@ handler.delete(
      *
      */
     async (req, res) => {
+        const { id } = req.query
+
         try {
-            // delete product
-            const product = await prisma.pterodactyl_product.delete({
+            // delete proxmox product by id
+            const proxmoxProduct = await prisma.proxmox_product.delete({
                 where: {
-                    id: req.query.id,
+                    id: Number(id),
                 },
             })
             return res.status(200).end()
