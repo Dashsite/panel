@@ -1,5 +1,7 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
+import Log from 'src/lib/utils/Logger'
+
 import { userDataSchema } from 'src/lib/validations/user'
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 
@@ -29,12 +31,10 @@ handler.get(
                     updatedAt: true,
                 },
             })
-            res.status(200).json(user)
+
+            return res.status(200).json(user)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error getting user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
@@ -71,12 +71,10 @@ handler.patch(
                 },
             })
 
-            res.status(200).end()
+            Log.info(`User ${req.session.user.id} updated email address to ${email}`)
+            return res.status(200).end()
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error updating user ${req.session.user.id} by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }

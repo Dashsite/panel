@@ -26,10 +26,7 @@ handler.get(
 
             return res.status(200).json(addresses)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error fetching addresses for user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
@@ -92,12 +89,10 @@ handler.put(
                 },
             })
 
+            Log.info(`Billing Address ${address.id} updated for user ${req.session.user.id}`)
             return res.status(200).json(address)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error updating billing address for user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
@@ -126,12 +121,10 @@ handler.delete(
             })
             if (!count.count) return res.status(404).end()
 
+            Log.info(`Billing Address ${req.query.id} deleted for user ${req.session.user.id}`)
             return res.status(200).json(count)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error deleting billingaddress for user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }

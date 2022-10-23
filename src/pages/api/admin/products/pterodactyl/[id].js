@@ -1,5 +1,7 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
+import Log from 'src/lib/utils/Logger'
+
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { pterodactylProductSchema } from 'src/lib/validations/products'
 
@@ -49,12 +51,13 @@ handler.put(
                     backup_limit,
                 },
             })
+
+            Log.info(`Product ${product.id} updated by user ${req.session.user.id}`)
             return res.status(200).json(product)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            if (error.code === 'P2025') return res.status(404).json({ error: 'Product not found' })
+
+            Log.error(error.message, `Error updating product ${req.query.id} by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
@@ -75,12 +78,13 @@ handler.delete(
                     id: req.query.id,
                 },
             })
+
+            Log.info(`Product ${product.id} deleted by user ${req.session.user.id}`)
             return res.status(200).end()
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            if (error.code === 'P2025') return res.status(404).json({ error: 'Product not found' })
+
+            Log.error(error.message, `Error deleting product ${req.query.id} by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }

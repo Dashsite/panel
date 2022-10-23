@@ -1,4 +1,5 @@
 import prisma from 'src/lib/utils/PrismaClient'
+import Log from 'src/lib/utils/Logger'
 import nextConnect from 'src/middleware'
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { addressSchema } from 'src/lib/validations/address'
@@ -16,7 +17,7 @@ handler.get(
         try {
             const addresses = await prisma.billing_adresses.findMany({
                 where: {
-                    user_id: req.session.user.id,
+                    user_id: reqsession.user.id,
                 },
             })
 
@@ -27,10 +28,7 @@ handler.get(
 
             return res.status(200).json(addresses)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, 'Error fetching addresses')
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
@@ -87,12 +85,10 @@ handler.post(
             // format invoice_emails to array. String is separated by semi-colon
             address.invoice_email = address.invoice_email.split(';')
 
+            Log.info(`Billing Address created for user: ${req.session.user.id}`)
             return res.status(200).json(address)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error creating billing address for user: ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
@@ -114,12 +110,10 @@ handler.delete(
             })
             if (!count) return res.status(404).end()
 
+            Log.info(`Billing Address deleted for user: ${req.session.user.id}`)
             return res.status(200).json(count)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error deleting billing address for user: ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }

@@ -1,5 +1,7 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
+import Log from 'src/lib/utils/Logger'
+
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { proxmoxProductSchema } from 'src/lib/validations/products'
 
@@ -32,12 +34,13 @@ handler.patch(
                     cpu_ballooning,
                 },
             })
+
+            Log.info(`Proxmox product ${proxmoxProduct.id} updated by user ${req.session.user.id}`)
             return res.status(200).json(proxmoxProduct)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            if (error.code === 'P2025') return res.status(404).json({ error: 'Proxmox product not found' })
+
+            Log.error(error.message, `Error updating proxmox product ${id} by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
@@ -62,10 +65,9 @@ handler.delete(
             })
             return res.status(200).end()
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            if (error.code === 'P2025') return res.status(404).json({ error: 'Proxmox product not found' })
+
+            Log.error(error.message, `Error deleting proxmox product ${id} by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }

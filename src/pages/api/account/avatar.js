@@ -27,6 +27,7 @@ handler.post(
         form.parse(req, (err, fields, files) => {
             if (err) {
                 fs.unlinkSync(path)
+                Log.error(err.message, 'Error uploading avatar')
                 return res.status(500).json()
             }
 
@@ -47,13 +48,11 @@ handler.post(
                 // delete image from uploads folder
                 fs.unlinkSync(path)
 
-                //return error when in debug mode
-                if (process.env.NODE_ENV === 'development') {
-                    return res.status(500).json({ error: error.message })
-                }
+                Log.error(error.message, 'Error updating avatar url')
                 return res.status(500).json({ error: 'Internal server error' })
             }
 
+            Log.info(`Avatar updated for user ${req.session.user.id}`)
             res.setHeader('Location', avatarUrl).status(201).end()
         })
     }

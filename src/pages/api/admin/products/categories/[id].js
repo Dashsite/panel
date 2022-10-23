@@ -2,6 +2,7 @@ import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { productCategoriesSchema } from 'src/lib/validations/products'
+import Log from 'src/lib/utils/Logger'
 
 const handler = nextConnect()
 
@@ -29,13 +30,13 @@ handler.put(
                     name,
                 },
             })
+
+            Log.info(`Category ${category.id} updated by user ${req.session.user.id}`)
             return res.status(200).json(category)
         } catch (error) {
             if (error.code === 'P2025') return res.status(404).json({ error: 'Category not found' })
 
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') return res.status(500).json({ error: error.message })
-
+            Log.error(error.message, `Error updating category ${req.query.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
@@ -56,12 +57,14 @@ handler.delete(
                     id: Number(req.query.id),
                 },
             })
+            if (count === 0) return res.status(404).json({ error: 'Category not found' })
+
+            Log.info(`Category ${req.query.id} deleted by user ${req.session.user.id}`)
             return res.status(200).end()
         } catch (error) {
             if (error.code === 'P2025') return res.status(404).json({ error: 'Category not found' })
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') return res.status(500).json({ error: error.message })
 
+            Log.error(error.message, `Error deleting category ${req.query.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }

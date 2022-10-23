@@ -1,5 +1,6 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
+import Log from 'src/lib/utils/Logger'
 
 const handler = nextConnect()
 
@@ -56,13 +57,11 @@ handler.post(
         const jsonReponse = await response.json()
 
         if (jsonReponse === 200) {
+            Log.info(`User ${email} created by user ${req.session.user.id}`)
             return res.status(200).json(user)
         }
 
-        //return error when in debug mode
-        if (process.env.NODE_ENV === 'development') {
-            return res.status(500).json({ error: error.message })
-        }
+        Log.error(jsonReponse.error, `Error creating user ${email} by user ${req.session.user.id}`)
         return res.status(500).json({ error: 'Internal server error' })
     }
 )

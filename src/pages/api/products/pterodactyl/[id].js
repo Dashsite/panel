@@ -1,5 +1,7 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
+import Log from 'src/lib/utils/Logger'
+
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { pterodactylProductSchema } from 'src/lib/validations/products'
 
@@ -42,10 +44,7 @@ handler.get(
             })
             return res.status(200).json(products)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error getting pterodactyl products by id: ${id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }

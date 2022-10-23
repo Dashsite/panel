@@ -1,5 +1,7 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
+import Log from 'src/lib/utils/Logger'
+
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { pterodactylProductSchema } from 'src/lib/validations/products'
 
@@ -46,12 +48,11 @@ handler.post(
                     backup_limit,
                 },
             })
+
+            Log.info(`Product ${product.id} created by user ${req.session.user.id}`)
             return res.status(200).json(product)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error creating product by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }

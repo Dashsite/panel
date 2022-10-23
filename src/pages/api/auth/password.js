@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
-import { compile } from 'Joi'
 import { nanoid } from 'nanoid'
+import Log from 'src/lib/utils/Logger'
 
 import sendMail from 'src/lib/utils/Nodemailer'
 
@@ -109,7 +109,10 @@ export default async (req, res) => {
     if (method === 'POST') {
         const result = await resetPassword(req, res)
 
-        if (result.status === 400) return res.status(400).json({ error: err.message })
+        if (result.status === 400) {
+            Log.error(result.message, `Error resetting password for user ${req.body.email}`)
+            return res.status(400).json({ error: err.message })
+        }
 
         return result ? res.status(200).end() : res.status(500).end()
     }

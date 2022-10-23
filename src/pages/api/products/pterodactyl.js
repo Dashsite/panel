@@ -1,3 +1,4 @@
+import Log from 'src/lib/utils/Logger'
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
 
@@ -35,10 +36,7 @@ handler.get(
             })
             return res.status(200).json(products)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, 'Error getting pterodactyl products')
             return res.status(500).json({ error: 'Internal server error' })
         }
     }

@@ -1,5 +1,7 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
+import Log from 'src/lib/utils/Logger'
+
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { proxmoxProductSchema } from 'src/lib/validations/products'
 
@@ -18,10 +20,7 @@ handler.get(
             const proxmoxProducts = await prisma.proxmox_product.findMany()
             return res.status(200).json(proxmoxProducts)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error fetching all proxmox products by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
@@ -66,13 +65,11 @@ handler.post(
                     cpu_ballooning,
                 },
             })
+
+            Log.info(`Proxmox product ${product.id} created by user ${req.session.user.id}`)
             return res.status(200).json(product)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                console.log(error)
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error creating new proxmox product by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
@@ -105,12 +102,11 @@ handler.patch(
                     cpu_ballooning,
                 },
             })
+
+            Log.info(`Proxmox product ${id} updated by user ${req.session.user.id}`)
             return res.status(200).json(proxmoxProduct)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error updating proxmox product ${id} by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }

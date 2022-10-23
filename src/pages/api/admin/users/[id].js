@@ -1,5 +1,7 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
+import Log from 'src/lib/utils/Logger'
+
 import { userDataSchema } from 'src/lib/validations/user'
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 
@@ -53,8 +55,10 @@ handler.delete(
                 },
             })
 
+            Log.info(`User ${user.id} deleted by user ${req.session.user.id}`)
             return res.status(200).end()
         } catch (error) {
+            Log.error(error.message, `Error deleting user ${req.query.id} by user ${req.session.user.id}`)
             return res.status(500).json({ error: error.message })
         }
     }
@@ -86,12 +90,11 @@ handler.patch(
                     disabled,
                 },
             })
+
+            Log.info(`User ${user.id} updated by user ${req.session.user.id}`)
             return res.status(200).json(user)
         } catch (error) {
-            //return error when in debug mode
-            if (process.env.NODE_ENV === 'development') {
-                return res.status(500).json({ error: error.message })
-            }
+            Log.error(error.message, `Error updating user ${req.query.id} by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }
     }
