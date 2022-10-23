@@ -41,6 +41,9 @@ yarn-error.log*
 
 #logs
 /logs
+<<<<<<< HEAD
 
 #yarn
 /.yarn
+=======
+>>>>>>> 90f6f1b (feat: 🔊 Added File logger)
