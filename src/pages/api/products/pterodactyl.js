@@ -13,7 +13,26 @@ handler.get(
     async (req, res) => {
         try {
             // get all pterodactyl products
-            const products = await prisma.pterodactyl_product.findMany({})
+            const products = await prisma.pterodactyl_product.findMany({
+                select: {
+                    id: true,
+                    name: true,
+                    price_per_hour: true,
+                    memory: true,
+                    cpu: true,
+                    disk_storage: true,
+                    block_io_weight: true,
+                    db_limit: true,
+                    allocation_limit: true,
+                    backup_limit: true,
+                    product_categories: {
+                        select: {
+                            id: true,
+                            name: true,
+                        },
+                    },
+                },
+            })
             return res.status(200).json(products)
         } catch (error) {
             //return error when in debug mode
