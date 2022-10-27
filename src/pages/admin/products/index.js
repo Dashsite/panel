@@ -19,7 +19,14 @@ const AdminProductOverview = ({}) => {
         dispatch(getProxmoxProducts())
     }, [dispatch])
 
-    return <ProductOverviewTable />
+    return (
+        <Box>
+            <Typography variant='h4' gutterBottom>
+                Products
+            </Typography>
+            <ProductOverviewTable />
+        </Box>
+    )
 }
 
 AdminProductOverview.adminProtected = true
