@@ -12,20 +12,6 @@
           "type": "string",
           "originalType": "String"
         },
-        "firstname": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "originalType": "String"
-        },
-        "lastname": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "originalType": "String"
-        },
         "company_name": {
           "type": [
             "string",
@@ -44,15 +30,29 @@
           ],
           "originalType": "String"
         },
-        "zipcode": {
-          "type": "string",
-          "originalType": "String"
-        },
         "country": {
           "type": "string",
           "originalType": "String"
         },
         "state": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "city": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "firstname": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "lastname": {
           "type": [
             "string",
             "null"
@@ -66,7 +66,11 @@
           ],
           "originalType": "String"
         },
-        "city": {
+        "zipcode": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "invoice_email": {
           "type": "string",
           "originalType": "String"
         },
@@ -75,10 +79,6 @@
             "string",
             "null"
           ],
-          "originalType": "String"
-        },
-        "invoice_email": {
-          "type": "string",
           "originalType": "String"
         },
         "user": {
@@ -145,11 +145,11 @@
           "type": "number",
           "originalType": "Decimal"
         },
-        "user": {
-          "$ref": "#/definitions/User"
-        },
         "payment_providers": {
           "$ref": "#/definitions/payment_providers"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
         }
       }
     },
@@ -262,6 +262,13 @@
           "type": "string",
           "originalType": "String"
         },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
         "email": {
           "type": [
             "string",
@@ -284,6 +291,28 @@
           ],
           "originalType": "String"
         },
+        "disabled": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "originalType": "Boolean"
+        },
+        "password": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String"
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "originalType": "String",
+          "default": "user"
+        },
         "createdAt": {
           "type": [
             "string",
@@ -299,27 +328,6 @@
           ],
           "originalType": "DateTime",
           "format": "date-time"
-        },
-        "disabled": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "originalType": "Boolean"
-        },
-        "name": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "originalType": "String"
-        },
-        "password": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "originalType": "String"
         },
         "accounts": {
           "type": "array",
@@ -348,14 +356,6 @@
           "items": {
             "$ref": "#/definitions/payments"
           }
-        },
-        "role": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "originalType": "String",
-          "default": "user"
         }
       }
     },
@@ -402,9 +402,23 @@
           "type": "integer",
           "originalType": "Int"
         },
+        "product_provider_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
         "name": {
           "type": "string",
           "originalType": "String"
+        },
+        "product_provider": {
+          "$ref": "#/definitions/product_provider"
+        },
+        "provider_instance_categories_filter": {
+          "type": "array",
+          "originalType": "provider_instance_categories_filter",
+          "items": {
+            "$ref": "#/definitions/provider_instance_categories_filter"
+          }
         },
         "proxmox_product": {
           "type": "array",
@@ -422,50 +436,6 @@
         }
       }
     },
-    "proxmox_hosts": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "originalType": "Int"
-        },
-        "name": {
-          "type": "string",
-          "originalType": "String"
-        },
-        "ipv4_adresses": {
-          "type": "string",
-          "originalType": "String"
-        },
-        "hostname": {
-          "type": "string",
-          "originalType": "String"
-        },
-        "bridge_interface": {
-          "type": "string",
-          "originalType": "String"
-        },
-        "max_cpu": {
-          "type": "integer",
-          "originalType": "Int"
-        },
-        "max_ram": {
-          "type": "integer",
-          "originalType": "Int"
-        },
-        "max_disk": {
-          "type": "integer",
-          "originalType": "Int"
-        },
-        "proxmox_product": {
-          "type": "array",
-          "originalType": "proxmox_product",
-          "items": {
-            "$ref": "#/definitions/proxmox_product"
-          }
-        }
-      }
-    },
     "proxmox_product": {
       "type": "object",
       "properties": {
@@ -473,7 +443,7 @@
           "type": "integer",
           "originalType": "Int"
         },
-        "proxmox_hosts_id": {
+        "product_provider_id": {
           "type": "integer",
           "originalType": "Int"
         },
@@ -509,11 +479,22 @@
           "type": "boolean",
           "originalType": "Boolean"
         },
+        "filter_type": {
+          "type": "boolean",
+          "originalType": "Boolean"
+        },
         "product_categories": {
           "$ref": "#/definitions/product_categories"
         },
-        "proxmox_hosts": {
-          "$ref": "#/definitions/proxmox_hosts"
+        "product_provider": {
+          "$ref": "#/definitions/product_provider"
+        },
+        "proxmox_product_instance_filter": {
+          "type": "array",
+          "originalType": "proxmox_product_instance_filter",
+          "items": {
+            "$ref": "#/definitions/proxmox_product_instance_filter"
+          }
         }
       }
     },
@@ -521,6 +502,10 @@
       "type": "object",
       "properties": {
         "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "product_provider_id": {
           "type": "integer",
           "originalType": "Int"
         },
@@ -564,8 +549,188 @@
           "type": "integer",
           "originalType": "Int"
         },
+        "filter_type": {
+          "type": "boolean",
+          "originalType": "Boolean"
+        },
         "product_categories": {
           "$ref": "#/definitions/product_categories"
+        },
+        "product_provider": {
+          "$ref": "#/definitions/product_provider"
+        },
+        "pterodactyl_product_instance_filter": {
+          "type": "array",
+          "originalType": "pterodactyl_product_instance_filter",
+          "items": {
+            "$ref": "#/definitions/pterodactyl_product_instance_filter"
+          }
+        }
+      }
+    },
+    "product_provider": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "name": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "product_categories": {
+          "type": "array",
+          "originalType": "product_categories",
+          "items": {
+            "$ref": "#/definitions/product_categories"
+          }
+        },
+        "provider_instances": {
+          "type": "array",
+          "originalType": "provider_instances",
+          "items": {
+            "$ref": "#/definitions/provider_instances"
+          }
+        },
+        "proxmox_product": {
+          "type": "array",
+          "originalType": "proxmox_product",
+          "items": {
+            "$ref": "#/definitions/proxmox_product"
+          }
+        },
+        "pterodactyl_product": {
+          "type": "array",
+          "originalType": "pterodactyl_product",
+          "items": {
+            "$ref": "#/definitions/pterodactyl_product"
+          }
+        }
+      }
+    },
+    "provider_instance_categories_filter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "product_categories_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "provider_instances_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "product_categories": {
+          "$ref": "#/definitions/product_categories"
+        },
+        "provider_instances": {
+          "$ref": "#/definitions/provider_instances"
+        }
+      }
+    },
+    "provider_instances": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "product_provider_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "connection_data": {
+          "type": [
+            "number",
+            "string",
+            "boolean",
+            "object",
+            "array",
+            "null"
+          ],
+          "originalType": "Json"
+        },
+        "name": {
+          "type": "string",
+          "originalType": "String"
+        },
+        "filter_type": {
+          "type": "boolean",
+          "originalType": "Boolean"
+        },
+        "product_provider": {
+          "$ref": "#/definitions/product_provider"
+        },
+        "provider_instance_categories_filter": {
+          "type": "array",
+          "originalType": "provider_instance_categories_filter",
+          "items": {
+            "$ref": "#/definitions/provider_instance_categories_filter"
+          }
+        },
+        "proxmox_product_instance_filter": {
+          "type": "array",
+          "originalType": "proxmox_product_instance_filter",
+          "items": {
+            "$ref": "#/definitions/proxmox_product_instance_filter"
+          }
+        },
+        "pterodactyl_product_instance_filter": {
+          "type": "array",
+          "originalType": "pterodactyl_product_instance_filter",
+          "items": {
+            "$ref": "#/definitions/pterodactyl_product_instance_filter"
+          }
+        }
+      }
+    },
+    "proxmox_product_instance_filter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "provider_instances_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "proxmox_product_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "provider_instances": {
+          "$ref": "#/definitions/provider_instances"
+        },
+        "proxmox_product": {
+          "$ref": "#/definitions/proxmox_product"
+        }
+      }
+    },
+    "pterodactyl_product_instance_filter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "provider_instances_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "pterodactyl_product_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
+        "provider_instances": {
+          "$ref": "#/definitions/provider_instances"
+        },
+        "pterodactyl_product": {
+          "$ref": "#/definitions/pterodactyl_product"
         }
       }
     }
@@ -599,14 +764,26 @@
     "product_categories": {
       "$ref": "#/definitions/product_categories"
     },
-    "proxmox_hosts": {
-      "$ref": "#/definitions/proxmox_hosts"
-    },
     "proxmox_product": {
       "$ref": "#/definitions/proxmox_product"
     },
     "pterodactyl_product": {
       "$ref": "#/definitions/pterodactyl_product"
+    },
+    "product_provider": {
+      "$ref": "#/definitions/product_provider"
+    },
+    "provider_instance_categories_filter": {
+      "$ref": "#/definitions/provider_instance_categories_filter"
+    },
+    "provider_instances": {
+      "$ref": "#/definitions/provider_instances"
+    },
+    "proxmox_product_instance_filter": {
+      "$ref": "#/definitions/proxmox_product_instance_filter"
+    },
+    "pterodactyl_product_instance_filter": {
+      "$ref": "#/definitions/pterodactyl_product_instance_filter"
     }
   }
 }

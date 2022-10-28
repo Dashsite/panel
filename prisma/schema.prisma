@@ -2,6 +2,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator jsonSchema {
+  provider                 = "prisma-json-schema-generator"
+  output                   = "../prisma/json"
+  keepRelationScalarFields = "true"
+  persistOriginalType      = "true"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
@@ -10,18 +17,18 @@ datasource db {
 model billing_adresses {
   id            String  @id @default(cuid()) @db.VarChar(255)
   user_id       String
-  firstname     String? @db.VarChar(255)
-  lastname      String? @db.VarChar(255)
   company_name  String? @db.VarChar(255)
   adress_line_1 String  @db.VarChar(255)
   adress_line_2 String? @db.VarChar(255)
-  zipcode       String  @db.VarChar(255)
   country       String  @db.VarChar(255)
   state         String? @db.VarChar(255)
-  phone         String? @db.VarChar(255)
   city          String  @db.VarChar(255)
-  tax_id        String? @db.VarChar(255)
+  firstname     String? @db.VarChar(255)
+  lastname      String? @db.VarChar(255)
+  phone         String? @db.VarChar(255)
+  zipcode       String  @db.VarChar(255)
   invoice_email String  @db.Text
+  tax_id        String? @db.VarChar(255)
   user          User    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_BILLING_ADRESSES")
 
   @@index([user_id], map: "User_BILLING_ADRESSES")
@@ -43,8 +50,8 @@ model payments {
   tax_value            Decimal           @db.Decimal(10, 0)
   tax_percent          Int
   total_price          Decimal           @db.Decimal(10, 0)
-  user                 User              @relation(fields: [User_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_PAYMENTS")
   payment_providers    payment_providers @relation(fields: [payment_providers_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "PAYMENT_PROVIDERS_PAYMENTS")
+  user                 User              @relation(fields: [User_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_PAYMENTS")
 
   @@index([payment_providers_id], map: "PAYMENT_PROVIDERS_PAYMENTS")
   @@index([User_id], map: "User_PAYMENTS")
@@ -81,19 +88,19 @@ model Session {
 
 model User {
   id               String             @id @default(cuid()) @db.VarChar(255)
+  name             String?
   email            String?            @unique @db.VarChar(255)
   emailVerified    DateTime?
   image            String?            @db.VarChar(255)
+  disabled         Boolean?
+  password         String?            @db.VarChar(255)
+  role             String?            @default("user") @db.VarChar(30)
   createdAt        DateTime?          @db.Timestamp(0)
   updatedAt        DateTime?          @db.Timestamp(0)
-  disabled         Boolean?
-  name             String?            @db.VarChar(191)
-  password         String?            @db.VarChar(255)
   accounts         Account[]
   sessions         Session[]
   billing_adresses billing_adresses[]
   payments         payments[]
-  role             String?            @default("user") @db.VarChar(30)
 }
 
 model VerificationToken {
@@ -113,62 +120,111 @@ model ResetToken {
 }
 
 model product_categories {
+  id                                  Int                                   @id @default(autoincrement())
+  product_provider_id                 Int
+  name                                String
+  product_provider                    product_provider                      @relation(fields: [product_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_provider_product_categories")
+  provider_instance_categories_filter provider_instance_categories_filter[]
+  proxmox_product                     proxmox_product[]
+  pterodactyl_product                 pterodactyl_product[]
+
+  @@index([product_provider_id], map: "product_provider_product_categories")
+}
+
+model proxmox_product {
+  id                              Int                               @id @default(autoincrement())
+  product_provider_id             Int
+  product_categories_id           Int
+  price_per_hour                  Decimal                           @db.Decimal(10, 4)
+  name                            String
+  cpu_cores                       Int
+  memory                          Int
+  minimum_memory                  Int
+  disk_size                       Int
+  cpu_ballooning                  Boolean
+  filter_type                     Boolean
+  product_categories              product_categories                @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_proxmox_product")
+  product_provider                product_provider                  @relation(fields: [product_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_provider_proxmox_product")
+  proxmox_product_instance_filter proxmox_product_instance_filter[]
+
+  @@index([product_categories_id], map: "product_categories_proxmox_product")
+  @@index([product_provider_id], map: "product_provider_proxmox_product")
+}
+
+model pterodactyl_product {
+  id                                  Int                                   @id @default(autoincrement())
+  product_provider_id                 Int
+  product_categories_id               Int
+  name                                String                                @db.VarChar(191)
+  price_per_hour                      Decimal                               @db.Decimal(10, 4)
+  memory                              Int
+  cpu                                 Int
+  disk_storage                        Int
+  block_io_weight                     Int
+  db_limit                            Int
+  allocation_limit                    Int
+  backup_limit                        Int
+  filter_type                         Boolean
+  product_categories                  product_categories                    @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_pterodactyl_product")
+  product_provider                    product_provider                      @relation(fields: [product_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_provider_pterodactyl_product")
+  pterodactyl_product_instance_filter pterodactyl_product_instance_filter[]
+
+  @@index([product_categories_id], map: "product_categories_pterodactyl_product")
+  @@index([product_provider_id], map: "product_provider_pterodactyl_product")
+}
+
+model product_provider {
   id                  Int                   @id @default(autoincrement())
-  name                String                @db.VarChar(191)
+  name                String
+  product_categories  product_categories[]
+  provider_instances  provider_instances[]
   proxmox_product     proxmox_product[]
   pterodactyl_product pterodactyl_product[]
 }
 
-model proxmox_hosts {
-  id               Int               @id @default(autoincrement())
-  name             String            @db.VarChar(191)
-  ipv4_adresses    String            @db.Text
-  hostname         String            @db.VarChar(191)
-  bridge_interface String            @db.VarChar(191)
-  max_cpu          Int
-  max_ram          Int
-  max_disk         Int
-  proxmox_product  proxmox_product[]
-}
-
-model proxmox_product {
-  id                    Int                @id @default(autoincrement())
-  proxmox_hosts_id      Int
+model provider_instance_categories_filter {
+  id                    Int                @id
   product_categories_id Int
-  price_per_hour        Decimal            @db.Decimal(10, 4)
-  name                  String             @db.VarChar(191)
-  cpu_cores             Int
-  memory                Int
-  minimum_memory        Int
-  disk_size             Int
-  cpu_ballooning        Boolean
-  product_categories    product_categories @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_proxmox_product")
-  proxmox_hosts         proxmox_hosts      @relation(fields: [proxmox_hosts_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proxmox_hosts_proxmox_product")
+  provider_instances_id Int
+  product_categories    product_categories @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_provider_instance_categories_filter")
+  provider_instances    provider_instances @relation(fields: [provider_instances_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "provider_instances_provider_instance_categories_filter")
 
-  @@index([product_categories_id], map: "product_categories_proxmox_product")
-  @@index([proxmox_hosts_id], map: "proxmox_hosts_proxmox_product")
+  @@index([product_categories_id], map: "product_categories_provider_instance_categories_filter")
+  @@index([provider_instances_id], map: "provider_instances_provider_instance_categories_filter")
 }
 
-model pterodactyl_product {
+model provider_instances {
+  id                                  Int                                   @id @default(autoincrement())
+  product_provider_id                 Int
+  connection_data                     Json
+  name                                String
+  filter_type                         Boolean
+  product_provider                    product_provider                      @relation(fields: [product_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_provider_provider_instances")
+  provider_instance_categories_filter provider_instance_categories_filter[]
+  proxmox_product_instance_filter     proxmox_product_instance_filter[]
+  pterodactyl_product_instance_filter pterodactyl_product_instance_filter[]
+
+  @@index([product_provider_id], map: "product_provider_provider_instances")
+}
+
+model proxmox_product_instance_filter {
   id                    Int                @id @default(autoincrement())
-  product_categories_id Int
-  name                  String             @db.VarChar(191)
-  price_per_hour        Decimal            @db.Decimal(10, 4)
-  memory                Int
-  cpu                   Int
-  disk_storage          Int
-  block_io_weight       Int
-  db_limit              Int
-  allocation_limit      Int
-  backup_limit          Int
-  product_categories    product_categories @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_pterodactyl_product")
+  provider_instances_id Int
+  proxmox_product_id    Int
+  provider_instances    provider_instances @relation(fields: [provider_instances_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "provider_instances_product_instance_filter")
+  proxmox_product       proxmox_product    @relation(fields: [proxmox_product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proxmox_product_proxmox_product_instance_filter")
 
-  @@index([product_categories_id], map: "product_categories_pterodactyl_product")
+  @@index([provider_instances_id], map: "provider_instances_product_instance_filter")
+  @@index([proxmox_product_id], map: "proxmox_product_proxmox_product_instance_filter")
 }
 
-generator jsonSchema {
-  provider                 = "prisma-json-schema-generator"
-  output                   = "../prisma/json"
-  persistOriginalType      = "true"
-  keepRelationScalarFields = "true"
+model pterodactyl_product_instance_filter {
+  id                     Int                 @id @default(autoincrement())
+  provider_instances_id  Int
+  pterodactyl_product_id Int
+  provider_instances     provider_instances  @relation(fields: [provider_instances_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "provider_instances_pterodactyl_product_instance_filter")
+  pterodactyl_product    pterodactyl_product @relation(fields: [pterodactyl_product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pterodactyl_product_pterodactyl_product_instance_filter")
+
+  @@index([provider_instances_id], map: "provider_instances_pterodactyl_product_instance_filter")
+  @@index([pterodactyl_product_id], map: "pterodactyl_product_pterodactyl_product_instance_filter")
 }
