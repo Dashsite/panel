@@ -402,13 +402,13 @@
           "type": "integer",
           "originalType": "Int"
         },
-        "product_provider_id": {
-          "type": "integer",
-          "originalType": "Int"
-        },
         "name": {
           "type": "string",
           "originalType": "String"
+        },
+        "product_provider_id": {
+          "type": "integer",
+          "originalType": "Int"
         },
         "product_provider": {
           "$ref": "#/definitions/product_provider"
@@ -440,10 +440,6 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "integer",
-          "originalType": "Int"
-        },
-        "product_provider_id": {
           "type": "integer",
           "originalType": "Int"
         },
@@ -483,6 +479,10 @@
           "type": "boolean",
           "originalType": "Boolean"
         },
+        "product_provider_id": {
+          "type": "integer",
+          "originalType": "Int"
+        },
         "product_categories": {
           "$ref": "#/definitions/product_categories"
         },
@@ -502,10 +502,6 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "integer",
-          "originalType": "Int"
-        },
-        "product_provider_id": {
           "type": "integer",
           "originalType": "Int"
         },
@@ -552,6 +548,10 @@
         "filter_type": {
           "type": "boolean",
           "originalType": "Boolean"
+        },
+        "product_provider_id": {
+          "type": "integer",
+          "originalType": "Int"
         },
         "product_categories": {
           "$ref": "#/definitions/product_categories"
