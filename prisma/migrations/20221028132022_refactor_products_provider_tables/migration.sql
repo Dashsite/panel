@@ -38,7 +38,7 @@ CREATE TABLE `product_provider` (
 
 -- CreateTable
 CREATE TABLE `provider_instance_categories_filter` (
-    `id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `product_categories_id` INTEGER NOT NULL,
     `provider_instances_id` INTEGER NOT NULL,
 

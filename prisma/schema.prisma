@@ -183,7 +183,7 @@ model product_provider {
 }
 
 model provider_instance_categories_filter {
-  id                    Int                @id
+  id                    Int                @id @default(autoincrement())
   product_categories_id Int
   provider_instances_id Int
   product_categories    product_categories @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_provider_instance_categories_filter")
