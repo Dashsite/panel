@@ -55,6 +55,9 @@ handler.post(
             Log.info(`Provider instance filter ${instanceId} created by user ${req.session.user.id}`)
             return res.status(200).json(instance)
         } catch (error) {
+            if (error.message.includes('Foreign key constraint failed on the field'))
+                return res.status(404).json({ error: 'Category not found' })
+
             Log.error(error.message, `Error creating provider instance filter for user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }

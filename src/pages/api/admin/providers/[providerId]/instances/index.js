@@ -28,9 +28,6 @@ handler.get(
                     product_provider: true,
                     filter_type: true,
                     provider_instance_categories_filter: {
-                        select: {
-                            product_categories_id: true,
-                        },
                         where: {
                             provider_instances_id: Number(providerId),
                         },

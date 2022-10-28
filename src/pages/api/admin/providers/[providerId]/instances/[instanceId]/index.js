@@ -24,6 +24,18 @@ handler.get(
                     id: Number(instanceId),
                     product_provider_id: Number(providerId),
                 },
+                select: {
+                    id: true,
+                    name: true,
+                    product_provider_id: true,
+                    connection_data: true,
+                    filter_type: true,
+                    provider_instance_categories_filter: {
+                        where: {
+                            provider_instances_id: Number(instanceId),
+                        },
+                    },
+                },
             })
 
             return res.status(200).json(instance)
