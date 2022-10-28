@@ -141,7 +141,7 @@ model proxmox_product {
   minimum_memory                  Int
   disk_size                       Int
   cpu_ballooning                  Boolean
-  filter_type                     Boolean
+  filter_type                     Boolean                           @default(false)
   product_provider_id             Int
   product_categories              product_categories                @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_proxmox_product")
   product_provider                product_provider                  @relation(fields: [product_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_provider_proxmox_product")
@@ -163,7 +163,7 @@ model pterodactyl_product {
   db_limit                            Int
   allocation_limit                    Int
   backup_limit                        Int
-  filter_type                         Boolean
+  filter_type                         Boolean                               @default(false)
   product_provider_id                 Int
   product_categories                  product_categories                    @relation(fields: [product_categories_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_categories_pterodactyl_product")
   product_provider                    product_provider                      @relation(fields: [product_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_provider_pterodactyl_product")
@@ -199,7 +199,7 @@ model provider_instances {
   product_provider_id                 Int
   connection_data                     Json
   name                                String
-  filter_type                         Boolean
+  filter_type                         Boolean                               @default(false)
   product_provider                    product_provider                      @relation(fields: [product_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_provider_provider_instances")
   provider_instance_categories_filter provider_instance_categories_filter[]
   proxmox_product_instance_filter     proxmox_product_instance_filter[]

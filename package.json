@@ -11,6 +11,9 @@
     "lint": "eslint --fix \"src/**/*.{js,jsx}\"",
     "format": "prettier --write \"src/**/*.{js,jsx}\""
   },
+  "prisma": {
+    "seed": "node --experimental-modules prisma/seed.js"
+  },
   "dependencies": {
     "@emotion/cache": "^11.10.3",
     "@emotion/react": "^11.10.4",

@@ -477,7 +477,8 @@
         },
         "filter_type": {
           "type": "boolean",
-          "originalType": "Boolean"
+          "originalType": "Boolean",
+          "default": false
         },
         "product_provider_id": {
           "type": "integer",
@@ -547,7 +548,8 @@
         },
         "filter_type": {
           "type": "boolean",
-          "originalType": "Boolean"
+          "originalType": "Boolean",
+          "default": false
         },
         "product_provider_id": {
           "type": "integer",
@@ -660,7 +662,8 @@
         },
         "filter_type": {
           "type": "boolean",
-          "originalType": "Boolean"
+          "originalType": "Boolean",
+          "default": false
         },
         "product_provider": {
           "$ref": "#/definitions/product_provider"
