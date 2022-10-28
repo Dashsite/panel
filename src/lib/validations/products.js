@@ -34,6 +34,7 @@ const pterodactylProductSchema = Joi.object({
 
 const productCategoriesSchema = Joi.object({
     name: Joi.string().required().regex(alphanumWithSpaces).min(2).max(255),
+    product_provider_id: Joi.number().required(),
 })
 
 export { proxmoxHostSchema, proxmoxProductSchema, pterodactylProductSchema, productCategoriesSchema }

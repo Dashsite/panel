@@ -33,7 +33,7 @@ handler.post(
      *
      */
     async (req, res) => {
-        const { name } = req.body
+        const { name, product_provider_id } = req.body
 
         // validate body
         const { error } = productCategoriesSchema.validate({ ...req.body }, validationOptions)
@@ -44,6 +44,7 @@ handler.post(
             const category = await prisma.product_categories.create({
                 data: {
                     name,
+                    product_provider_id,
                 },
             })
 
