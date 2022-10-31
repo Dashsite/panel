@@ -27,6 +27,19 @@ handler.get(
                 },
             })
 
+            // when products are included, they need to be put into an product object with product_type (pterodactyl or proxmox) as key
+            if (include.includes('products')) {
+                productProviders.forEach(provider => {
+                    provider.products = []
+                    Object.keys(provider).forEach(key => {
+                        if (key.includes('_product')) {
+                            provider.products = provider.products.concat(provider[key])
+                            delete provider[key]
+                        }
+                    })
+                })
+            }
+
             return res.status(200).json(productProviders)
         } catch (error) {
             Log.error(error.message, `Error getting product providers`)

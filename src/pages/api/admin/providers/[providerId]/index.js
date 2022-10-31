@@ -23,12 +23,24 @@ handler.get(
                     id: Number(providerId),
                 },
                 include: {
-                    product_categories: include.includes('categories') ? true : false,
-                    pterodactyl_product: include.includes('products') ? true : false,
-                    proxmox_product: include.includes('products') ? true : false,
-                    provider_instances: include.includes('instances') ? true : false,
+                    product_categories: include?.includes('categories') ? true : false,
+                    pterodactyl_product: include?.includes('products') ? true : false,
+                    proxmox_product: include?.includes('products') ? true : false,
+                    provider_instances: include?.includes('instances') ? true : false,
                 },
             })
+
+            if (include?.includes('products')) {
+                productProvider.products = []
+                // find a key that includes "product" in its name and rename it to "products"
+                Object.keys(productProvider).forEach(key => {
+                    // key includes _product and is not empty
+                    if (key.includes('_product')) {
+                        productProvider.products = productProvider.products.concat(productProvider[key])
+                        delete productProvider[key]
+                    }
+                })
+            }
 
             return res.status(200).json(productProvider)
         } catch (error) {
