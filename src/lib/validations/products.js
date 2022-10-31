@@ -64,7 +64,6 @@ const pterodactylProductPatchSchema = pterodactylProductSchema.fork(
 
 const productCategoriesSchema = Joi.object({
     name: Joi.string().min(2).max(50).regex(alphanumWithSpaces).required().label('Name'),
-    product_provider_id: Joi.number().required().label('Provider'),
 })
 
 export {
