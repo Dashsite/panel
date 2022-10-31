@@ -9,6 +9,7 @@ const productSchema = Joi.object().keys({
     product_categories_id: Joi.number().required().label('Category'),
     product_provider_id: Joi.number().required().label('Provider'),
 })
+
 const proxmoxProductSchema = productSchema.keys({
     cpu_cores: Joi.number().required().label('CPU cores'),
     memory: Joi.number().required().label('Memory'),
@@ -16,6 +17,23 @@ const proxmoxProductSchema = productSchema.keys({
     disk_size: Joi.number().required().label('Disk size'),
     cpu_ballooning: Joi.boolean().required().label('CPU ballooning'),
 })
+
+const proxmoxProductPatchSchema = proxmoxProductSchema.fork(
+    [
+        'name',
+        'price_per_hour',
+        'filter_type',
+        'product_categories_id',
+        'product_provider_id',
+        'cpu_cores',
+        'memory',
+        'minimum_memory',
+        'disk_size',
+        'cpu_ballooning',
+    ],
+    schema => schema.optional()
+)
+
 const pterodactylProductSchema = productSchema.keys({
     memory: Joi.number().required().label('Memory'),
     cpu: Joi.number().required().label('CPU'),
@@ -26,9 +44,33 @@ const pterodactylProductSchema = productSchema.keys({
     backup_limit: Joi.number().required().label('Backup limit'),
 })
 
+const pterodactylProductPatchSchema = pterodactylProductSchema.fork(
+    [
+        'name',
+        'price_per_hour',
+        'filter_type',
+        'product_categories_id',
+        'product_provider_id',
+        'memory',
+        'cpu',
+        'disk_storage',
+        'block_io_weight',
+        'db_limit',
+        'allocation_limit',
+        'backup_limit',
+    ],
+    schema => schema.optional()
+)
+
 const productCategoriesSchema = Joi.object({
     name: Joi.string().min(2).max(50).regex(alphanumWithSpaces).required().label('Name'),
     product_provider_id: Joi.number().required().label('Provider'),
 })
 
-export { proxmoxHostSchema, proxmoxProductSchema, pterodactylProductSchema, productCategoriesSchema }
+export {
+    proxmoxProductSchema,
+    pterodactylProductSchema,
+    productCategoriesSchema,
+    proxmoxProductPatchSchema,
+    pterodactylProductPatchSchema,
+}

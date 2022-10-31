@@ -3,7 +3,7 @@ import nextConnect from 'src/middleware'
 import Log from 'src/lib/utils/Logger'
 
 import { validationFormatter, validationOptions } from 'src/lib/validations'
-import { proxmoxProductSchema } from 'src/lib/validations/products'
+import { proxmoxProductSchema, proxmoxProductPatchSchema } from 'src/lib/validations/products'
 
 const handler = nextConnect()
 
@@ -30,7 +30,7 @@ handler.patch(
 
         try {
             // validate body
-            const { error } = proxmoxProductSchema.validate({ ...req.body }, validationOptions)
+            const { error } = proxmoxProductPatchSchema.validate({ ...req.body }, validationOptions)
             if (error) return res.status(400).json({ error: validationFormatter(error) })
 
             // update proxmox product by id with new data from body that is not undefined
@@ -39,7 +39,9 @@ handler.patch(
                     id: Number(id),
                 },
                 data: {
-                    product_categories: { connect: { id: Number(product_categories_id) } },
+                    product_categories: product_categories_id
+                        ? { connect: { id: Number(product_categories_id) } }
+                        : undefined,
                     price_per_hour,
                     name,
                     cpu_cores,

@@ -3,7 +3,7 @@ import nextConnect from 'src/middleware'
 import Log from 'src/lib/utils/Logger'
 
 import { validationFormatter, validationOptions } from 'src/lib/validations'
-import { pterodactylProductSchema } from 'src/lib/validations/products'
+import { pterodactylProductSchema, pterodactylProductPatchSchema } from 'src/lib/validations/products'
 
 const handler = nextConnect()
 
@@ -30,7 +30,7 @@ handler.patch(
         } = req.body
 
         // validate body
-        const { error } = pterodactylProductSchema.validate({ ...req.body }, validationOptions)
+        const { error } = pterodactylProductPatchSchema.validate({ ...req.body }, validationOptions)
         if (error) return res.status(400).json({ error: validationFormatter(error) })
 
         try {
