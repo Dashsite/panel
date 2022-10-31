@@ -23,10 +23,10 @@ handler.get(
                     id: Number(providerId),
                 },
                 include: {
-                    provider_instances: true,
-                    product_categories: true,
+                    product_categories: include.includes('categories') ? true : false,
                     pterodactyl_product: include.includes('products') ? true : false,
                     proxmox_product: include.includes('products') ? true : false,
+                    provider_instances: include.includes('instances') ? true : false,
                 },
             })
 
