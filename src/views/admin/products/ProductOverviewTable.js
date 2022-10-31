@@ -1,13 +1,9 @@
 import MaterialReactTable from 'material-react-table'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { useSelector } from 'react-redux'
 import { Chip, IconButton } from '@mui/material'
-import { Box } from 'mdi-material-ui'
 
-const ProductOverviewTable = ({}) => {
-    const products = useSelector(state => state.products)
-
+const ProductOverviewTable = ({ products, categories }) => {
     // pick a color for a category based on the category name for any name but always the same color for the same name
     const categoryColors = categoryName => {
         const colors = ['primary', 'red', 'blue', 'green', 'yellow', 'orange']
@@ -16,6 +12,10 @@ const ProductOverviewTable = ({}) => {
     }
 
     const columns = [
+        {
+            header: 'ID',
+            accessorKey: 'id',
+        },
         {
             header: 'Name',
             accessorKey: 'name',
@@ -26,7 +26,10 @@ const ProductOverviewTable = ({}) => {
         },
         {
             header: 'Category',
-            accessorKey: 'product_categories.name',
+            accessorFn: row => {
+                const category = categories?.find(category => category.id === row.product_categories_id)
+                return category ? category.name : 'No category'
+            },
             Cell: ({ cell }) => (
                 <Chip
                     label={cell.getValue()}
@@ -36,33 +39,14 @@ const ProductOverviewTable = ({}) => {
                 />
             ),
         },
-        {
-            header: 'Type',
-            // check if any product.key contains the row and if so, return the key name
-            accessorFn: row => {
-                const type = Object.keys(products).find(key => products[key].indexOf(row) !== -1)
-                // capitalize the first letter
-                return type.charAt(0).toUpperCase() + type.slice(1)
-            },
-        },
     ]
 
-    const rows = [...products.proxmox, ...products.pterodactyl]
-
-    // Combine all products into one array and add a type column based on the product type by checking the product key
-    const rows2 = Object.keys(products).reduce((acc, key) => {
-        return [...acc, ...products[key].map(product => ({ ...product, key }))]
-    }, [])
-
-    console.log(rows2())
-
-    // set padding to row cells to 0
     return (
         <MaterialReactTable
             initialState={{ density: 'compact' }}
             title='Products'
             columns={columns}
-            data={rows}
+            data={products}
             muiTableBodyCellProps={{ padding: 'none' }}
             enableDensityToggle={false}
             muiTablePaginationProps={{ rowsPerPageOptions: [15, 25, 50, 100], rowsPerPage: 15 }}
@@ -78,6 +62,12 @@ const ProductOverviewTable = ({}) => {
                     </IconButton>
                 </>
             )}
+            muiTableFooterRowProps={{
+                sx: {
+                    borderRadius: 2,
+                    border: '1px solid',
+                },
+            }}
         />
     )
 }
