@@ -11,3 +11,9 @@ export const getProxmoxProducts = createAction('getProxmoxProducts', () => ({
         request: { url: `/products/proxmox`, method: 'GET' },
     },
 }))
+
+export const getProvidersWithProducts = createAction('getProvidersWithProducts', () => ({
+    payload: {
+        request: { url: `/admin/providers?include=products,categories`, method: 'GET' },
+    },
+}))
