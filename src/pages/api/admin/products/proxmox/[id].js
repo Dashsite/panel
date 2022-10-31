@@ -16,15 +16,30 @@ handler.patch(
      */
     async (req, res) => {
         const { id } = req.query
-        const { price_per_hour, name, cpu_cores, memory, minimum_memory, disk_size, cpu_ballooning } = req.body
+        const {
+            price_per_hour,
+            name,
+            cpu_cores,
+            memory,
+            minimum_memory,
+            disk_size,
+            cpu_ballooning,
+            product_categories_id,
+            filter_type,
+        } = req.body
 
         try {
+            // validate body
+            const { error } = proxmoxProductSchema.validate({ ...req.body }, validationOptions)
+            if (error) return res.status(400).json({ error: validationFormatter(error) })
+
             // update proxmox product by id with new data from body that is not undefined
             const proxmoxProduct = await prisma.proxmox_product.update({
                 where: {
                     id: Number(id),
                 },
                 data: {
+                    product_categories: { connect: { id: Number(product_categories_id) } },
                     price_per_hour,
                     name,
                     cpu_cores,
@@ -32,6 +47,7 @@ handler.patch(
                     minimum_memory,
                     disk_size,
                     cpu_ballooning,
+                    filter_type,
                 },
             })
 

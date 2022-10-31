@@ -7,7 +7,7 @@ import { pterodactylProductSchema } from 'src/lib/validations/products'
 
 const handler = nextConnect()
 
-handler.put(
+handler.patch(
     /**
      * @param {import('next').NextApiRequest} req
      * @param {import('next').NextApiResponse} res
@@ -26,6 +26,7 @@ handler.put(
             db_limit,
             allocation_limit,
             backup_limit,
+            filter_type,
         } = req.body
 
         // validate body
@@ -39,7 +40,7 @@ handler.put(
                     id: req.query.id,
                 },
                 data: {
-                    product_categories_id,
+                    product_categories: { connect: { id: Number(product_categories_id) } },
                     name,
                     price_per_hour,
                     memory,
@@ -49,6 +50,7 @@ handler.put(
                     db_limit,
                     allocation_limit,
                     backup_limit,
+                    filter_type,
                 },
             })
 

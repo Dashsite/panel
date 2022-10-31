@@ -26,18 +26,8 @@ handler.get(
                     minimum_memory: true,
                     disk_size: true,
                     cpu_ballooning: true,
-                    product_categories: {
-                        select: {
-                            id: true,
-                            name: true,
-                        },
-                    },
-                    proxmox_hosts: {
-                        select: {
-                            id: true,
-                            name: true,
-                        },
-                    },
+                    product_categories_id: true,
+                    product_provider_id: true,
                 },
             })
             return res.status(200).json(proxmoxProducts)

@@ -30,18 +30,8 @@ handler.get(
                     minimum_memory: true,
                     disk_size: true,
                     cpu_ballooning: true,
-                    product_categories: {
-                        select: {
-                            id: true,
-                            name: true,
-                        },
-                    },
-                    proxmox_hosts: {
-                        select: {
-                            id: true,
-                            name: true,
-                        },
-                    },
+                    product_categories_id: true,
+                    product_provider_id: true,
                 },
             })
             if (!proxmoxProduct) return res.status(404).json({ error: 'Proxmox product not found' })

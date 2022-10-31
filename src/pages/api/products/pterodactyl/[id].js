@@ -33,13 +33,8 @@ handler.get(
                     db_limit: true,
                     allocation_limit: true,
                     backup_limit: true,
-
-                    product_categories: {
-                        select: {
-                            id: true,
-                            name: true,
-                        },
-                    },
+                    product_categories_id: true,
+                    product_provider_id: true,
                 },
             })
             return res.status(200).json(products)

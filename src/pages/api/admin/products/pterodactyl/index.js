@@ -26,6 +26,8 @@ handler.post(
             db_limit,
             allocation_limit,
             backup_limit,
+            product_provider_id,
+            filter_type,
         } = req.body
 
         // validate body
@@ -36,7 +38,8 @@ handler.post(
             // create new product
             const product = await prisma.pterodactyl_product.create({
                 data: {
-                    product_categories_id,
+                    product_categories: { connect: { id: Number(product_categories_id) } },
+                    product_provider: { connect: { id: Number(product_provider_id) } },
                     name,
                     price_per_hour,
                     memory,
@@ -46,6 +49,7 @@ handler.post(
                     db_limit,
                     allocation_limit,
                     backup_limit,
+                    filter_type,
                 },
             })
 
