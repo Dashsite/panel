@@ -1,4 +1,6 @@
 import nextConnect from 'next-connect'
+import Log from './Logger'
+
 /**
  * Custimalized nextConnect handler with default options
  * @param {import('next-connect').Options<Req, Res>} options
@@ -16,7 +18,7 @@ export default options => {
     options?.onNoMatch ??
         (handlerOptions = {
             onNoMatch: (req, res) => {
-                Log.error(error.message, 'No matching route in nextConnect handler')
+                Log.error('No matching route in nextConnect handler')
                 return res.status(405).end()
             },
         })
