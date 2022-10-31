@@ -37,10 +37,12 @@ handler.patch(
             // update product
             const product = await prisma.pterodactyl_product.update({
                 where: {
-                    id: req.query.id,
+                    id: Number(req.query.id),
                 },
                 data: {
-                    product_categories: { connect: { id: Number(product_categories_id) } },
+                    product_categories: product_categories_id
+                        ? { connect: { id: Number(product_categories_id) } }
+                        : undefined,
                     name,
                     price_per_hour,
                     memory,
