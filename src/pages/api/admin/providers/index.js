@@ -15,12 +15,15 @@ handler.get(
      *
      */
     async (req, res) => {
+        const { include } = req.query
+
         try {
-            // get all product providers
             const productProviders = await prisma.product_provider.findMany({
                 include: {
                     provider_instances: true,
                     product_categories: true,
+                    pterodactyl_product: include.includes('products') ? true : false,
+                    proxmox_product: include.includes('products') ? true : false,
                 },
             })
 

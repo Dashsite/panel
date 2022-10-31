@@ -16,8 +16,7 @@ handler.get(
      */
     async (req, res) => {
         try {
-            // get product provider by productId
-            const { providerId } = req.query
+            const { providerId, include } = req.query
 
             const productProvider = await prisma.product_provider.findUnique({
                 where: {
@@ -26,6 +25,8 @@ handler.get(
                 include: {
                     provider_instances: true,
                     product_categories: true,
+                    pterodactyl_product: include.includes('products') ? true : false,
+                    proxmox_product: include.includes('products') ? true : false,
                 },
             })
 
