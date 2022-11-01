@@ -79,7 +79,7 @@ handler.delete(
             // delete product
             const product = await prisma.pterodactyl_product.delete({
                 where: {
-                    id: req.query.id,
+                    id: Number(req.query.id),
                 },
             })
 
