@@ -21,9 +21,9 @@ const AdminProductOverview = ({}) => {
                 Products
             </Typography>
             <Box>
-                {products.providers?.map(provider => {
+                {products.providers?.map((provider, index) => {
                     return (
-                        <Box mb={8}>
+                        <Box mb={8} key={index}>
                             <Typography variant='h5' gutterBottom>
                                 {provider.name}
                             </Typography>

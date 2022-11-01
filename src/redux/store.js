@@ -7,20 +7,20 @@ import rootReducers from './reducers'
 import axiosInstance from 'src/configs/axiosInstance'
 
 const setupStore = () => {
-  const { requestsReducer, requestsMiddleware } = handleRequests({
-    driver: createDriver(axiosInstance)
-  })
+    const { requestsReducer, requestsMiddleware } = handleRequests({
+        driver: createDriver(axiosInstance),
+    })
 
-  const reducer = combineReducers({
-    requests: requestsReducer,
-    ...rootReducers
-  })
+    const reducer = combineReducers({
+        requests: requestsReducer,
+        ...rootReducers,
+    })
 
-  return configureStore({
-    reducer,
-    middleware: getDefaultMiddleware =>
-      getDefaultMiddleware({ serializableCheck: true, immutableCheck: false }).concat(requestsMiddleware)
-  })
+    return configureStore({
+        reducer,
+        middleware: getDefaultMiddleware =>
+            getDefaultMiddleware({ serializableCheck: false, immutableCheck: true }).concat(requestsMiddleware),
+    })
 }
 
 const store = setupStore()
