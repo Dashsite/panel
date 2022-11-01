@@ -2,7 +2,8 @@ import { useDispatch } from 'react-redux'
 import MaterialReactTable from 'material-react-table'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Chip, IconButton } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import { Chip, IconButton, Typography } from '@mui/material'
 
 const ProductOverviewTable = ({ provider, products, categories, deleteAction }) => {
     const dispatch = useDispatch()
@@ -66,6 +67,12 @@ const ProductOverviewTable = ({ provider, products, categories, deleteAction }) 
                         <DeleteIcon />
                     </IconButton>
                 </>
+            )}
+            renderTopToolbarCustomActions={({ table }) => (
+                <IconButton disableRipple onClick={() => console.info('Add')}>
+                    <AddIcon />
+                    <Typography variant='button'>Add</Typography>
+                </IconButton>
             )}
             muiTablePaperProps={{
                 sx: {
