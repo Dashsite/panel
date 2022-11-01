@@ -1,15 +1,20 @@
+import { useDispatch } from 'react-redux'
 import MaterialReactTable from 'material-react-table'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Chip, IconButton } from '@mui/material'
 
-const ProductOverviewTable = ({ products, categories }) => {
+const ProductOverviewTable = ({ provider, products, categories, deleteAction }) => {
+    const dispatch = useDispatch()
+
     // pick a color for a category based on the category name for any name but always the same color for the same name
     const categoryColors = categoryName => {
         const colors = ['primary', 'red', 'blue', 'green', 'yellow', 'orange']
         const colorIndex = categoryName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length
         return colors[colorIndex]
     }
+
+    const deleteProduct = id => dispatch(deleteAction(id))
 
     const columns = [
         {
@@ -52,20 +57,20 @@ const ProductOverviewTable = ({ products, categories }) => {
             muiTablePaginationProps={{ rowsPerPageOptions: [15, 25, 50, 100], rowsPerPage: 15 }}
             enableRowActions
             positionActionsColumn='last'
-            renderRowActions={(row, index) => (
+            renderRowActions={({ cell, row, table }) => (
                 <>
                     <IconButton onClick={() => console.info('Edit')}>
                         <EditIcon />
                     </IconButton>
-                    <IconButton onClick={() => console.info('Delete')}>
+                    <IconButton onClick={() => deleteProduct(row.original.id)}>
                         <DeleteIcon />
                     </IconButton>
                 </>
             )}
-            muiTableFooterRowProps={{
+            muiTablePaperProps={{
                 sx: {
                     borderRadius: 2,
-                    border: '1px solid',
+                    overflow: 'hidden',
                 },
             }}
         />

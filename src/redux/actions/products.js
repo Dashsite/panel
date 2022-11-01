@@ -17,3 +17,15 @@ export const getProvidersWithProducts = createAction('getProvidersWithProducts',
         request: { url: `/admin/providers?include=products,categories`, method: 'GET' },
     },
 }))
+
+export const deletePterodactylProduct = createAction('deletePterodactylProduct', id => ({
+    payload: {
+        request: { url: `/admin/products/pterodactyl/${id}`, method: 'DELETE' },
+    },
+}))
+
+export const deleteProxmoxProduct = createAction('deleteProxmoxProduct', id => ({
+    payload: {
+        request: { url: `/admin/products/proxmox/${id}`, method: 'DELETE' },
+    },
+}))
