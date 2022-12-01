@@ -26,8 +26,8 @@ handler.post(
             const passwordHash = await bcrypt.hash(password, 9)
             await prisma.user.create({
                 data: {
-                    name: username,
-                    email: email,
+                    username,
+                    email,
                     password: passwordHash,
                     createdAt: new Date(),
                     updatedAt: new Date(),

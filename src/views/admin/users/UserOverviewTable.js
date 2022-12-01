@@ -5,8 +5,9 @@ import Block from '@mui/icons-material/Block'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Chip, IconButton, Typography, Tooltip } from '@mui/material'
 import OverviewTable from 'src/components/OverviewTable'
+import { EditAttributesRounded } from '@mui/icons-material'
 
-const UserOverviewTable = ({ users, deleteAction, disableAction }) => {
+const UserOverviewTable = ({ users, addAction, deleteAction, disableAction, editAction }) => {
     const dispatch = useDispatch()
 
     const deleteUser = id => dispatch(deleteAction(id))
@@ -75,13 +76,13 @@ const UserOverviewTable = ({ users, deleteAction, disableAction }) => {
             title='Users'
             columns={columns}
             data={users}
-            addAction={() => dispatch(disableAction(1, true))}
+            addAction={() => addAction()}
             enableRowActions
             positionActionsColumn='last'
             renderRowActions={({ cell, row, table }) => (
                 <>
                     <Tooltip title='Edit'>
-                        <IconButton onClick={() => console.info('Edit')}>
+                        <IconButton onClick={() => editAction(row.original.id)}>
                             <EditIcon />
                         </IconButton>
                     </Tooltip>

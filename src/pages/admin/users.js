@@ -17,14 +17,14 @@ const AdminUsersOverview = ({}) => {
         setSelectedUser(null)
     }
 
-    const editAction = user => {
+    const editAction = id => {
+        setSelectedUser(users.find(user => user.id === id))
         setMode('edit')
-        setSelectedUser(user)
     }
 
     const cancelAction = () => {
-        setMode('overview')
         setSelectedUser(null)
+        setMode('overview')
     }
 
     useEffect(() => {
