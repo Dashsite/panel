@@ -14,68 +14,85 @@ import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
  * Function that returns the navigation items.
  * @returns {Array} An array of menu items.
  */
-const navigation = () => {
-  return [
-    {
-      title: 'Dashboard',
-      icon: HomeOutline,
-      path: '/'
-    },
-    {
-      title: 'Account Settings',
-      icon: AccountCogOutline,
-      path: '/demo/account-settings'
-    },
-    {
-      sectionTitle: 'Pages'
-    },
-    {
-      title: 'Login',
-      icon: Login,
-      path: '/auth/login',
-      openInNewTab: false
-    },
-    {
-      title: 'Register',
-      icon: AccountPlusOutline,
-      path: '/auth/register',
-      openInNewTab: false
-    },
-    {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/error',
-      openInNewTab: false
-    },
-    {
-      sectionTitle: 'User Interface'
-    },
-    {
-      title: 'Typography',
-      icon: FormatLetterCase,
-      path: '/demo/typography'
-    },
-    {
-      title: 'Icons',
-      path: '/demo/icons',
-      icon: GoogleCirclesExtended
-    },
-    {
-      title: 'Cards',
-      icon: CreditCardOutline,
-      path: '/demo/cards'
-    },
-    {
-      title: 'Tables',
-      icon: Table,
-      path: '/demo/tables'
-    },
-    {
-      icon: CubeOutline,
-      title: 'Form Layouts',
-      path: '/demo/form-layouts'
+const UserNavigation = role => {
+    const userNavigation = [
+        {
+            title: 'Dashboard',
+            icon: HomeOutline,
+            path: '/',
+        },
+        {
+            title: 'Account Settings',
+            icon: AccountCogOutline,
+            path: '/demo/account-settings',
+        },
+        {
+            sectionTitle: 'Pages',
+        },
+        {
+            title: 'Login',
+            icon: Login,
+            path: '/auth/login',
+            openInNewTab: false,
+        },
+        {
+            title: 'Register',
+            icon: AccountPlusOutline,
+            path: '/auth/register',
+            openInNewTab: false,
+        },
+        {
+            title: 'Error',
+            icon: AlertCircleOutline,
+            path: '/error',
+            openInNewTab: false,
+        },
+        {
+            sectionTitle: 'User Interface',
+        },
+        {
+            title: 'Typography',
+            icon: FormatLetterCase,
+            path: '/demo/typography',
+        },
+        {
+            title: 'Icons',
+            path: '/demo/icons',
+            icon: GoogleCirclesExtended,
+        },
+        {
+            title: 'Cards',
+            icon: CreditCardOutline,
+            path: '/demo/cards',
+        },
+        {
+            title: 'Tables',
+            icon: Table,
+            path: '/demo/tables',
+        },
+        {
+            icon: CubeOutline,
+            title: 'Form Layouts',
+            path: '/demo/form-layouts',
+        },
+    ]
+
+    const adminNavigation = [
+        {
+            sectionTitle: 'Admin Area',
+        },
+        {
+            title: 'Products',
+            icon: Table,
+            path: '/admin/products',
+        },
+    ]
+
+    if (role === 'admin') {
+        return [...userNavigation, ...adminNavigation]
     }
-  ]
+
+    return userNavigation
 }
 
-export default navigation
+export default UserNavigation
