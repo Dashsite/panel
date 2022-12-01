@@ -86,6 +86,11 @@ const UserNavigation = role => {
             icon: Table,
             path: '/admin/products',
         },
+        {
+            title: 'Users',
+            icon: Table,
+            path: '/admin/users',
+        },
     ]
 
     if (role === 'admin') {

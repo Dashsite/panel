@@ -3,7 +3,7 @@ import MaterialReactTable from 'material-react-table'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
-import { Chip, IconButton, Typography } from '@mui/material'
+import { Chip, IconButton, Typography, Tooltip } from '@mui/material'
 
 const ProductOverviewTable = ({ provider, products, categories, deleteAction }) => {
     const dispatch = useDispatch()
@@ -60,12 +60,16 @@ const ProductOverviewTable = ({ provider, products, categories, deleteAction }) 
             positionActionsColumn='last'
             renderRowActions={({ cell, row, table }) => (
                 <>
-                    <IconButton onClick={() => console.info('Edit')}>
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => deleteProduct(row.original.id)}>
-                        <DeleteIcon />
-                    </IconButton>
+                    <Tooltip title='Edit'>
+                        <IconButton onClick={() => console.info('Edit')}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title='Delete'>
+                        <IconButton onClick={() => deleteProduct(row.original.id)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
                 </>
             )}
             renderTopToolbarCustomActions={({ table }) => (
