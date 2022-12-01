@@ -1,8 +1,6 @@
 import { useDispatch } from 'react-redux'
-import MaterialReactTable from 'material-react-table'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import AddIcon from '@mui/icons-material/Add'
 import Block from '@mui/icons-material/Block'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Chip, IconButton, Typography, Tooltip } from '@mui/material'
