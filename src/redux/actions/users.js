@@ -14,6 +14,18 @@ export const deleteUser = createAction('deleteUser', id => ({
 
 export const disableUser = createAction('disableUser', (id, disabled) => ({
     payload: {
-        request: { url: `/admin/users/${id}`, method: 'PATCH', data: { disabled: !disabled } },
+        request: { url: `/admin/users/${id}`, method: 'PATCH', data: { disabled: 'swada' } },
+    },
+}))
+
+export const createUser = createAction('createUser', data => ({
+    payload: {
+        request: { url: `/admin/users`, method: 'POST', data },
+    },
+}))
+
+export const updateUser = createAction('updateUser', (id, data) => ({
+    payload: {
+        request: { url: `/admin/users/${id}`, method: 'PATCH', data },
     },
 }))

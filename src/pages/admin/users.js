@@ -1,13 +1,31 @@
 import { Alert, Box, Button, Divider, Typography, CardContent, Card as MuiCard } from '@mui/material'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { getUsers, deleteUser, disableUser } from 'src/redux/actions/users'
 import UserOverviewTable from 'src/views/admin/users/UserOverviewTable'
+import UserForm from 'src/views/admin/users/UserForm'
 
 const AdminUsersOverview = ({}) => {
     const dispatch = useDispatch()
     const users = useSelector(state => state.system.users)
+    const [mode, setMode] = useState('overview')
+    const [selectedUser, setSelectedUser] = useState(null)
+
+    const addAction = () => {
+        setMode('add')
+        setSelectedUser(null)
+    }
+
+    const editAction = user => {
+        setMode('edit')
+        setSelectedUser(user)
+    }
+
+    const cancelAction = () => {
+        setMode('overview')
+        setSelectedUser(null)
+    }
 
     useEffect(() => {
         // dispatch the action to get the products
@@ -20,7 +38,18 @@ const AdminUsersOverview = ({}) => {
                 Users
             </Typography>
             <Box>
-                <UserOverviewTable users={users} deleteAction={deleteUser} disableAction={disableUser} />
+                {mode === 'overview' && (
+                    <UserOverviewTable
+                        users={users}
+                        addAction={addAction}
+                        deleteAction={deleteUser}
+                        disableAction={disableUser}
+                        editAction={editAction}
+                    />
+                )}
+
+                {mode === 'add' && <UserForm user={selectedUser} cancelAction={cancelAction} />}
+                {mode === 'edit' && <UserForm user={selectedUser} cancelAction={cancelAction} />}
             </Box>
         </Box>
     )

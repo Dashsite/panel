@@ -187,6 +187,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.10.0":
+  version: 7.20.6
+  resolution: "@babel/runtime@npm:7.20.6"
+  dependencies:
+    regenerator-runtime: ^0.13.11
+  checksum: 42a8504db21031b1859fbc0f52d698a3d2f5ada9519eb76c6f96a7e657d8d555732a18fe71ef428a67cc9fc81ca0d3562fb7afdc70549c5fec343190cbaa9b03
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.18.9, @babel/runtime@npm:^7.19.0, @babel/runtime@npm:^7.2.0, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
   version: 7.20.0
   resolution: "@babel/runtime@npm:7.20.0"
@@ -2463,6 +2472,7 @@ __metadata:
     eslint-import-resolver-alias: ^1.1.2
     eslint-import-resolver-typescript: ^3.5.2
     eslint-plugin-import: ^2.26.0
+    final-form: ^4.20.7
     formidable: ^2.0.1
     formidable-serverless: ^1.1.1
     joi: ^17.6.4
@@ -2486,6 +2496,7 @@ __metadata:
     react-apexcharts: ^1.4.0
     react-datepicker: ^4.8.0
     react-dom: 18.2.0
+    react-final-form: ^6.5.9
     react-perfect-scrollbar: ^1.5.8
     react-popper: ^2.3.0
     react-redux: ^8.0.4
@@ -3308,6 +3319,15 @@ __metadata:
   dependencies:
     to-regex-range: ^5.0.1
   checksum: cc283f4e65b504259e64fd969bcf4def4eb08d85565e906b7d36516e87819db52029a76b6363d0f02d0d532f0033c9603b9e2d943d56ee3b0d4f7ad3328ff917
+  languageName: node
+  linkType: hard
+
+"final-form@npm:^4.20.7":
+  version: 4.20.7
+  resolution: "final-form@npm:4.20.7"
+  dependencies:
+    "@babel/runtime": ^7.10.0
+  checksum: 0e2a9a9cf70814e1099da38e8a79ff6dc2862f07217dae041ba70c5a4bcc8284c74b0500f00b4935331f5fbe7dc119f63ca4776495ecc8c486c939daa23598ec
   languageName: node
   linkType: hard
 
@@ -5973,6 +5993,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-final-form@npm:^6.5.9":
+  version: 6.5.9
+  resolution: "react-final-form@npm:6.5.9"
+  dependencies:
+    "@babel/runtime": ^7.15.4
+  peerDependencies:
+    final-form: ^4.20.4
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 2ab79b1b0230545af1b93b324e2ce61992087beda344f762e1c1306867c177ca6258651e992515fa6681a790f94380a388c18e898ffb20468562e62c83c6b289
+  languageName: node
+  linkType: hard
+
 "react-immutable-proptypes@npm:2.2.0":
   version: 2.2.0
   resolution: "react-immutable-proptypes@npm:2.2.0"
@@ -6296,6 +6328,13 @@ __metadata:
   version: 0.13.10
   resolution: "regenerator-runtime@npm:0.13.10"
   checksum: 09893f5a9e82932642d9a999716b6c626dc53ef2a01307c952ebbf8e011802360163a37c304c18a6c358548be5a72b448e37209954a18696f21e438c81cbb4b9
+  languageName: node
+  linkType: hard
+
+"regenerator-runtime@npm:^0.13.11":
+  version: 0.13.11
+  resolution: "regenerator-runtime@npm:0.13.11"
+  checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
   languageName: node
   linkType: hard
 
