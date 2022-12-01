@@ -39,6 +39,7 @@ const passwordValidation = JoiPassword.string()
 const registerSchema = Joi.object({
     username: username.required(),
     email: email.required(),
+    role: Joi.string().valid('user', 'admin').label('Role'),
     password: passwordValidation,
 })
 

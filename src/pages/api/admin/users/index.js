@@ -1,6 +1,8 @@
 import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
 import Log from 'src/lib/utils/Logger'
+import { registerSchema } from 'src/lib/validations/user'
+import { validationFormatter, validationOptions } from 'src/lib/validations'
 
 const handler = nextConnect()
 
@@ -36,7 +38,7 @@ handler.post(
      *
      */
     async (req, res) => {
-        const { name, email, password } = req.body
+        const { name, email, password, role } = req.body
 
         // validate email and name
         const { error } = registerSchema.validate({ ...req.body }, validationOptions)
@@ -52,6 +54,7 @@ handler.post(
                 name,
                 email,
                 password,
+                role,
             }),
         })
         const jsonReponse = await response.json()
