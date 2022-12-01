@@ -89,6 +89,17 @@ handler.patch(
                     role,
                     disabled,
                 },
+                select: {
+                    id: true,
+                    username: true,
+                    disabled: true,
+                    email: true,
+                    emailVerified: true,
+                    image: true,
+                    role: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
             })
 
             Log.info(`User ${user.id} updated by user ${req.session.user.id}`)
