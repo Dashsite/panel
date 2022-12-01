@@ -22,7 +22,7 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -44,10 +44,11 @@ const UserDropdown = () => {
         setAnchorEl(event.currentTarget)
     }
 
-    const handleDropdownClose = url => {
-        if (url) {
-            router.push(url)
-        }
+    const handleDropdownClose = () => {
+        signOut()
+
+        router.push('/')
+
         setAnchorEl(null)
     }
 
@@ -136,7 +137,7 @@ const UserDropdown = () => {
                     </MenuItem>
 
                     <Divider />
-                    <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+                    <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose()}>
                         <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
                         Logout
                     </MenuItem>
@@ -228,7 +229,7 @@ const UserDropdown = () => {
                     </Box>
                 </MenuItem>
                 <Divider />
-                <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+                <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose()}>
                     <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
                     Logout
                 </MenuItem>

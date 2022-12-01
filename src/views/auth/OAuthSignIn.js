@@ -9,21 +9,24 @@ import { signIn } from 'next-auth/react'
  * Component that renders all OAuth sign in buttons.
  */
 const OAuthSignIn = ({ providers }) => {
-  return (
-    <>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Link href='/' passHref>
-          <IconButton component='a' onClick={() => signIn(providers['google'].id)}>
-            <Google sx={{ color: '#db4437' }} />
-          </IconButton>
-        </Link>
-      </Box>
-    </>
-  )
+    return (
+        <>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Link href='/' passHref>
+                    <IconButton
+                        component='a'
+                        onClick={() => signIn(providers['google'].id, { callbackUrl: `${window.location.origin}/` })}
+                    >
+                        <Google sx={{ color: '#db4437' }} />
+                    </IconButton>
+                </Link>
+            </Box>
+        </>
+    )
 }
 
 OAuthSignIn.propTypes = {
-  providers: PropTypes.object.isRequired
+    providers: PropTypes.object.isRequired,
 }
 
 export default OAuthSignIn
