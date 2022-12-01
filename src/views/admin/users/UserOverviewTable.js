@@ -51,6 +51,8 @@ const UserOverviewTable = ({ users, addAction, deleteAction, disableAction, edit
         {
             header: 'Email Verified',
             accessorFn: row => {
+                if (row.emailVerified === null) return 'No'
+
                 // Accessor function just for formatting the date
                 const date = new Date(row.emailVerified)
                 const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
@@ -82,7 +84,7 @@ const UserOverviewTable = ({ users, addAction, deleteAction, disableAction, edit
             renderRowActions={({ cell, row, table }) => (
                 <>
                     <Tooltip title='Edit'>
-                        <IconButton onClick={() => editAction(row.original.id)}>
+                        <IconButton onClick={() => editAction(row.original)}>
                             <EditIcon />
                         </IconButton>
                     </Tooltip>
