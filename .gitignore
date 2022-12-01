@@ -45,3 +45,5 @@ yarn-error.log*
 #yarn
 /.yarn
 
+public/uploads
+
