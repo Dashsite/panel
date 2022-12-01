@@ -4,13 +4,17 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import Block from '@mui/icons-material/Block'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Chip, IconButton, Typography, Tooltip } from '@mui/material'
 
 const UserOverviewTable = ({ users, deleteAction, disableAction }) => {
     const dispatch = useDispatch()
 
     const deleteUser = id => dispatch(deleteAction(id))
-    const disableUser = id => dispatch(disableAction(id))
+    const disableUser = (id, disabled) => {
+        console.log('disabledUser', disabled)
+        dispatch(disableAction(id, disabled))
+    }
 
     const columns = [
         {
@@ -88,15 +92,27 @@ const UserOverviewTable = ({ users, deleteAction, disableAction }) => {
                             <EditIcon />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title='Disable'>
-                        <IconButton
-                            onClick={() => {
-                                disableUser(row.original.id)
-                            }}
-                        >
-                            <Block />
-                        </IconButton>
-                    </Tooltip>
+                    {!row.original.disabled ? (
+                        <Tooltip title='Disable'>
+                            <IconButton
+                                onClick={() => {
+                                    disableUser(row.original.id, false)
+                                }}
+                            >
+                                <Block />
+                            </IconButton>
+                        </Tooltip>
+                    ) : (
+                        <Tooltip title='Enable'>
+                            <IconButton
+                                onClick={() => {
+                                    disableUser(row.original.id, true)
+                                }}
+                            >
+                                <CheckCircleIcon />
+                            </IconButton>
+                        </Tooltip>
+                    )}
                     <Tooltip title='Delete'>
                         <IconButton onClick={() => deleteUser(row.original.id)}>
                             <DeleteIcon />

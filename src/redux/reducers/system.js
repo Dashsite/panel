@@ -19,7 +19,7 @@ const system = createSlice({
         [success(disableUser)]: (state, { payload }) => {
             state.users = state.users.map(user => {
                 if (user.id === payload.data.id) {
-                    user.disabled = true
+                    user = payload.data
                 }
                 return user
             })
