@@ -92,11 +92,11 @@ model User {
   email            String?            @unique @db.VarChar(255)
   emailVerified    DateTime?
   image            String?            @db.VarChar(255)
-  disabled         Boolean?
+  disabled         Boolean?           @default(false)
   password         String?            @db.VarChar(255)
   role             String?            @default("user") @db.VarChar(30)
-  createdAt        DateTime?          @db.Timestamp(0)
-  updatedAt        DateTime?          @db.Timestamp(0)
+  createdAt        DateTime?          @default(now())
+  updatedAt        DateTime?          @default(now())
   accounts         Account[]
   sessions         Session[]
   billing_adresses billing_adresses[]

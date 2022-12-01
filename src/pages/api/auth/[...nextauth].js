@@ -89,6 +89,8 @@ export const nextAuthOptions = {
         async session({ session, user }) {
             session.user.role = user.role
             session.user.id = user.id
+            session.user.username = user.username
+            session.user.image = user.image
             return session
         },
     },

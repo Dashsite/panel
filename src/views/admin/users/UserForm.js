@@ -1,6 +1,7 @@
 import { PropTypes } from 'prop-types'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { signIn } from 'next-auth/react'
+import { useDispatch } from 'react-redux'
 import {
     TextField,
     Box,
@@ -38,6 +39,7 @@ const UserForm = ({ user, cancelAction }) => {
         }
 
         if (submitResult.action.type.endsWith('_SUCCESS')) {
+            signIn('verify', { email: values.email, redirect: false })
             cancelAction()
         }
         if (submitResult.action.type.endsWith('_ERROR')) {

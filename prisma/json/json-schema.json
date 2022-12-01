@@ -296,7 +296,8 @@
             "boolean",
             "null"
           ],
-          "originalType": "Boolean"
+          "originalType": "Boolean",
+          "default": false
         },
         "password": {
           "type": [
