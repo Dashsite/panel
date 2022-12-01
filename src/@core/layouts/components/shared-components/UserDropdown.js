@@ -22,6 +22,7 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
+import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import { useSession, signOut } from 'next-auth/react'
 
 // ** Styled Components
@@ -44,11 +45,20 @@ const UserDropdown = () => {
         setAnchorEl(event.currentTarget)
     }
 
-    const handleDropdownClose = () => {
-        signOut()
-
-        router.push('/')
-
+    const handleDropdownClose = mode => {
+        switch (mode) {
+            case 'login':
+                router.push('/auth/login')
+                break
+            case 'register':
+                router.push('/auth/register')
+                break
+            case 'logout':
+                signOut()
+                router.push('/')
+            default:
+                break
+        }
         setAnchorEl(null)
     }
 
@@ -127,8 +137,6 @@ const UserDropdown = () => {
                             Profile
                         </Box>
                     </MenuItem>
-
-                    <Divider />
                     <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
                         <Box sx={styles}>
                             <CogOutline sx={{ marginRight: 2 }} />
@@ -137,7 +145,7 @@ const UserDropdown = () => {
                     </MenuItem>
 
                     <Divider />
-                    <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose()}>
+                    <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('logout')}>
                         <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
                         Logout
                     </MenuItem>
@@ -190,48 +198,14 @@ const UserDropdown = () => {
                         </Box>
                     </Box>
                 </Box>
-                <Divider sx={{ mt: 0, mb: 1 }} />
-                <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-                    <Box sx={styles}>
-                        <AccountOutline sx={{ marginRight: 2 }} />
-                        Profile
-                    </Box>
-                </MenuItem>
-                <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-                    <Box sx={styles}>
-                        <EmailOutline sx={{ marginRight: 2 }} />
-                        Inbox
-                    </Box>
-                </MenuItem>
-                <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-                    <Box sx={styles}>
-                        <MessageOutline sx={{ marginRight: 2 }} />
-                        Chat
-                    </Box>
-                </MenuItem>
                 <Divider />
-                <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-                    <Box sx={styles}>
-                        <CogOutline sx={{ marginRight: 2 }} />
-                        Settings
-                    </Box>
+                <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('register')}>
+                    <AccountPlusOutline sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
+                    Register
                 </MenuItem>
-                <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-                    <Box sx={styles}>
-                        <CurrencyUsd sx={{ marginRight: 2 }} />
-                        Pricing
-                    </Box>
-                </MenuItem>
-                <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-                    <Box sx={styles}>
-                        <HelpCircleOutline sx={{ marginRight: 2 }} />
-                        FAQ
-                    </Box>
-                </MenuItem>
-                <Divider />
-                <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose()}>
+                <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('login')}>
                     <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
-                    Logout
+                    Login
                 </MenuItem>
             </Menu>
         </Fragment>
