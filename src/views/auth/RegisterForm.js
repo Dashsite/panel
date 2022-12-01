@@ -23,6 +23,7 @@ import { signIn } from 'next-auth/react'
 import LoadingButton from '@mui/lab/LoadingButton'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
+import FormErrors from 'src/components/vertical/FormErrors'
 
 const LinkStyled = styled('a')(({ theme }) => ({
     fontSize: '0.875rem',
@@ -85,18 +86,7 @@ const RegisterForm = ({ successHandler }) => {
 
     return (
         <>
-            <Collapse in={error.length > 0} timeout='auto'>
-                <Alert severity='error' sx={{ marginBottom: 4 }}>
-                    <AlertTitle>Error</AlertTitle>
-                    <List>
-                        {error.map((error, index) => (
-                            <ListItem dense disableGutters key={index}>
-                                • {Object.values(error)}.
-                            </ListItem>
-                        ))}
-                    </List>
-                </Alert>
-            </Collapse>
+            <FormErrors formErrors={error} />
             <form
                 onSubmit={event => {
                     event.preventDefault()
