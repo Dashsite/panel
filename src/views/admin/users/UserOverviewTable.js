@@ -32,7 +32,7 @@ const UserOverviewTable = ({ users, addAction, deleteAction, disableAction, edit
                 return (
                     <Chip
                         label={role.toUpperCase()}
-                        color={role === 'admin' ? 'primary' : 'secondary'}
+                        color={role === 'admin' ? 'red' : 'blue'}
                         variant='outlined'
                         sx={{ padding: 0, minWidth }}
                     />
