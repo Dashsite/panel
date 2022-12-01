@@ -22,7 +22,7 @@ handler.get(
                 },
                 select: {
                     id: true,
-                    name: true,
+                    username: true,
                     email: true,
                     emailVerified: true,
                     image: true,
@@ -66,7 +66,7 @@ handler.patch(
                     id: req.session.user.id,
                 },
                 data: {
-                    name: username,
+                    username,
                     email: email,
                 },
             })

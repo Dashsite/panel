@@ -262,7 +262,7 @@
           "type": "string",
           "originalType": "String"
         },
-        "name": {
+        "username": {
           "type": [
             "string",
             "null"

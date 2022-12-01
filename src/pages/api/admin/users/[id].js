@@ -22,7 +22,7 @@ handler.get(
                 },
                 select: {
                     id: true,
-                    name: true,
+                    username: true,
                     disabled: true,
                     email: true,
                     emailVerified: true,
@@ -72,7 +72,7 @@ handler.patch(
      *
      */
     async (req, res) => {
-        const { name, email, role, disabled } = req.body
+        const { username, email, role, disabled } = req.body
 
         // validate email and name
         const { error } = userDataUpdateSchema.validate({ ...req.body }, validationOptions)
@@ -84,7 +84,7 @@ handler.patch(
                     id: req.query.id,
                 },
                 data: {
-                    name,
+                    username,
                     email,
                     role,
                     disabled,
