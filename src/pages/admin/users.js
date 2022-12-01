@@ -17,8 +17,9 @@ const AdminUsersOverview = ({}) => {
         setSelectedUser(null)
     }
 
-    const editAction = id => {
-        setSelectedUser(users.find(user => user.id === id))
+    const editAction = user => {
+        setSelectedUser(user)
+        console.log(selectedUser)
         setMode('edit')
     }
 
