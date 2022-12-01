@@ -2939,6 +2939,7 @@ __metadata:
     joi: ^17.6.4
     joi-password: ^4.0.0
     material-react-table: ^1.2.10
+    material-ui-confirm: ^3.0.7
     mdi-material-ui: ^7.5.0
     nanoid: ^3.3.4
     next: 12.3.1
@@ -5285,6 +5286,17 @@ __metadata:
     "@mui/material": ">=5"
     react: ">=17.0"
   checksum: f65492ac6f36cd559ee36ef1f5e28b2a17f58b8cf9be1c6ef8dbebc3250c53552c06c596ef4aca17e66ddd4e31fdac81469b907181d83f074282ba2a3cef8f40
+  languageName: node
+  linkType: hard
+
+"material-ui-confirm@npm:^3.0.7":
+  version: 3.0.7
+  resolution: "material-ui-confirm@npm:3.0.7"
+  peerDependencies:
+    "@mui/material": ">= 5.0.0"
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+  checksum: 85f1f7ac2121d86d442f998aa7e0f53b16513eee0b9749efd76bddad5e7b615fc81a35e2e3683e407ca70b103f8e0f60d2ab30bfc8451facc536bed524dc0abd
   languageName: node
   linkType: hard
 

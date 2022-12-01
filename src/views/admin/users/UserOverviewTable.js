@@ -1,16 +1,23 @@
 import { useDispatch } from 'react-redux'
+import { useConfirm } from 'material-ui-confirm'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Block from '@mui/icons-material/Block'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Chip, IconButton, Typography, Tooltip } from '@mui/material'
 import OverviewTable from 'src/components/OverviewTable'
-import { EditAttributesRounded } from '@mui/icons-material'
 
 const UserOverviewTable = ({ users, addAction, deleteAction, disableAction, editAction }) => {
     const dispatch = useDispatch()
+    const confirm = useConfirm()
 
-    const deleteUser = id => dispatch(deleteAction(id))
+    const onDelete = id => {
+        confirm({ title: 'Are you sure you want to delete this user?' })
+            .then(() => {
+                dispatch(deleteAction(id))
+            })
+            .catch(() => {})
+    }
     const disableUser = (id, disabled) => dispatch(disableAction(id, disabled))
 
     const columns = [
@@ -74,49 +81,51 @@ const UserOverviewTable = ({ users, addAction, deleteAction, disableAction, edit
     ]
 
     return (
-        <OverviewTable
-            title='Users'
-            columns={columns}
-            data={users}
-            addAction={() => addAction()}
-            enableRowActions
-            positionActionsColumn='last'
-            renderRowActions={({ cell, row, table }) => (
-                <>
-                    <Tooltip title='Edit'>
-                        <IconButton onClick={() => editAction(row.original)}>
-                            <EditIcon />
-                        </IconButton>
-                    </Tooltip>
-                    {!row.original.disabled ? (
-                        <Tooltip title='Disable'>
-                            <IconButton
-                                onClick={() => {
-                                    disableUser(row.original.id, false)
-                                }}
-                            >
-                                <Block />
+        <>
+            <OverviewTable
+                title='Users'
+                columns={columns}
+                data={users}
+                addAction={() => addAction()}
+                enableRowActions
+                positionActionsColumn='last'
+                renderRowActions={({ cell, row, table }) => (
+                    <>
+                        <Tooltip title='Edit'>
+                            <IconButton onClick={() => editAction(row.original)}>
+                                <EditIcon />
                             </IconButton>
                         </Tooltip>
-                    ) : (
-                        <Tooltip title='Enable'>
-                            <IconButton
-                                onClick={() => {
-                                    disableUser(row.original.id, true)
-                                }}
-                            >
-                                <CheckCircleIcon />
+                        {!row.original.disabled ? (
+                            <Tooltip title='Disable'>
+                                <IconButton
+                                    onClick={() => {
+                                        disableUser(row.original.id, false)
+                                    }}
+                                >
+                                    <Block />
+                                </IconButton>
+                            </Tooltip>
+                        ) : (
+                            <Tooltip title='Enable'>
+                                <IconButton
+                                    onClick={() => {
+                                        disableUser(row.original.id, true)
+                                    }}
+                                >
+                                    <CheckCircleIcon />
+                                </IconButton>
+                            </Tooltip>
+                        )}
+                        <Tooltip title='Delete'>
+                            <IconButton onClick={() => onDelete(row.original.id)}>
+                                <DeleteIcon />
                             </IconButton>
                         </Tooltip>
-                    )}
-                    <Tooltip title='Delete'>
-                        <IconButton onClick={() => deleteUser(row.original.id)}>
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-                </>
-            )}
-        />
+                    </>
+                )}
+            />
+        </>
     )
 }
 
