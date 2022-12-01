@@ -1,6 +1,6 @@
 import { Alert, AlertTitle, Collapse, List, ListItem } from '@mui/material'
 
-const FormErrors = ({ formErrors }) => {
+const FormErrors = ({ formErrors = [] }) => {
     return (
         <Collapse in={formErrors?.length > 0} timeout='auto'>
             <Alert severity='error' sx={{ marginBottom: 4 }}>
