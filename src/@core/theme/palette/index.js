@@ -19,7 +19,6 @@ const DefaultPalette = (mode, themeColor) => {
             return '#6ACDFF'
         }
     }
-    console.log(mode)
 
     return {
         customColors: {

@@ -4,6 +4,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import { Chip, IconButton, Typography, Tooltip } from '@mui/material'
+import OverviewTable from 'src/components/OverviewTable'
 
 const ProductOverviewTable = ({ provider, products, categories, deleteAction }) => {
     const dispatch = useDispatch()
@@ -48,14 +49,12 @@ const ProductOverviewTable = ({ provider, products, categories, deleteAction }) 
     ]
 
     return (
-        <MaterialReactTable
-            initialState={{ density: 'compact' }}
+        <OverviewTable
             title='Products'
             columns={columns}
             data={products}
-            muiTableBodyCellProps={{ padding: 'none' }}
-            enableDensityToggle={false}
-            muiTablePaginationProps={{ rowsPerPageOptions: [15, 25, 50, 100], rowsPerPage: 15 }}
+            addAction={() => console.log('add')}
+            initialState={{ density: 'compact' }}
             enableRowActions
             positionActionsColumn='last'
             renderRowActions={({ cell, row, table }) => (
@@ -72,18 +71,6 @@ const ProductOverviewTable = ({ provider, products, categories, deleteAction }) 
                     </Tooltip>
                 </>
             )}
-            renderTopToolbarCustomActions={({ table }) => (
-                <IconButton disableRipple onClick={() => console.info('Add')}>
-                    <AddIcon />
-                    <Typography variant='button'>Add</Typography>
-                </IconButton>
-            )}
-            muiTablePaperProps={{
-                sx: {
-                    borderRadius: 2,
-                    overflow: 'hidden',
-                },
-            }}
         />
     )
 }

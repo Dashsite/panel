@@ -94,6 +94,10 @@ handler.patch(
             Log.info(`User ${user.id} updated by user ${req.session.user.id}`)
             return res.status(200).json(user)
         } catch (error) {
+            if (error.code === 'P2025') {
+                Log.error(error.message, `Error updating user ${req.query.id} by user ${req.session.user.id}`)
+                return res.status(404).json({ error: 'User not found' })
+            }
             Log.error(error.message, `Error updating user ${req.query.id} by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
         }

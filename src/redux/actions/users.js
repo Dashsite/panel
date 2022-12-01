@@ -12,11 +12,8 @@ export const deleteUser = createAction('deleteUser', id => ({
     },
 }))
 
-export const disableUser = createAction('disableUser', (id, disabled) => {
-    console.log('Action Disabled', disabled)
-    return {
-        payload: {
-            request: { url: `/admin/users/${id}`, method: 'PATCH', data: { disabled: !disabled } },
-        },
-    }
-})
+export const disableUser = createAction('disableUser', (id, disabled) => ({
+    payload: {
+        request: { url: `/admin/users/${id}`, method: 'PATCH', data: { disabled: !disabled } },
+    },
+}))

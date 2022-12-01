@@ -6,15 +6,13 @@ import AddIcon from '@mui/icons-material/Add'
 import Block from '@mui/icons-material/Block'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Chip, IconButton, Typography, Tooltip } from '@mui/material'
+import OverviewTable from 'src/components/OverviewTable'
 
 const UserOverviewTable = ({ users, deleteAction, disableAction }) => {
     const dispatch = useDispatch()
 
     const deleteUser = id => dispatch(deleteAction(id))
-    const disableUser = (id, disabled) => {
-        console.log('disabledUser', disabled)
-        dispatch(disableAction(id, disabled))
-    }
+    const disableUser = (id, disabled) => dispatch(disableAction(id, disabled))
 
     const columns = [
         {
@@ -75,14 +73,11 @@ const UserOverviewTable = ({ users, deleteAction, disableAction }) => {
     ]
 
     return (
-        <MaterialReactTable
-            initialState={{ density: 'compact' }}
+        <OverviewTable
             title='Users'
             columns={columns}
             data={users}
-            muiTableBodyCellProps={{ padding: 'none' }}
-            enableDensityToggle={false}
-            muiTablePaginationProps={{ rowsPerPageOptions: [15, 25, 50, 100], rowsPerPage: 15 }}
+            addAction={() => dispatch(disableAction(1, true))}
             enableRowActions
             positionActionsColumn='last'
             renderRowActions={({ cell, row, table }) => (
@@ -120,18 +115,6 @@ const UserOverviewTable = ({ users, deleteAction, disableAction }) => {
                     </Tooltip>
                 </>
             )}
-            renderTopToolbarCustomActions={({ table }) => (
-                <IconButton disableRipple onClick={() => console.info('Add')}>
-                    <AddIcon />
-                    <Typography variant='button'>Add</Typography>
-                </IconButton>
-            )}
-            muiTablePaperProps={{
-                sx: {
-                    borderRadius: 2,
-                    overflow: 'hidden',
-                },
-            }}
         />
     )
 }
