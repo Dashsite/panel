@@ -2,7 +2,7 @@ import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
 import Log from 'src/lib/utils/Logger'
 
-import { userDataSchema } from 'src/lib/validations/user'
+import { userDataSchema, userDataUpdateSchema } from 'src/lib/validations/user'
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 
 const handler = nextConnect()
@@ -75,7 +75,7 @@ handler.patch(
         const { name, email, role, disabled } = req.body
 
         // validate email and name
-        const { error } = userDataSchema.validate({ ...req.body }, validationOptions)
+        const { error } = userDataUpdateSchema.validate({ ...req.body }, validationOptions)
         if (error) return res.status(400).json({ error: validationFormatter(error) })
 
         try {

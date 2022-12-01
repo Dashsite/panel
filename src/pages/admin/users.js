@@ -2,7 +2,7 @@ import { Alert, Box, Button, Divider, Typography, CardContent, Card as MuiCard }
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { getUsers } from 'src/redux/actions/users'
+import { getUsers, deleteUser, disableUser } from 'src/redux/actions/users'
 import UserOverviewTable from 'src/views/admin/users/UserOverviewTable'
 
 const AdminUsersOverview = ({}) => {
@@ -20,7 +20,7 @@ const AdminUsersOverview = ({}) => {
                 Users
             </Typography>
             <Box>
-                <UserOverviewTable users={users} />
+                <UserOverviewTable users={users} deleteAction={deleteUser} disableAction={disableUser} />
             </Box>
         </Box>
     )

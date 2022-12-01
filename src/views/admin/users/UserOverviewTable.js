@@ -6,8 +6,11 @@ import AddIcon from '@mui/icons-material/Add'
 import Block from '@mui/icons-material/Block'
 import { Chip, IconButton, Typography, Tooltip } from '@mui/material'
 
-const UserOverviewTable = ({ users }) => {
+const UserOverviewTable = ({ users, deleteAction, disableAction }) => {
     const dispatch = useDispatch()
+
+    const deleteUser = id => dispatch(deleteAction(id))
+    const disableUser = id => dispatch(disableAction(id))
 
     const columns = [
         {
@@ -88,14 +91,14 @@ const UserOverviewTable = ({ users }) => {
                     <Tooltip title='Disable'>
                         <IconButton
                             onClick={() => {
-                                dispatch(disableUser(row.id))
+                                disableUser(row.original.id)
                             }}
                         >
                             <Block />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title='Delete'>
-                        <IconButton onClick={() => console.info('Delete')}>
+                        <IconButton onClick={() => deleteUser(row.original.id)}>
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>

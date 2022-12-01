@@ -5,3 +5,15 @@ export const getUsers = createAction('getUsers', () => ({
         request: { url: `/admin/users`, method: 'GET' },
     },
 }))
+
+export const deleteUser = createAction('deleteUser', id => ({
+    payload: {
+        request: { url: `/admin/users/${id}`, method: 'DELETE' },
+    },
+}))
+
+export const disableUser = createAction('disableUser', id => ({
+    payload: {
+        request: { url: `/admin/users/${id}`, method: 'PATCH', body: { disabled: true } },
+    },
+}))

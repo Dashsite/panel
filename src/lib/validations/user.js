@@ -12,6 +12,12 @@ const userDataSchema = Joi.object({
     email: email.required(),
 })
 
+const userDataUpdateSchema = Joi.object({
+    username: username,
+    email: email,
+    disabled: Joi.boolean().label('Disabled'),
+})
+
 const passwordValidation = JoiPassword.string()
     .min(8)
     .max(70)
@@ -40,4 +46,4 @@ const resetSchema = Joi.object({
     password: passwordValidation,
 })
 
-export { registerSchema, resetSchema, email, username, userDataSchema }
+export { registerSchema, resetSchema, email, username, userDataSchema, userDataUpdateSchema }
