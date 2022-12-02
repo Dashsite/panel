@@ -39,8 +39,6 @@ const UserDropdown = () => {
     const router = useRouter()
     const [anchorEl, setAnchorEl] = useState(null)
 
-    console.log(session)
-
     const handleDropdownOpen = event => {
         setAnchorEl(event.currentTarget)
     }
@@ -53,9 +51,13 @@ const UserDropdown = () => {
             case 'register':
                 router.push('/auth/register')
                 break
+            case 'profile':
+                router.push('/account-settings')
+                break
             case 'logout':
                 signOut()
                 router.push('/')
+                break
             default:
                 break
         }
@@ -131,7 +133,7 @@ const UserDropdown = () => {
                         </Box>
                     </Box>
                     <Divider sx={{ mt: 0, mb: 1 }} />
-                    <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+                    <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('profile')}>
                         <Box sx={styles}>
                             <AccountOutline sx={{ marginRight: 2 }} />
                             Profile
@@ -173,32 +175,10 @@ const UserDropdown = () => {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={() => handleDropdownClose()}
-                sx={{ '& .MuiMenu-paper': { width: 230, marginTop: 4 } }}
+                sx={{ '& .MuiMenu-paper': { width: 150, marginTop: 4 } }}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-                <Box sx={{ pt: 2, pb: 3, px: 4 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Badge
-                            overlap='circular'
-                            badgeContent={<BadgeContentSpan />}
-                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                        >
-                            <Avatar
-                                alt='John Doe'
-                                src='/images/avatars/1.png'
-                                sx={{ width: '2.5rem', height: '2.5rem' }}
-                            />
-                        </Badge>
-                        <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-                            <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
-                            <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                                Admin
-                            </Typography>
-                        </Box>
-                    </Box>
-                </Box>
-                <Divider />
                 <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('register')}>
                     <AccountPlusOutline sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
                     Register

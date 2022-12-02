@@ -1,11 +1,12 @@
 import Joi from 'Joi'
 import { joiPasswordExtendCore } from 'joi-password'
 
+const alphanumWithSpaces = /^[\w\-\s]+$/
 const JoiPassword = Joi.extend(joiPasswordExtendCore)
 
 const email = Joi.string().email().messages({ 'string.email': 'Email is not valid' }).label('Email')
 
-const username = Joi.string().min(3).max(30).alphanum().label('Username')
+const username = Joi.string().min(3).max(30).pattern(alphanumWithSpaces).label('Username')
 
 const userDataSchema = Joi.object({
     username: username.required(),

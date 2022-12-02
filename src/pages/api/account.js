@@ -50,7 +50,7 @@ handler.patch(
         const { username, email } = req.body
 
         //Validate Username and email
-        const { error } = userDataSchema.validate({ ...req.body }, validationOptions)
+        const { error } = userDataSchema.validate({ username, email }, validationOptions)
         if (error) return res.status(400).json({ error: validationFormatter(error) })
 
         try {
@@ -58,10 +58,11 @@ handler.patch(
             const user = await prisma.user.findUnique({
                 where: { email },
             })
-            if (user) return res.status(400).json({ error: { email: 'Email address is already in use.' } })
+            if (user && user.id != req.session.user.id)
+                return res.status(400).json({ error: { email: 'Email address is already in use.' } })
 
             // update user email address
-            await prisma.user.update({
+            const updatedUser = await prisma.user.update({
                 where: {
                     id: req.session.user.id,
                 },
@@ -69,10 +70,20 @@ handler.patch(
                     username,
                     email: email,
                 },
+                select: {
+                    id: true,
+                    username: true,
+                    email: true,
+                    emailVerified: true,
+                    image: true,
+                    role: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
             })
 
             Log.info(`User ${req.session.user.id} updated email address to ${email}`)
-            return res.status(200).end()
+            return res.status(200).json(updatedUser)
         } catch (error) {
             Log.error(error.message, `Error updating user ${req.session.user.id} by user ${req.session.user.id}`)
             return res.status(500).json({ error: 'Internal server error' })
