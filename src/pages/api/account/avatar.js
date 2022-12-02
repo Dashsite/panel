@@ -23,25 +23,46 @@ handler.post(
      */
 
     async (req, res) => {
-        const form = formidable({})
-        form.uploadDir = './public/uploads/avatars'
-        form.keepExtensions = true
+        const form = formidable({
+            maxFileSize: 8 * 1024 * 1024,
+            uploadDir: './public/uploads/avatars',
+            keepExtensions: true,
+        })
+
+        form.on('fileBegin', (name, file) => {
+            // check mimetype png or jpg if not return an formidable error
+            if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+                form.emit('error', new Error('File type is not supported'))
+            }
+        })
+
+        form.on('error', err => {
+            if (err.message === 'File type is not supported') {
+                return res.status(400).json({ error: err.message })
+            }
+            if (err.message === 'Image size is too large') {
+                return res.status(400).json({ error: err.message })
+            }
+            if (err.message.startsWith('maxFileSize exceeded')) {
+                return res.status(400).json({ error: 'Image size is too large' })
+            }
+            return res.status(500).end()
+        })
+
         form.parse(req, async (err, fields, files) => {
             if (err) {
-                fs.unlinkSync(path)
-                Log.error(err.message, 'Error uploading avatar')
-                return res.status(500).json()
+                // An error occurred when uploading, do not parse
+                // Errors are handled in the form.on('error') event
+                return
             }
-
             const path = files.image.path.replace(/\\/g, '/')
-
-            const image = await jimp.read(path)
-            await image.resize(250, jimp.AUTO)
-            await image.writeAsync(path)
-
-            const avatarUrl = `${process.env.APP_URL}/${path.replace('public/', '')}`
-
             try {
+                const image = await jimp.read(path)
+                await image.resize(250, jimp.AUTO)
+                await image.writeAsync(path)
+
+                const avatarUrl = `${process.env.APP_URL}/${path.replace('public/', '')}`
+
                 const user = await prisma.user.update({
                     where: {
                         id: req.session.user.id,

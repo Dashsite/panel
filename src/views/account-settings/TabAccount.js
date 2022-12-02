@@ -72,17 +72,6 @@ const TabAccount = () => {
         }
     }, [session])
 
-    // handle file upload to api/account/avatar POST
-    const handleFileUpload = async e => {
-        const file = e.target.files[0]
-        const formData = new FormData()
-        formData.append('image', file)
-        const res = await fetch('/api/account/avatar', { method: 'POST', body: formData })
-        if (res.status === 201) {
-            setOpenAlert(true)
-        }
-    }
-
     const resetValues = () => {
         setValues({
             username: session.user.username,
@@ -91,17 +80,30 @@ const TabAccount = () => {
     }
 
     const onSubmit = async submitValues => {
+        console.log(submitValues)
+        let errors = []
+        if (submitValues.image) {
+            // Handle image upload
+            const file = submitValues.image[0]
+            const formData = new FormData()
+            formData.append('image', file)
+            const res = await fetch('/api/account/avatar', { method: 'POST', body: formData })
+            if (res.status !== 201) errors.push({ Image: 'Image upload failed' })
+        }
+
+        // Handle other fields
         const res = await fetch('/api/account', {
             method: 'PATCH',
-            body: JSON.stringify(submitValues),
+            // send all fields execot image
+            body: JSON.stringify({ ...submitValues, image: undefined }),
             headers: {
                 'Content-Type': 'application/json',
             },
         })
         const json = await res.json()
 
-        if (res.status === 400) return [json.error]
-        if (res.status === 500) return [{ message: 'Server Error' }]
+        if (res.status === 400) return [json.error, ...errors]
+        if (res.status === 500) return [{ message: 'Server Error' }, ...errors]
         if (res.status === 200) {
             setOpenAlert(true)
             return
@@ -131,19 +133,23 @@ const TabAccount = () => {
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                         <ImgStyled src={session?.user?.image} alt='Profile Pic' />
                                         <Box>
-                                            <ButtonStyled
-                                                component='label'
-                                                variant='contained'
-                                                htmlFor='account-settings-upload-image'
-                                            >
-                                                Upload New Photo
-                                                <input
-                                                    type='file'
-                                                    id='account-settings-upload-image'
-                                                    hidden
-                                                    onChange={handleFileUpload}
-                                                />
-                                            </ButtonStyled>
+                                            <Field name='image'>
+                                                {({ input: { value, onChange, ...input }, meta }) => (
+                                                    <ButtonStyled component='label' variant='contained' htmlFor='image'>
+                                                        Upload New Photo
+                                                        <input
+                                                            type='file'
+                                                            id='image'
+                                                            hidden
+                                                            name='image'
+                                                            accept='image/png, image/jpeg'
+                                                            onChange={({ target }) => onChange(target.files)}
+                                                            {...input}
+                                                        />
+                                                    </ButtonStyled>
+                                                )}
+                                            </Field>
+
                                             <ResetButtonStyled
                                                 color='error'
                                                 variant='outlined'
