@@ -8,7 +8,7 @@ const FormErrors = ({ formErrors = [] }) => {
                 <List>
                     {formErrors?.map((error, index) => (
                         <ListItem dense disableGutters key={index}>
-                            • {Object.values(error)}.
+                            • {Object.values(error)}
                         </ListItem>
                     ))}
                 </List>

@@ -56,12 +56,12 @@ handler.post(
                 return
             }
             const path = files.image.path.replace(/\\/g, '/')
+            const avatarUrl = `${process.env.APP_URL}/${path.replace('public/', '')}`
+
             try {
                 const image = await jimp.read(path)
                 await image.resize(250, jimp.AUTO)
                 await image.writeAsync(path)
-
-                const avatarUrl = `${process.env.APP_URL}/${path.replace('public/', '')}`
 
                 const user = await prisma.user.update({
                     where: {

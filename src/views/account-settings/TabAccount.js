@@ -17,6 +17,7 @@ import {
     IconButton,
     CardContent,
     FormControl,
+    CircularProgress,
     Button,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
@@ -58,6 +59,7 @@ const TabAccount = () => {
     const dispatch = useDispatch()
     const { data: session } = useSession({ required: true })
     const [openAlert, setOpenAlert] = useState(false)
+    const [imageSrc, setImageSrc] = useState(null)
     const [values, setValues] = useState({
         username: '',
         email: '',
@@ -72,15 +74,18 @@ const TabAccount = () => {
         }
     }, [session])
 
-    const resetValues = () => {
+    const resetValues = form => {
         setValues({
             username: session.user.username,
             email: session.user.email,
         })
+        setImageSrc(null)
+        form.reset()
+        setOpenAlert(false)
     }
 
     const onSubmit = async submitValues => {
-        console.log(submitValues)
+        setOpenAlert(false)
         let errors = []
         if (submitValues.image) {
             // Handle image upload
@@ -102,7 +107,7 @@ const TabAccount = () => {
         })
         const json = await res.json()
 
-        if (res.status === 400) return [json.error, ...errors]
+        if (res.status === 400) return [...json.error, ...errors]
         if (res.status === 500) return [{ message: 'Server Error' }, ...errors]
         if (res.status === 200) {
             setOpenAlert(true)
@@ -113,7 +118,7 @@ const TabAccount = () => {
     return (
         <>
             <Form onSubmit={onSubmit} initialValues={values}>
-                {({ handleSubmit, submitting, submitErrors, dirtySinceLastSubmit }) => (
+                {({ handleSubmit, submitting, submitErrors, dirtySinceLastSubmit, dirty, form, pristine }) => (
                     <Box sx={{ padding: 6 }}>
                         <FormErrors formErrors={submitErrors} />
                         <Collapse
@@ -127,38 +132,59 @@ const TabAccount = () => {
                                 Your account has been updated successfully!
                             </Alert>
                         </Collapse>
+                        {submitting && (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: '100%',
+                                }}
+                            >
+                                <CircularProgress />
+                            </Box>
+                        )}
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={7}>
                                 <Grid item xs={12} sx={{ marginBottom: 3 }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <ImgStyled src={session?.user?.image} alt='Profile Pic' />
                                         <Box>
                                             <Field name='image'>
                                                 {({ input: { value, onChange, ...input }, meta }) => (
-                                                    <ButtonStyled component='label' variant='contained' htmlFor='image'>
-                                                        Upload New Photo
-                                                        <input
-                                                            type='file'
-                                                            id='image'
-                                                            hidden
-                                                            name='image'
-                                                            accept='image/png, image/jpeg'
-                                                            onChange={({ target }) => onChange(target.files)}
-                                                            {...input}
+                                                    <>
+                                                        <ImgStyled
+                                                            src={imageSrc || session?.user?.image}
+                                                            alt='Profile Pic'
                                                         />
-                                                    </ButtonStyled>
+                                                        <ButtonStyled
+                                                            component='label'
+                                                            variant='contained'
+                                                            htmlFor='image'
+                                                        >
+                                                            Upload New Photo
+                                                            <input
+                                                                type='file'
+                                                                id='image'
+                                                                hidden
+                                                                name='image'
+                                                                accept='image/png, image/jpeg'
+                                                                onChange={({ target }) => {
+                                                                    let reader = new FileReader()
+                                                                    reader.readAsDataURL(target.files[0])
+                                                                    reader.onload = () => {
+                                                                        setImageSrc(reader.result)
+                                                                    }
+                                                                    onChange(target.files)
+                                                                }}
+                                                                {...input}
+                                                            />
+                                                        </ButtonStyled>
+                                                    </>
                                                 )}
                                             </Field>
 
-                                            <ResetButtonStyled
-                                                color='error'
-                                                variant='outlined'
-                                                onClick={() => setImgSrc('/images/avatars/1.png')}
-                                            >
-                                                Reset
-                                            </ResetButtonStyled>
                                             <Typography variant='body2' sx={{ marginTop: 5 }}>
-                                                Allowed PNG or JPEG. Max size of 800K.
+                                                Allowed PNG or JPEG. Max size of 8MB.
                                             </Typography>
                                         </Box>
                                     </Box>
@@ -182,7 +208,7 @@ const TabAccount = () => {
                                         variant='contained'
                                         sx={{ marginRight: 3.5 }}
                                         type='submit'
-                                        disabled={submitting}
+                                        disabled={submitting || !dirty}
                                     >
                                         Save Changes
                                     </Button>
@@ -190,7 +216,7 @@ const TabAccount = () => {
                                         type='reset'
                                         variant='outlined'
                                         color='secondary'
-                                        onClick={() => resetValues()}
+                                        onClick={() => resetValues(form)}
                                     >
                                         Reset
                                     </Button>
