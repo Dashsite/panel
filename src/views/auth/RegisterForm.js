@@ -23,7 +23,7 @@ import { signIn } from 'next-auth/react'
 import LoadingButton from '@mui/lab/LoadingButton'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import FormErrors from 'src/components/vertical/FormErrors'
+import FormErrors from 'src/components/FormErrors'
 
 const LinkStyled = styled('a')(({ theme }) => ({
     fontSize: '0.875rem',

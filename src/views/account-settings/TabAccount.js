@@ -26,7 +26,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { useSession } from 'next-auth/react'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
-import FormErrors from 'src/components/vertical/FormErrors'
+import FormErrors from 'src/components/FormErrors'
 
 const ImgStyled = styled('img')(({ theme }) => ({
     // set square image but keep aspect ratio
@@ -56,7 +56,7 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 
 const TabAccount = () => {
     const dispatch = useDispatch()
-    const { data: session, status } = useSession({ required: true })
+    const { data: session } = useSession({ required: true })
     const [openAlert, setOpenAlert] = useState(false)
     const [values, setValues] = useState({
         username: '',
@@ -73,11 +73,14 @@ const TabAccount = () => {
     }, [session])
 
     // handle file upload to api/account/avatar POST
-    const handleFileUpload = e => {
+    const handleFileUpload = async e => {
         const file = e.target.files[0]
         const formData = new FormData()
         formData.append('image', file)
-        fetch('/api/account/avatar', { method: 'POST', body: formData })
+        const res = await fetch('/api/account/avatar', { method: 'POST', body: formData })
+        if (res.status === 201) {
+            setOpenAlert(true)
+        }
     }
 
     const resetValues = () => {

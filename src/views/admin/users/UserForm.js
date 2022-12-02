@@ -23,7 +23,7 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import { Form, Field } from 'react-final-form'
 import { updateUser, createUser } from 'src/redux/actions/users'
-import FormErrors from 'src/components/vertical/FormErrors'
+import FormErrors from 'src/components/FormErrors'
 
 const UserForm = ({ user, cancelAction }) => {
     const dispatch = useDispatch()
