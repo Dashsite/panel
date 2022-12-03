@@ -69,6 +69,7 @@ handler.patch(
                 data: {
                     username,
                     email: email,
+                    emailVerified: user ? req.session.user.emailVerified : null,
                 },
                 select: {
                     id: true,
