@@ -1,5 +1,4 @@
-import fs from 'fs'
-
+import bcrypt from 'bcrypt'
 import Log from 'src/lib/utils/Logger'
 import nextConnect from 'src/middleware'
 import prisma from 'src/lib/utils/PrismaClient'

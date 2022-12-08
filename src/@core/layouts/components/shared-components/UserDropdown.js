@@ -55,7 +55,7 @@ const UserDropdown = () => {
                 router.push('/account-settings')
                 break
             case 'logout':
-                signOut()
+                signOut({ callbackUrl: `${window.location.origin}` })
                 router.push('/')
                 break
             default:

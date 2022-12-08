@@ -71,7 +71,6 @@ handler.post(
                         image: avatarUrl,
                     },
                 })
-                console.log(user)
             } catch (error) {
                 // delete image from uploads folder
                 fs.unlinkSync(path)

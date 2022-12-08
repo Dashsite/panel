@@ -62,14 +62,14 @@ const TabSecurity = () => {
                 password: newPassword,
             }),
         })
-        const json = await res.json()
-
-        if (res.status === 400) return json.error
-        if (res.status === 500) return [{ message: 'Server Error' }]
         if (res.status === 200) {
             setOpenAlert(true)
             return
         }
+        const json = await res.json()
+
+        if (res.status === 400) return json.error
+        if (res.status === 500) return [{ message: 'Server Error' }]
     }
 
     return (
