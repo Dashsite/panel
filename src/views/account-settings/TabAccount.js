@@ -25,16 +25,6 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
     },
 }))
 
-const ResetButtonStyled = styled(Button)(({ theme }) => ({
-    marginLeft: theme.spacing(4.5),
-    [theme.breakpoints.down('sm')]: {
-        width: '100%',
-        marginLeft: 0,
-        textAlign: 'center',
-        marginTop: theme.spacing(4),
-    },
-}))
-
 const StyledImageBox = styled(Box)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: {
         display: 'flex',
