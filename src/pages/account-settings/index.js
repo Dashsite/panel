@@ -77,15 +77,15 @@ const AccountSettings = () => {
                     />
                 </TabList>
 
-                <TabPanel sx={{ p: 0 }} value='account'>
+                <Box sx={{ display: tab === 'account' ? 'block' : 'none' }}>
                     <TabAccount />
-                </TabPanel>
-                <TabPanel sx={{ p: 0 }} value='security'>
+                </Box>
+                <Box sx={{ display: tab === 'security' ? 'block' : 'none' }}>
                     <TabSecurity />
-                </TabPanel>
-                <TabPanel sx={{ p: 0 }} value='info'>
+                </Box>
+                <Box sx={{ display: tab === 'info' ? 'block' : 'none' }}>
                     <TabInfo />
-                </TabPanel>
+                </Box>
             </TabContext>
         </Card>
     )
