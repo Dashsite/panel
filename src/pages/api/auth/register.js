@@ -31,6 +31,7 @@ handler.post(
                     password: passwordHash,
                     createdAt: new Date(),
                     updatedAt: new Date(),
+                    image: `/images/avatars/${Math.floor(Math.random() * 8) + 1}.png`,
                 },
             })
 
