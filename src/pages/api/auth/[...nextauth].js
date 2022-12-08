@@ -3,8 +3,8 @@ import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import bcrypt from 'bcrypt'
 import prisma from 'src/lib/utils/PrismaClient'
+import confirmPassword from 'src/lib/utils/confirmPassword'
 
 export const nextAuthOptions = {
     adapter: PrismaAdapter(prisma),
@@ -48,7 +48,7 @@ export const nextAuthOptions = {
                     })
 
                     if (!user) return null
-                    const res = await confirmPasswordHash(credentials.password, user.password)
+                    const res = await confirmPassword(credentials.password, user.password)
                     if (res === true) {
                         return {
                             id: user.id,
@@ -107,11 +107,3 @@ export const nextAuthOptions = {
 }
 
 export default NextAuth(nextAuthOptions)
-
-const confirmPasswordHash = (plainPassword, hashedPassword) => {
-    return new Promise(resolve => {
-        bcrypt.compare(plainPassword, hashedPassword, function (err, res) {
-            resolve(res)
-        })
-    })
-}
