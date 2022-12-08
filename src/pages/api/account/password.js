@@ -21,20 +21,18 @@ handler.post(
         const { password, currentPassword } = req.body
         const { user } = req.session
 
-        if (!user) return res.status(401).json({ error: [{ Password: 'Unauthorized' }] })
+        if (!user) return res.status(401).json({ error: 'Unauthorized' })
         if (password === currentPassword)
-            return res
-                .status(400)
-                .json({ error: [{ Password: 'New password cannot be the same as current password' }] })
+            return res.status(400).json({ error: 'New password cannot be the same as current password' })
 
         //Get User password hash from database
         const userFromDB = await prisma.user.findUnique({ where: { id: user.id } }, { select: { password: true } })
         if (userFromDB.password) {
-            if (!currentPassword) return res.status(400).json({ error: [{ Password: 'Current password is required' }] })
+            if (!currentPassword) return res.status(400).json({ error: 'Current password is required' })
 
             // check if current password is correct
             const result = await confirmPassword(currentPassword, userFromDB.password)
-            if (result !== true) return res.status(400).json({ error: ['Current password is incorrect'] })
+            if (result !== true) return res.status(400).json({ error: 'Current password is incorrect' })
         }
 
         // validate password with resetSchema
@@ -52,7 +50,7 @@ handler.post(
             return res.status(200).end()
         } catch (error) {
             Log.error(error)
-            return res.status(500).json({ error: ['Internal server error'] })
+            return res.status(500).json({ error: 'Internal server error' })
         }
     }
 )

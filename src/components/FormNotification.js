@@ -12,15 +12,27 @@ const FormNotifications = ({
 }) => {
     return (
         <Box sx={{ marginBottom: 4, ...sx }}>
-            <Collapse in={showErrors && errors?.length > 0} timeout='auto'>
+            <Collapse in={showErrors && (errors.length > 0 || typeof errors === 'string')} timeout='auto'>
                 <Alert severity='error'>
                     <AlertTitle>Error</AlertTitle>
                     <List>
-                        {errors?.map((error, index) => (
-                            <ListItem dense disableGutters key={index}>
-                                • {Object.values(error)}
-                            </ListItem>
-                        ))}
+                        {
+                            // If there is only one error, it will be a string
+                            // If there are multiple errors, it will be an array of objects
+                            // So we need to check if it is an array or not
+
+                            Array.isArray(errors) ? (
+                                errors?.map((error, index) => (
+                                    <ListItem dense disableGutters key={index}>
+                                        • {Object.values(error)}
+                                    </ListItem>
+                                ))
+                            ) : (
+                                <ListItem dense disableGutters>
+                                    • {errors}
+                                </ListItem>
+                            )
+                        }
                     </List>
                 </Alert>
             </Collapse>
