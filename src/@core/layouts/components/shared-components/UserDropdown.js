@@ -51,7 +51,7 @@ const UserDropdown = () => {
             case 'register':
                 router.push('/auth/register')
                 break
-            case 'profile':
+            case 'account':
                 router.push('/account-settings')
                 break
             case 'logout':
@@ -133,16 +133,10 @@ const UserDropdown = () => {
                         </Box>
                     </Box>
                     <Divider sx={{ mt: 0, mb: 1 }} />
-                    <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('profile')}>
+                    <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('account')}>
                         <Box sx={styles}>
                             <AccountOutline sx={{ marginRight: 2 }} />
-                            Profile
-                        </Box>
-                    </MenuItem>
-                    <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-                        <Box sx={styles}>
-                            <CogOutline sx={{ marginRight: 2 }} />
-                            Settings
+                            Account
                         </Box>
                     </MenuItem>
 
