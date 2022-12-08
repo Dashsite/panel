@@ -9,7 +9,6 @@ import {
     FormControl,
     MenuItem,
     Select,
-    FormControlLabel as MuiFormControlLabel,
     Button,
     Card,
     CardHeader,
@@ -23,7 +22,7 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import { Form, Field } from 'react-final-form'
 import { updateUser, createUser } from 'src/redux/actions/users'
-import FormErrors from 'src/components/FormErrors'
+import FormNotification from 'src/components/FormNotification'
 
 const UserForm = ({ user, cancelAction }) => {
     const dispatch = useDispatch()
@@ -48,15 +47,15 @@ const UserForm = ({ user, cancelAction }) => {
     }
 
     return (
-        <>
-            <Form
-                onSubmit={onSubmit}
-                initialValues={user}
-                render={({ handleSubmit, submitting, submitErrors }) => (
-                    <>
-                        <FormErrors formErrors={submitErrors} />
+        <Form
+            onSubmit={onSubmit}
+            initialValues={user}
+            render={({ handleSubmit, submitting, submitErrors }) => (
+                // show Notification right next to the form (not in the form) both take the same space about 50%
+                <Box sx={{ display: 'flex', alignItems: 'stretch' }}>
+                    <Box sx={{ flex: 1 }}>
                         <form onSubmit={handleSubmit}>
-                            <Card sx={{ width: '50%', padding: 2 }}>
+                            <Card sx={{ padding: 2 }}>
                                 <CardHeader
                                     title={user ? 'Edit User' : 'Create User'}
                                     titleTypographyProps={{ variant: 'h6' }}
@@ -160,10 +159,15 @@ const UserForm = ({ user, cancelAction }) => {
                                 </CardContent>
                             </Card>
                         </form>
-                    </>
-                )}
-            />
-        </>
+                    </Box>
+                    <FormNotification
+                        errors={submitErrors}
+                        showLoadinger={submitting}
+                        sx={{ flex: 1, marginLeft: 8 }}
+                    />
+                </Box>
+            )}
+        />
     )
 }
 

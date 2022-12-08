@@ -6,7 +6,7 @@ import { Form, Field } from 'react-final-form'
 
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
-import FormErrors from 'src/components/FormErrors'
+import FormNotifications from 'src/components/FormNotification'
 
 const ImgStyled = styled('img')(({ theme }) => ({
     // set square image but keep aspect ratio
@@ -106,30 +106,12 @@ const TabAccount = () => {
             <Form onSubmit={onSubmit} initialValues={values}>
                 {({ handleSubmit, submitting, submitErrors, dirtySinceLastSubmit, dirty, form, pristine }) => (
                     <Box sx={{ padding: 6 }}>
-                        <FormErrors formErrors={submitErrors} />
-                        <Collapse
-                            mountOnEnter
-                            in={openAlert && !dirtySinceLastSubmit}
-                            timeout='auto'
-                            sx={{ marginBottom: 3 }}
-                        >
-                            <Alert severity='success'>
-                                <AlertTitle>Success</AlertTitle>
-                                Your account has been updated successfully!
-                            </Alert>
-                        </Collapse>
-                        {submitting && (
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    height: '100%',
-                                }}
-                            >
-                                <CircularProgress />
-                            </Box>
-                        )}
+                        <FormNotifications
+                            errors={submitErrors}
+                            successMessage=' Your account has been updated successfully!'
+                            showSuccess={openAlert && !dirtySinceLastSubmit}
+                            showLoadinger={submitting}
+                        />
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={7}>
                                 <Grid item xs={12} sx={{ marginBottom: 3 }}>

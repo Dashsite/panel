@@ -23,7 +23,7 @@ import { signIn } from 'next-auth/react'
 import LoadingButton from '@mui/lab/LoadingButton'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import FormErrors from 'src/components/FormErrors'
+import FormNotification from 'src/components/FormNotification'
 
 const LinkStyled = styled('a')(({ theme }) => ({
     fontSize: '0.875rem',
@@ -86,7 +86,7 @@ const RegisterForm = ({ successHandler }) => {
 
     return (
         <>
-            <FormErrors formErrors={error} />
+            <FormNotification errors={error} />
             <form
                 onSubmit={event => {
                     event.preventDefault()
