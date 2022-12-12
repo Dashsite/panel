@@ -4,10 +4,10 @@ import prisma from 'src/lib/utils/PrismaClient'
 import { v4 } from 'uuid'
 
 // create a new verification token for a user which expires in 20 minutes
-export const createVerificationToken = async user => {
+export const createVerificationToken = async email => {
     const token = await prisma.verificationToken.create({
         data: {
-            identifier: user.email,
+            identifier: email,
             token: v4(),
             expires: new Date(Date.now() + 20 * 60 * 1000),
         },
@@ -18,18 +18,29 @@ export const createVerificationToken = async user => {
 
 /**
  *
- * @param {string} token
+ * @param {string} key A Token or Email
  * @returns {Promise<import('@prisma/client').VerificationToken | false>} A promise that resolves to the verification token or false if not found.
  */
-export const findVerificationToken = async token => {
-    const verificationToken = await prisma.verificationToken.findUnique({
+export const findVerificationToken = async key => {
+    // search for a verification token by its token value or email
+    const verificationToken = await prisma.verificationToken.findFirst({
         where: {
-            token,
+            OR: [
+                {
+                    token: key,
+                },
+                {
+                    identifier: key,
+                },
+            ],
         },
     })
+
+    console.log(verificationToken)
+
     if (!verificationToken) return false
     if (verificationToken.expires < new Date()) {
-        deleteVerificationToken(token)
+        deleteVerificationToken(verificationToken.token)
         return false
     }
 
