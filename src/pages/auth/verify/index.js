@@ -84,7 +84,7 @@ const VerifyEmailPage = () => {
                                     fontWeight: 600,
                                     fontSize: '1rem !important',
                                 }}
-                                href='/dashboard'
+                                href='/'
                             >
                                 Go to Dashboard
                             </Button>
