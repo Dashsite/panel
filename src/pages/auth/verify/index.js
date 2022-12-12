@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Alert, Box, Button, Typography, CardContent, Card as MuiCard } from '@mui/material'
+import { Alert, Box, Button, Typography, CardContent, Card as MuiCard, Collapse } from '@mui/material'
 
 import { styled } from '@mui/material/styles'
 
@@ -8,6 +8,7 @@ import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import { FooterIllustration, LogoHeader } from 'src/views/auth'
 import { useSession } from 'next-auth/react'
+import { useState } from 'react'
 
 const Card = styled(MuiCard)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: { width: '28rem' },
@@ -15,13 +16,36 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 const VerifyEmailPage = () => {
     const router = useRouter()
-    const { status } = useSession()
+    const { status } = useSession({
+        required: true,
+        onUnauthenticated() {
+            router.push('/auth/login')
+        },
+    })
+    const { token } = router.query
+    const [error, setError] = useState('')
+    const [verificationLoading, setVerificationLoading] = useState(true)
 
     useEffect(() => {
-        if (status !== 'authenticated') {
-            router.push('/')
+        if (token) {
+            fetch('/api/auth/verification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token }),
+            }).then(res => {
+                if (res.status === 200) {
+                    setVerificationLoading(false)
+                } else {
+                    setError('Invalid or expired token')
+                    setVerificationLoading(false)
+                }
+            })
         }
-    }, [status, router])
+    }, [token])
+
+    console.log(error, verificationLoading)
 
     if (status === 'authenticated') {
         return (
@@ -34,9 +58,21 @@ const VerifyEmailPage = () => {
                                 Welcome to {themeConfig.templateName}! 👋🏻
                             </Typography>
 
-                            <Alert severity='success' sx={{ mt: 8 }}>
-                                Email is verified! 🎉
-                            </Alert>
+                            <Collapse in={!verificationLoading && !error}>
+                                <Alert severity='success' sx={{ mt: 8 }}>
+                                    Email is verified! 🎉
+                                </Alert>
+                            </Collapse>
+                            <Collapse in={!verificationLoading && error}>
+                                <Alert severity='error' sx={{ mt: 8 }}>
+                                    {error}
+                                </Alert>
+                            </Collapse>
+                            <Collapse in={verificationLoading}>
+                                <Alert severity='info' sx={{ mt: 8 }}>
+                                    Verifying email...
+                                </Alert>
+                            </Collapse>
                         </Box>
                         <Box>
                             <Button
