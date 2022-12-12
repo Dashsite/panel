@@ -22,8 +22,16 @@ handler.get(
         // get the userId from the session
         const { user } = req.session
 
+        // if users email is already verified -> error
+        if (user.emailVerified) return res.status(400).json({ error: 'Email already verified' })
+
+        // if a token is found -> error
+        const found = await findVerificationToken(user.email)
+        if (found)
+            return res.status(400).json({ error: 'Please wait 20 minutes before requesting a new verification email' })
+
         // create a new verification token for a user which expires in 20 minutes
-        const token = await createVerificationToken(user)
+        const token = await createVerificationToken(user.email)
 
         // send the verification email
         sendVerificationEmail(user, token)
