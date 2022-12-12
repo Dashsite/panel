@@ -9,19 +9,6 @@ import confirmPassword from 'src/lib/utils/confirmPassword'
 export const nextAuthOptions = {
     adapter: PrismaAdapter(prisma),
     providers: [
-        EmailProvider({
-            id: 'verify',
-            name: 'verify',
-            server: {
-                host: process.env.EMAIL_SERVER_HOST,
-                port: process.env.EMAIL_SERVER_PORT,
-                auth: {
-                    user: process.env.EMAIL_SERVER_USER,
-                    pass: process.env.EMAIL_SERVER_PASSWORD,
-                },
-            },
-            from: process.env.EMAIL_FROM,
-        }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -91,6 +78,7 @@ export const nextAuthOptions = {
             session.user.id = user.id
             session.user.username = user.username
             session.user.image = user.image
+            session.user.emailVerified = user.emailVerified
             return session
         },
     },
