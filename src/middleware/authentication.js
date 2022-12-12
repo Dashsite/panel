@@ -37,5 +37,5 @@ const isUserRoute = URL => {
     return userRoutes.some(route => URL.startsWith(route))
 }
 
-const userRoutes = ['/api/account']
+const userRoutes = ['/api/account', '/api/auth/verification']
 const adminRoutes = ['/api/admin', '/admin']
