@@ -26,7 +26,7 @@ const RegisterPage = ({ providers }) => {
     const [registerSuccess, setRegisterSuccess] = useState(false)
     const [showSuccess, setShowSuccess] = useState(false)
 
-    if (status === 'authenticated') {
+    if (status === 'authenticated' && !registerSuccess) {
         return (
             <Box className='content-center'>
                 <Card sx={{ zIndex: 1 }}>
@@ -77,6 +77,21 @@ const RegisterPage = ({ providers }) => {
                         <Alert severity='success'>
                             Registration successful! Please check your email to verify your account.
                         </Alert>
+                        <Box>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                sx={{
+                                    mt: 3,
+                                    width: '100%',
+                                    fontWeight: 600,
+                                    fontSize: '1rem !important',
+                                }}
+                                onClick={() => router.push('/')}
+                            >
+                                Go to Dashboard
+                            </Button>
+                        </Box>
                     </Collapse>
 
                     <Collapse unmountOnExit onExited={() => setShowSuccess(true)} in={!registerSuccess} timeout='auto'>

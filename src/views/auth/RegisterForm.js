@@ -73,7 +73,7 @@ const RegisterForm = ({ successHandler }) => {
         })
         setIsLoading(false)
         if (response.status === 200) {
-            signIn('credentials', {
+            await signIn('credentials', {
                 email,
                 password,
                 callbackUrl: `${window.location.origin}/`,
