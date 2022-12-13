@@ -5,6 +5,7 @@ import Log from 'src/lib/utils/Logger'
 
 import { validationFormatter, validationOptions } from 'src/lib/validations'
 import { registerSchema } from 'src/lib/validations/user'
+import { sendVerificationEmail } from 'src/server/emailVerification'
 
 const handler = nextConnect()
 
@@ -32,6 +33,14 @@ handler.post(
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     image: `/images/avatars/${Math.floor(Math.random() * 8) + 1}.png`,
+                },
+            })
+
+            // send verification email by calling the route GET /api/auth/verification with with the users session token
+            fetch(`${process.env.NEXTAUTH_URL}/api/auth/verification`, {
+                method: 'GET',
+                headers: {
+                    cookie: req.headers.cookie,
                 },
             })
 
