@@ -19,7 +19,6 @@ const AdminUsersOverview = ({}) => {
 
     const editAction = user => {
         setSelectedUser(user)
-        console.log(selectedUser)
         setMode('edit')
     }
 

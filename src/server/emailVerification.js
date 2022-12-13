@@ -36,8 +36,6 @@ export const findVerificationToken = async key => {
         },
     })
 
-    console.log(verificationToken)
-
     if (!verificationToken) return false
     if (verificationToken.expires < new Date()) {
         deleteVerificationToken(verificationToken.token)
@@ -102,6 +100,6 @@ export const sendVerificationEmail = async (user, token) => {
     try {
         await sendMail(message)
     } catch (error) {
-        Log.error(error)
+        Log.error(error, 'Error sending verification email')
     }
 }

@@ -45,8 +45,6 @@ const VerifyEmailPage = () => {
         }
     }, [token])
 
-    console.log(error, verificationLoading)
-
     if (status === 'authenticated') {
         return (
             <Box className='content-center'>

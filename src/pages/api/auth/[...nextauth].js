@@ -39,7 +39,6 @@ export const nextAuthOptions = (request, response) => {
                     if (!user) return null
                     const res = await confirmPassword(credentials.password, user.password)
                     if (res === true) {
-                        console.log('AUTHENTICATED')
                         return {
                             id: user.id,
                             username: user.username,
@@ -49,7 +48,6 @@ export const nextAuthOptions = (request, response) => {
                             disabled: user.disabled,
                         }
                     } else {
-                        console.log('NOT AUTHENTICATED')
                         return null
                     }
                 } catch (err) {
@@ -76,7 +74,6 @@ export const nextAuthOptions = (request, response) => {
     }
     const callbacks = {
         async signIn({ user, account, credentials }) {
-            console.log('signIn', user, account, credentials)
             if (user.disabled) return false
 
             if (account.provider === 'credentials') {
@@ -102,7 +99,6 @@ export const nextAuthOptions = (request, response) => {
             return true
         },
         async session({ session, user }) {
-            console.log('session', session, user)
             session.user.role = user.role
             session.user.id = user.id
             session.user.username = user.username
@@ -126,12 +122,10 @@ export const nextAuthOptions = (request, response) => {
             const cookies = new Cookies(request, response)
             const cookie = cookies.get('next-auth.session-token')
 
-            console.log('jwt.encode', cookie)
             if (cookie) return cookie
             return ''
         },
         async decode({ secret, token, maxAge }) {
-            console.log('jwt.decode', secret, token, maxAge)
             return null
         },
     }
