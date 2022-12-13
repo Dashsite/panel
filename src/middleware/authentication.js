@@ -11,7 +11,7 @@ export default async (req, res, next) => {
     // if its an admin or user route check for authentication
     if (isAdminRoute(pathname) || isUserRoute(pathname)) {
         // get the user session
-        const session = await unstable_getServerSession(req, res, nextAuthOptions)
+        const session = await unstable_getServerSession(req, res, nextAuthOptions(req))
 
         if (!session) {
             return res.redirect('/auth/login')
