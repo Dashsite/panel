@@ -7,6 +7,7 @@ import prisma from 'src/lib/utils/PrismaClient'
 import confirmPassword from 'src/lib/utils/confirmPassword'
 import { v4 } from 'uuid'
 import Cookies from 'cookies'
+import { decode, encode } from 'next-auth/jwt'
 
 export const nextAuthOptions = (request, response) => {
     const adapter = PrismaAdapter(prisma)
@@ -73,7 +74,7 @@ export const nextAuthOptions = (request, response) => {
         },
     }
     const callbacks = {
-        async signIn({ user, account, credentials }) {
+        async signIn({ user, account }) {
             if (user.disabled) return false
 
             if (account.provider === 'credentials') {
@@ -116,17 +117,32 @@ export const nextAuthOptions = (request, response) => {
         signIn: '/auth/login',
         verifyRequest: '/auth/verification',
     }
-    const debug = true
     const jwt = {
         async encode({ secret, token, maxAge }) {
-            const cookies = new Cookies(request, response)
-            const cookie = cookies.get('next-auth.session-token')
+            if (
+                request.query.nextauth.includes('callback') &&
+                request.query.nextauth.includes('credentials') &&
+                request.method === 'POST'
+            ) {
+                const cookies = new Cookies(request, response)
+                const cookie = cookies.get('next-auth.session-token')
 
-            if (cookie) return cookie
-            return ''
+                if (cookie) return cookie
+                return ''
+            }
+
+            return encode({ token, secret, maxAge })
         },
         async decode({ secret, token, maxAge }) {
-            return null
+            if (
+                request.query.nextauth.includes('callback') &&
+                request.query.nextauth.includes('credentials') &&
+                request.method === 'POST'
+            ) {
+                return null
+            }
+
+            return decode({ token, secret, maxAge })
         },
     }
 
