@@ -73,7 +73,12 @@ const RegisterForm = ({ successHandler }) => {
         })
         setIsLoading(false)
         if (response.status === 200) {
-            signIn('verify', { email, callbackUrl: `${window.location.origin}/auth/verify`, redirect: false })
+            signIn('credentials', {
+                email,
+                password,
+                callbackUrl: `${window.location.origin}/`,
+                redirect: false,
+            })
             successHandler(true)
 
             return
