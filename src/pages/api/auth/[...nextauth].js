@@ -153,7 +153,6 @@ export const nextAuthOptions = (request, response) => {
         callbacks,
         session,
         pages,
-        debug,
         jwt,
     }
     return nextAuthOptions
