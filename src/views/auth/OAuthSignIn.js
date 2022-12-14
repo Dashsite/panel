@@ -12,14 +12,12 @@ const OAuthSignIn = ({ providers }) => {
     return (
         <>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Link href='/' passHref>
-                    <IconButton
-                        component='a'
-                        onClick={() => signIn(providers['google'].id, { callbackUrl: `${window.location.origin}/` })}
-                    >
-                        <Google sx={{ color: '#db4437' }} />
-                    </IconButton>
-                </Link>
+                <IconButton
+                    component='a'
+                    onClick={() => signIn(providers['google'].id, { callbackUrl: `${window.location.origin}/` })}
+                >
+                    <Google sx={{ color: '#db4437' }} />
+                </IconButton>
             </Box>
         </>
     )

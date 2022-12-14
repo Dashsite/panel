@@ -19,7 +19,7 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import router from 'next/router'
 
-const LinkStyled = styled('a')(({ theme }) => ({
+const LinkStyled = styled(Link)(({ theme }) => ({
     fontSize: '0.875rem',
     textDecoration: 'none',
     color: theme.palette.primary.main,
@@ -110,9 +110,9 @@ const LoginForm = () => {
                         justifyContent: 'right',
                     }}
                 >
-                    <Link passHref href='/auth/reset'>
-                        <LinkStyled>Forgot Password?</LinkStyled>
-                    </Link>
+                    <LinkStyled passHref href='/auth/reset'>
+                        Forgot Password?
+                    </LinkStyled>
                 </Box>
                 {/* // make button default enter key */}
                 <LoadingButton

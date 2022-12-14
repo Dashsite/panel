@@ -15,7 +15,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: { width: '28rem' },
 }))
 
-const LinkStyled = styled('a')(({ theme }) => ({
+const LinkStyled = styled(Link)(({ theme }) => ({
     fontSize: '0.875rem',
     textDecoration: 'none',
     color: theme.palette.primary.main,
@@ -101,9 +101,9 @@ const RegisterPage = ({ providers }) => {
                                 Already have an account?
                             </Typography>
                             <Typography variant='body2'>
-                                <Link passHref href='/auth/login'>
-                                    <LinkStyled>Sign in instead</LinkStyled>
-                                </Link>
+                                <LinkStyled passHref href='/auth/login'>
+                                    Sign in instead
+                                </LinkStyled>
                             </Typography>
                         </Box>
                         <Divider sx={{ my: 5 }}>or</Divider>

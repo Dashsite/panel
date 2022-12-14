@@ -12,7 +12,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: { width: '28rem' },
 }))
 
-const LinkStyled = styled('a')(({ theme }) => ({
+const LinkStyled = styled(Link)(({ theme }) => ({
     fontSize: '0.875rem',
     textDecoration: 'none',
     color: theme.palette.primary.main,
@@ -105,9 +105,9 @@ const ResetPage = ({ isTokenValid }) => {
                                     Remember your password?
                                 </Typography>
                                 <Typography variant='body2'>
-                                    <Link passHref href='/auth/login'>
-                                        <LinkStyled>Login instead</LinkStyled>
-                                    </Link>
+                                    <LinkStyled passHref href='/auth/login'>
+                                        Login instead
+                                    </LinkStyled>
                                 </Typography>
                             </Box>
                         </Collapse>

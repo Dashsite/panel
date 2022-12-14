@@ -25,7 +25,7 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import FormNotification from 'src/components/FormNotification'
 
-const LinkStyled = styled('a')(({ theme }) => ({
+const LinkStyled = styled(Link)(({ theme }) => ({
     fontSize: '0.875rem',
     textDecoration: 'none',
     color: theme.palette.primary.main,
@@ -172,9 +172,9 @@ const RegisterForm = ({ successHandler }) => {
                     label={
                         <>
                             <span>I agree to </span>
-                            <Link href='/' passHref>
-                                <LinkStyled onClick={e => e.preventDefault()}>Privacy policy & Terms</LinkStyled>
-                            </Link>
+                            <LinkStyled href='/' passHref onClick={e => e.preventDefault()}>
+                                Privacy policy & Terms
+                            </LinkStyled>
                         </>
                     }
                 />
