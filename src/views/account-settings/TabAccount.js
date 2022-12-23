@@ -37,14 +37,14 @@ const TabAccount = () => {
     const [openAlert, setOpenAlert] = useState(false)
     const [imageSrc, setImageSrc] = useState(null)
     const [values, setValues] = useState({
-        username: '',
+        name: '',
         email: '',
     })
 
     useEffect(() => {
         if (session) {
             setValues({
-                username: session.user.username,
+                name: session.user.name,
                 email: session.user.email,
             })
         }
@@ -52,7 +52,7 @@ const TabAccount = () => {
 
     const resetValues = form => {
         setValues({
-            username: session.user.username,
+            name: session.user.name,
             email: session.user.email,
         })
         setImageSrc(null)
@@ -142,7 +142,7 @@ const TabAccount = () => {
                                     </Box>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <Field name='username'>
+                                    <Field name='name'>
                                         {({ input, meta }) => (
                                             <TextField fullWidth type='text' label='Username' {...input} />
                                         )}

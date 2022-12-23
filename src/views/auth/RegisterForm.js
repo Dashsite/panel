@@ -46,7 +46,7 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const RegisterForm = ({ successHandler }) => {
     const [error, setError] = useState([])
 
-    const [username, setUsername] = useState('')
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirm, setPasswordConfirm] = useState('')
@@ -56,7 +56,7 @@ const RegisterForm = ({ successHandler }) => {
 
     const handleRegister = async () => {
         setError([])
-        if (!username || !email || !password || !isPrivacyChecked) return
+        if (!name || !email || !password || !isPrivacyChecked) return
         if (password !== passwordConfirm) {
             setError([{ password: 'Passwords do not match' }])
 
@@ -69,7 +69,7 @@ const RegisterForm = ({ successHandler }) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username, email, password }),
+            body: JSON.stringify({ name, email, password }),
         })
         setIsLoading(false)
         if (response.status === 200) {
@@ -101,11 +101,11 @@ const RegisterForm = ({ successHandler }) => {
                 <TextField
                     autoFocus
                     fullWidth
-                    id='username'
+                    id='name'
                     label='Username'
-                    value={username}
+                    value={name}
                     sx={{ marginBottom: 4 }}
-                    onChange={event => setUsername(event.target.value)}
+                    onChange={event => setName(event.target.value)}
                 />
                 <TextField
                     fullWidth
@@ -184,7 +184,7 @@ const RegisterForm = ({ successHandler }) => {
                     fullWidth
                     size='large'
                     variant='contained'
-                    disabled={!(isPrivacyChecked && username && email && password && passwordConfirm)}
+                    disabled={!(isPrivacyChecked && name && email && password && passwordConfirm)}
                     sx={{ marginBottom: 7 }}
                 >
                     Sign up

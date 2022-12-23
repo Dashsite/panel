@@ -61,7 +61,7 @@ const UserForm = ({ user, cancelAction }) => {
                                     titleTypographyProps={{ variant: 'h6' }}
                                 />
                                 <CardContent>
-                                    <Field name='username'>
+                                    <Field name='name'>
                                         {({ input, meta }) => (
                                             <Box>
                                                 <TextField

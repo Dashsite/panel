@@ -17,7 +17,7 @@ handler.post(
      *
      */
     async (req, res) => {
-        const { username, email, password } = req.body
+        const { name, email, password } = req.body
 
         try {
             // validate the data using the schema in src/lib/validations/user.js
@@ -27,7 +27,7 @@ handler.post(
             const passwordHash = await bcrypt.hash(password, 9)
             await prisma.user.create({
                 data: {
-                    username,
+                    name,
                     email,
                     password: passwordHash,
                     createdAt: new Date(),

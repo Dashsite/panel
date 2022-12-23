@@ -17,7 +17,7 @@ handler.get(
         const users = await prisma.user.findMany({
             select: {
                 id: true,
-                username: true,
+                name: true,
                 disabled: true,
                 email: true,
                 emailVerified: true,
@@ -39,7 +39,7 @@ handler.post(
      *
      */
     async (req, res) => {
-        const { username, email, password, role } = req.body
+        const { name, email, password, role } = req.body
 
         // validate email and name
         const { error } = registerSchema.validate({ ...req.body }, validationOptions)
@@ -54,7 +54,7 @@ handler.post(
 
             const user = await prisma.user.create({
                 data: {
-                    username,
+                    name,
                     email: email,
                     password: passwordHash,
                     role,
@@ -63,7 +63,7 @@ handler.post(
                 },
                 select: {
                     id: true,
-                    username: true,
+                    name: true,
                     disabled: true,
                     email: true,
                     emailVerified: true,

@@ -27,7 +27,7 @@ const UserOverviewTable = ({ users, addAction, deleteAction, disableAction, edit
         },
         {
             header: 'Username',
-            accessorKey: 'username',
+            accessorKey: 'name',
         },
         {
             header: 'Role',

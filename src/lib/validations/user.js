@@ -9,12 +9,12 @@ const email = Joi.string().email().messages({ 'string.email': 'Email is not vali
 const username = Joi.string().min(3).max(30).pattern(alphanumWithSpaces).label('Username')
 
 const userDataSchema = Joi.object({
-    username: username.required(),
+    name: username.required(),
     email: email.required(),
 })
 
 const userDataUpdateSchema = Joi.object({
-    username: username,
+    name: username,
     email: email,
     disabled: Joi.boolean().label('Disabled'),
 })
@@ -38,7 +38,7 @@ const passwordValidation = JoiPassword.string()
     })
 
 const registerSchema = Joi.object({
-    username: username.required(),
+    name: username.required(),
     email: email.required(),
     role: Joi.string().valid('user', 'admin').label('Role'),
     password: passwordValidation,

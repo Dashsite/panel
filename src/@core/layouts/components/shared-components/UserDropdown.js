@@ -90,7 +90,7 @@ const UserDropdown = () => {
                     badgeContent={<BadgeContentSpan />}
                 >
                     <Avatar
-                        alt={session.user.username}
+                        alt={session.user.name}
                         src={session.user.image}
                         onClick={handleDropdownOpen}
                         sx={{ cursor: 'pointer' }}
@@ -112,7 +112,7 @@ const UserDropdown = () => {
                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                             >
                                 <Avatar
-                                    alt={session.user.username}
+                                    alt={session.user.name}
                                     src={session.user.image}
                                     sx={{ width: '2.5rem', height: '2.5rem' }}
                                 />
@@ -125,7 +125,7 @@ const UserDropdown = () => {
                                     flexDirection: 'column',
                                 }}
                             >
-                                <Typography sx={{ fontWeight: 600 }}>{session.user.username}</Typography>
+                                <Typography sx={{ fontWeight: 600 }}>{session.user.name}</Typography>
                                 <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
                                     {session.user.role}
                                 </Typography>

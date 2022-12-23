@@ -22,7 +22,7 @@ handler.get(
                 },
                 select: {
                     id: true,
-                    username: true,
+                    name: true,
                     email: true,
                     emailVerified: true,
                     image: true,
@@ -47,10 +47,10 @@ handler.patch(
      * @returns {Promise<void>}
      */
     async (req, res) => {
-        const { username, email } = req.body
+        const { name, email } = req.body
 
-        //Validate Username and email
-        const { error } = userDataSchema.validate({ username, email }, validationOptions)
+        //Validate name and email
+        const { error } = userDataSchema.validate({ name, email }, validationOptions)
         if (error) return res.status(400).json({ error: validationFormatter(error) })
 
         try {
@@ -67,13 +67,13 @@ handler.patch(
                     id: req.session.user.id,
                 },
                 data: {
-                    username,
+                    name,
                     email: email,
                     emailVerified: user ? req.session.user.emailVerified : null,
                 },
                 select: {
                     id: true,
-                    username: true,
+                    name: true,
                     email: true,
                     emailVerified: true,
                     image: true,

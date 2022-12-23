@@ -42,7 +42,7 @@ export const nextAuthOptions = (request, response) => {
                     if (res === true) {
                         return {
                             id: user.id,
-                            username: user.username,
+                            name: user.name,
                             email: user.email,
                             image: user.image,
                             role: user.role,
@@ -63,7 +63,6 @@ export const nextAuthOptions = (request, response) => {
                 where: {
                     id: user.id,
                 },
-
                 // Add Custom User fields at user creation
                 data: {
                     createdAt: new Date(),
@@ -102,7 +101,7 @@ export const nextAuthOptions = (request, response) => {
         async session({ session, user }) {
             session.user.role = user.role
             session.user.id = user.id
-            session.user.username = user.username
+            session.user.name = user.name
             session.user.image = user.image
             session.user.emailVerified = user.emailVerified
             return session
