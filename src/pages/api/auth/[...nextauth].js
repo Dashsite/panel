@@ -154,6 +154,7 @@ export const nextAuthOptions = (request, response) => {
         session,
         pages,
         jwt,
+        debug: process.env.NODE_ENV === 'development',
     }
     return nextAuthOptions
 }

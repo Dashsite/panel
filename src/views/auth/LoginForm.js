@@ -42,7 +42,6 @@ const LoginForm = () => {
         const result = await signIn('credentials', {
             email,
             password,
-            callbackUrl: `${window.location.origin}/`,
             redirect: false,
         })
 
