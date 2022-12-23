@@ -4,10 +4,8 @@ import Table from 'mdi-material-ui/Table'
 import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
 import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
-import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
-import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
 /**
@@ -17,17 +15,12 @@ import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 const UserNavigation = role => {
     const userNavigation = [
         {
-            title: 'Dashboard',
+            title: 'Home',
             icon: HomeOutline,
             path: '/',
         },
         {
-            title: 'Account Settings',
-            icon: AccountCogOutline,
-            path: '/demo/account-settings',
-        },
-        {
-            sectionTitle: 'Pages',
+            sectionTitle: 'User',
         },
         {
             title: 'Login',
@@ -41,14 +34,24 @@ const UserNavigation = role => {
             path: '/auth/register',
             openInNewTab: false,
         },
+    ]
+
+    const adminNavigation = [
         {
-            title: 'Error',
-            icon: AlertCircleOutline,
-            path: '/error',
-            openInNewTab: false,
+            sectionTitle: 'Admin Area',
         },
         {
-            sectionTitle: 'User Interface',
+            title: 'Products',
+            icon: Table,
+            path: '/admin/products',
+        },
+        {
+            title: 'Users',
+            icon: Table,
+            path: '/admin/users',
+        },
+        {
+            sectionTitle: 'Demo',
         },
         {
             title: 'Typography',
@@ -74,22 +77,6 @@ const UserNavigation = role => {
             icon: CubeOutline,
             title: 'Form Layouts',
             path: '/demo/form-layouts',
-        },
-    ]
-
-    const adminNavigation = [
-        {
-            sectionTitle: 'Admin Area',
-        },
-        {
-            title: 'Products',
-            icon: Table,
-            path: '/admin/products',
-        },
-        {
-            title: 'Users',
-            icon: Table,
-            path: '/admin/users',
         },
     ]
 
