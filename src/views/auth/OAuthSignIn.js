@@ -14,7 +14,9 @@ const OAuthSignIn = ({ providers }) => {
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <IconButton
                     component='a'
-                    onClick={() => signIn(providers['google'].id, { callbackUrl: `${window.location.origin}/` })}
+                    onClick={() =>
+                        signIn(providers['google'].id, { callbackUrl: `${window.location.origin}/`, redirect: false })
+                    }
                 >
                     <Google sx={{ color: '#db4437' }} />
                 </IconButton>
