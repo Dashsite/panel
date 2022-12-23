@@ -94,6 +94,9 @@ const UserDropdown = () => {
                         src={session.user.image}
                         onClick={handleDropdownOpen}
                         sx={{ cursor: 'pointer' }}
+                        imgProps={{
+                            referrerPolicy: 'no-referrer',
+                        }}
                     />
                 </Badge>
                 <Menu

@@ -112,6 +112,7 @@ const TabAccount = () => {
                                                     <ImgStyled
                                                         src={imageSrc || session?.user?.image}
                                                         alt='Profile Pic'
+                                                        referrerPolicy='no-referrer'
                                                     />
                                                     <ButtonStyled component='label' variant='contained' htmlFor='image'>
                                                         Select New Avatar
