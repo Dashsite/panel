@@ -224,3 +224,8 @@ model pterodactyl_product_instance_filter {
   @@index([provider_instances_id], map: "provider_instances_pterodactyl_product_instance_filter")
   @@index([pterodactyl_product_id], map: "pterodactyl_product_pterodactyl_product_instance_filter")
 }
+
+model config {
+  id    String  @id @db.VarChar(255)
+  value String? @db.Text
+}
