@@ -21,6 +21,7 @@
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.5",
     "@keyv/mysql": "^1.5.1",
+    "@keyv/tiered": "^1.0.4",
     "@mui/icons-material": "^5.11.0",
     "@mui/lab": "5.0.0-alpha.113",
     "@mui/material": "^5.11.1",

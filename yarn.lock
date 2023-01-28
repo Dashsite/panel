@@ -978,6 +978,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@keyv/tiered@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "@keyv/tiered@npm:1.0.4"
+  checksum: d9234735b1c3f64d94381a2b27c47c07c9a1ac6a1c98192c82349ead54f3e26e7f8f8b4957c00f17c22699993ff20f758494af53ab4f371ca52b7e8fd14e233e
+  languageName: node
+  linkType: hard
+
 "@mapbox/node-pre-gyp@npm:^1.0.10":
   version: 1.0.10
   resolution: "@mapbox/node-pre-gyp@npm:1.0.10"
@@ -3003,6 +3010,7 @@ __metadata:
     "@emotion/server": ^11.10.0
     "@emotion/styled": ^11.10.5
     "@keyv/mysql": ^1.5.1
+    "@keyv/tiered": ^1.0.4
     "@mui/icons-material": ^5.11.0
     "@mui/lab": 5.0.0-alpha.113
     "@mui/material": ^5.11.1
