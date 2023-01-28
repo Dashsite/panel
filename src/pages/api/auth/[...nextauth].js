@@ -73,6 +73,7 @@ export const nextAuthOptions = (request, response) => {
         },
     }
     const callbacks = {
+        // Use own custom JWT encode/decode to use the credentials provider with a database session
         async signIn({ user, account }) {
             if (user.disabled) return false
 
@@ -88,9 +89,10 @@ export const nextAuthOptions = (request, response) => {
                 })
 
                 const cookies = new Cookies(request, response)
-                cookies.set('next-auth.session-token', sessionToken, {
+                cookies.set(`${cookiePrefix()}next-auth.session-token`, sessionToken, {
                     expires: sessionExpiry,
                     httpOnly: true,
+                    secure: cookiePrefix() === '__Secure-',
                     path: '/',
                     sameSite: 'lax',
                 })
@@ -124,7 +126,7 @@ export const nextAuthOptions = (request, response) => {
                 request.method === 'POST'
             ) {
                 const cookies = new Cookies(request, response)
-                const cookie = cookies.get('next-auth.session-token')
+                const cookie = cookies.get(`${cookiePrefix()}next-auth.session-token`)
 
                 if (cookie) return cookie
                 return ''
@@ -164,4 +166,10 @@ const fromDate = (time, date = Date.now()) => {
 
 export default async function auth(req, res) {
     return NextAuth(req, res, nextAuthOptions(req, res))
+}
+
+const cookiePrefix = () => {
+    const useSecureCookies = process.env.NEXTAUTH_URL.startsWith('https://')
+    const cookiePrefix = useSecureCookies ? '__Secure-' : ''
+    return cookiePrefix
 }
