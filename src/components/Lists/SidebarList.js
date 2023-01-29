@@ -37,20 +37,21 @@ const ListBox = styled(List)(({ theme }) => ({
     borderRadius: 10,
 }))
 
-const CategoryList = ({ categories, selectedCategory, selectCategory }) => {
+const SidebarList = ({ options, selectedOption, selectOption }) => {
     // create a vertical list of categories as links like a side menu using MUI
     return (
         <ListBox>
-            <List sx={{ width: '100%', mt: 1.5, px: '0 !important' }}>
-                {categories.map(category => (
+            <List>
+                {options.map(option => (
                     <MenuNavLink
                         component={Button}
-                        className={selectedCategory === category ? 'active' : ''}
-                        onClick={() => selectCategory(category)}
+                        className={selectedOption === option ? 'active' : ''}
+                        onClick={() => selectOption(option)}
                     >
                         <MenuItemText>
                             <Typography {...(themeConfig.menuTextTruncate && { noWrap: true })}>
-                                {category.charAt(0).toUpperCase() + category.slice(1)}
+                                {/* make first letter of each category uppercase */}
+                                {option.charAt(0).toUpperCase() + option.slice(1)}
                             </Typography>
                         </MenuItemText>
                     </MenuNavLink>
@@ -60,10 +61,10 @@ const CategoryList = ({ categories, selectedCategory, selectCategory }) => {
     )
 }
 
-export default CategoryList
+export default SidebarList
 
-CategoryList.propTypes = {
-    categories: PropTypes.arrayOf(
+SidebarList.propTypes = {
+    options: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string.isRequired,
             path: PropTypes.string.isRequired,
