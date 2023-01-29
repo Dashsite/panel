@@ -9,39 +9,71 @@ const seedApplicationConfig = async () => {
         data: [
             {
                 id: 'auth:GOOGLE_CLIENT_ID',
-                value: { value: '', expires: null },
+                value: JSON.stringify({
+                    value: {
+                        value: '',
+                        description: 'Your google oauth client id - https://google.com/',
+                        type: 'text',
+                    },
+                    expires: null,
+                }),
             },
             {
                 id: 'auth:GOOGLE_CLIENT_SECRET',
-                value: { value: '', expires: null },
+                value: JSON.stringify({
+                    value: {
+                        value: '',
+                        description: 'Your google oauth client secret - https://google.com/',
+                        type: 'text',
+                    },
+                    expires: null,
+                }),
             },
             {
                 id: 'auth:GITHUB_CLIENT_ID',
-                value: { value: '', expires: null },
+                value: JSON.stringify({
+                    value: {
+                        value: '',
+                        description: 'Your github oauth client id - https://github.com/',
+                        type: 'text',
+                    },
+                    expires: null,
+                }),
             },
             {
                 id: 'auth:GITHUB_CLIENT_SECRET',
-                value: { value: '', expires: null },
+                value: JSON.stringify({
+                    value: {
+                        value: '',
+                        description: 'Your github oauth client secret - https://github.com/',
+                        type: 'text',
+                    },
+                    expires: null,
+                }),
             },
+
             {
                 id: 'system:EMAIL_SERVER_HOST',
-                value: { value: '', expires: null },
+                value: JSON.stringify({
+                    value: { value: '', type: 'text' },
+                    expires: null,
+                }),
             },
             {
                 id: 'system:EMAIL_SERVER_PORT',
-                value: { value: '', expires: null },
+                value: JSON.stringify({ value: { value: '', type: 'number' }, expires: null }),
             },
             {
                 id: 'system:EMAIL_SERVER_USER',
-                value: { value: '', expires: null },
+                value: JSON.stringify({ value: { value: '', type: 'text' }, expires: null }),
             },
             {
                 id: 'system:EMAIL_SERVER_PASSWORD',
-                value: { value: '', expires: null },
+                value: JSON.stringify({ value: { value: '', type: 'text' }, expires: null }),
             },
             {
                 id: 'system:EMAIL_FROM',
-                value: { value: '', expires: null },
+                value: JSON.stringify({ value: { value: '', type: 'text' }, expires: null }),
             },
         ],
     })
