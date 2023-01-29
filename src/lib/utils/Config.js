@@ -27,7 +27,9 @@ const Config = {
 
 // apply error handler to all config connections
 Object.values(Config).forEach(connection => {
-    connection.on('error', err => Log.error(`Config connection error: ${err}`))
+    if (connection instanceof KeyvTiered) {
+        connection.on('error', err => Log.error(`Config connection error: ${err}`))
+    }
 })
 
 export default Config

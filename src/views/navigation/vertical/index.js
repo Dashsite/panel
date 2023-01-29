@@ -3,6 +3,7 @@ import Login from 'mdi-material-ui/Login'
 import Table from 'mdi-material-ui/Table'
 import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
+import CogOutline from 'mdi-material-ui/CogOutline'
 import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
 import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
@@ -39,6 +40,11 @@ const UserNavigation = role => {
     const adminNavigation = [
         {
             sectionTitle: 'Admin Area',
+        },
+        {
+            title: 'Settings',
+            icon: CogOutline,
+            path: '/admin/settings',
         },
         {
             title: 'Products',
