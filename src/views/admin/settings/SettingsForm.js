@@ -27,22 +27,22 @@ const SettingsForm = ({ options }) => {
                 <form onSubmit={handleSubmit}>
                     <Box sx={{ marginLeft: '5rem' }}>
                         <Grid container spacing={2} columns={12} width='100%'>
-                            {Object.entries(options).map(([key, value]) => (
-                                <Field name='key'>
+                            {Object.entries(options).map(([optionName, field]) => (
+                                <Field name={optionName} key={optionName}>
                                     {({ input, meta }) => (
                                         <>
                                             <GridItem item xs={4} className='center'>
-                                                <Typography>{value.label}</Typography>
+                                                <Typography>{field.label}</Typography>
                                             </GridItem>
                                             <GridItem item xs={1} className='center right'>
-                                                {value.description && (
-                                                    <Tooltip title={value.description}>
+                                                {field.description && (
+                                                    <Tooltip title={field.description}>
                                                         <InformationOutline />
                                                     </Tooltip>
                                                 )}
                                             </GridItem>
                                             <GridItem item xs={7}>
-                                                <SettingsEdit field={value} {...input} />
+                                                <SettingsEdit field={field} {...input} />
                                             </GridItem>
                                         </>
                                     )}

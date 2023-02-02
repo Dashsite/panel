@@ -2,10 +2,9 @@ import { useState } from 'react'
 import { Box, Switch, TextField } from '@mui/material'
 import { NumberEdit } from 'src/components/Edits/NumberEdit'
 
-const SettingsEdit = ({ field, ...props }) => {
-    const renderEdit = f => {
-        console.log(f)
-        if (f.type === 'text') {
+const SettingsEdit = ({ field, value, ...props }) => {
+    const renderEdit = () => {
+        if (field.type === 'text') {
             return (
                 <TextField
                     fullWidth
@@ -13,21 +12,23 @@ const SettingsEdit = ({ field, ...props }) => {
                     // do not show any label
                     label=''
                     placeholder='Enter value'
+                    value={value}
                     {...props}
                 />
             )
         }
 
-        if (f.type === 'boolean') {
-            return <Switch {...props} />
+        if (field.type === 'boolean') {
+            // manually call onChange to bypass the Switch's onChange
+            return <Switch checked={value} onChange={() => props.onChange({ target: { value: !value } })} />
         }
 
-        if (f.type === 'number') {
-            return <NumberEdit fullWidth formatNumber={false} {...props} />
+        if (field.type === 'number') {
+            return <NumberEdit value={value} formatNumber={false} onChange={props.onChange} />
         }
     }
 
-    return <Box>{renderEdit(field)}</Box>
+    return <Box>{renderEdit()}</Box>
 }
 
 export default SettingsEdit
