@@ -24,7 +24,15 @@ const SettingsEdit = ({ field, value, ...props }) => {
         }
 
         if (field.type === 'number') {
-            return <NumberEdit value={value} formatNumber={false} onChange={props.onChange} />
+            return (
+                <NumberEdit
+                    value={value}
+                    placeholder='Enter value'
+                    formatNumber={false}
+                    onChange={props.onChange}
+                    fullWidth={true}
+                />
+            )
         }
     }
 

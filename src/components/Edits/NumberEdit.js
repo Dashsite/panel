@@ -50,6 +50,7 @@ export const NumberEdit = ({
     formatNumber = true,
     allowDecimal = true,
     allowNegative = true,
+    fullWidth = false,
     variant = 'contained',
     ...props
 }) => {
@@ -65,6 +66,7 @@ export const NumberEdit = ({
                 const newValue = event.target.value ? Number(event.target.value) : null
                 onChange(field)(newValue)
             }}
+            fullWidth={fullWidth}
             disabled={disabled}
             InputLabelProps={{
                 sx: { pr: adorner ? '60px' : '0px' },
