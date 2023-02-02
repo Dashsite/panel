@@ -47,6 +47,7 @@ const SidebarList = ({ options, selectedOption, selectOption }) => {
                         component={Button}
                         className={selectedOption === option ? 'active' : ''}
                         onClick={() => selectOption(option)}
+                        key={option}
                     >
                         <MenuItemText>
                             <Typography {...(themeConfig.menuTextTruncate && { noWrap: true })}>
@@ -64,10 +65,5 @@ const SidebarList = ({ options, selectedOption, selectOption }) => {
 export default SidebarList
 
 SidebarList.propTypes = {
-    options: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            path: PropTypes.string.isRequired,
-        })
-    ).isRequired,
+    options: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
