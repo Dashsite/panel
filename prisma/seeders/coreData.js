@@ -13,8 +13,8 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Google Client ID',
                         value: '',
-                        description: 'Your google oauth client id - https://google.com/',
                         type: 'text',
+                        description: 'Your google oauth client id - https://google.com/',
                     },
                     expires: null,
                 }),
@@ -25,8 +25,8 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Google Client Secret',
                         value: '',
-                        description: 'Your google oauth client secret - https://google.com/',
                         type: 'text',
+                        description: 'Your google oauth client secret - https://google.com/',
                     },
                     expires: null,
                 }),
@@ -37,8 +37,8 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Github Client ID',
                         value: '',
-                        description: 'Your github oauth client id - https://github.com/',
                         type: 'text',
+                        description: 'Your github oauth client id - https://github.com/',
                     },
                     expires: null,
                 }),
@@ -49,8 +49,8 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Github Client Secret',
                         value: '',
-                        description: 'Your github oauth client secret - https://github.com/',
                         type: 'text',
+                        description: 'Your github oauth client secret - https://github.com/',
                     },
                     expires: null,
                 }),
@@ -72,7 +72,7 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'SMTP Port',
-                        value: '',
+                        value: null,
                         type: 'number',
                     },
                     expires: null,
@@ -107,6 +107,7 @@ const seedApplicationConfig = async () => {
                         label: 'Email From Adress',
                         value: '',
                         type: 'text',
+                        description: 'The email adress that will be used as sender',
                     },
                     expires: null,
                 }),

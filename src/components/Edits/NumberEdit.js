@@ -24,6 +24,8 @@ const NumberFormatCustom = forwardRef(
                 decimalSeparator={formatNumber ? ',' : undefined}
                 allowNegative={allowNegative}
                 valueIsNumericString
+                // limit the number to max integer
+                isAllowed={({ floatValue }) => floatValue <= maxValue}
             />
         )
     }
@@ -51,6 +53,7 @@ export const NumberEdit = ({
     allowDecimal = true,
     allowNegative = true,
     fullWidth = false,
+    maxLength = 10,
     variant = 'contained',
     ...props
 }) => {
@@ -64,7 +67,7 @@ export const NumberEdit = ({
             autoFocus={autoFocus}
             onChange={event => {
                 const newValue = event.target.value ? Number(event.target.value) : null
-                onChange(field)(newValue)
+                onChange(newValue)
             }}
             fullWidth={fullWidth}
             disabled={disabled}
@@ -72,7 +75,6 @@ export const NumberEdit = ({
                 sx: { pr: adorner ? '60px' : '0px' },
             }}
             InputProps={{
-                // TODO Braucht n Review
                 inputComponent: NumberFormatCustom,
                 endAdornment: adorner && (
                     <InputAdornment position='end' style={{ padding: 0 }}>
@@ -83,7 +85,8 @@ export const NumberEdit = ({
                     formatNumber,
                     allowDecimal,
                     allowNegative,
-                    style: { textAlign: 'right' },
+                    style: { textAlign: 'left' },
+                    maxLength,
                     ...props,
                 },
             }}
