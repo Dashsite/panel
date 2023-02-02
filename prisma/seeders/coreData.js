@@ -112,6 +112,43 @@ const seedApplicationConfig = async () => {
                     expires: null,
                 }),
             },
+            {
+                id: 'pterodactyl:API_URL',
+                value: JSON.stringify({
+                    value: {
+                        label: 'Pterodactyl API URL',
+                        value: '',
+                        type: 'text',
+                        description: 'The URL to your pterodactyl panel API',
+                    },
+                    expires: null,
+                }),
+            },
+            {
+                id: 'pterodactyl:APP_API_KEY',
+                value: JSON.stringify({
+                    value: {
+                        label: 'Pterodactyl application API Key',
+                        value: '',
+                        type: 'text',
+                        description: 'The application API key for your pterodactyl application',
+                    },
+                    expires: null,
+                }),
+            },
+            {
+                id: 'pterodactyl:ADMIN_API_KEY',
+                value: JSON.stringify({
+                    value: {
+                        label: 'Pterodactyl admin API Key',
+                        value: '',
+                        type: 'text',
+                        description:
+                            'The admin API key for your pterodactyl application - create a user api key with admin permissions',
+                    },
+                    expires: null,
+                }),
+            },
         ],
     })
 }

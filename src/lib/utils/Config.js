@@ -2,18 +2,17 @@ import Keyv from 'keyv'
 import KeyvTiered from '@keyv/tiered'
 import Log from './Logger'
 
-const system = () =>
+export const remoteInstance = namepspace =>
     new Keyv(process.env.DATABASE_URL, {
-        namespace: 'system',
+        namespace: namepspace,
         table: 'config',
     })
 
-const auth = () =>
-    new Keyv(process.env.DATABASE_URL, {
-        namespace: 'auth',
-        table: 'config',
-    })
+const system = () => remoteInstance('system')
+const auth = () => remoteInstance('auth')
+const pterodactyl = () => remoteInstance('pterodactyl')
 
+// TODO -> make it generic!
 const Config = {
     system: new KeyvTiered({
         remote: system(),
@@ -21,6 +20,10 @@ const Config = {
     }),
     auth: new KeyvTiered({
         remote: auth(),
+        local: new Keyv(),
+    }),
+    pterodactyl: new KeyvTiered({
+        remote: pterodactyl(),
         local: new Keyv(),
     }),
 }
