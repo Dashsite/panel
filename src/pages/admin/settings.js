@@ -8,9 +8,8 @@ import SettingsForm from 'src/views/admin/settings/SettingsForm'
 import themeConfig from 'src/configs/themeConfig'
 
 const SettingsOverview = ({ config }) => {
-    const [selectedCategory, setSelectedCategory] = useState('system')
-
     const categories = Object.keys(config)
+    const [selectedCategory, setSelectedCategory] = useState(categories[0])
 
     return (
         <Box>
@@ -43,6 +42,9 @@ export async function getServerSideProps() {
             config[provider][key] = value
         }
     }
+
+    // sort the providers alphabetically
+    config = Object.fromEntries(Object.entries(config).sort(([a], [b]) => a.localeCompare(b)))
 
     return {
         props: {
