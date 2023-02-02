@@ -19,10 +19,16 @@ const GridItem = styled(Grid)(({ theme }) => ({
 }))
 
 const SettingsForm = ({ options }) => {
+    // convert options to an array of {optionName, value} -> do not include label, descpription, type
+    const formOptions = Object.entries(options).reduce((acc, [key, { value }]) => {
+        acc[key] = value
+        return acc
+    }, {})
+
     return (
         <Form
             onSubmit={() => {}}
-            initialValues={options}
+            initialValues={formOptions}
             render={({ handleSubmit, submitting, submitErrors }) => (
                 <form onSubmit={handleSubmit}>
                     <Box sx={{ marginLeft: '5rem' }}>
