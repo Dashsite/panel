@@ -4,7 +4,7 @@ import { NumberEdit } from 'src/components/Edits/NumberEdit'
 
 const SettingsEdit = ({ field, value, ...props }) => {
     const renderEdit = () => {
-        if (field.type === 'text') {
+        if (field.type === 'string') {
             return (
                 <TextField
                     fullWidth

@@ -3,7 +3,7 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 const seedApplicationConfig = async () => {
-    console.log('Seeding application config ...')
+    console.log('Seeding settings ...')
     await prisma.config.createMany({
         skipDuplicates: true,
         data: [
@@ -13,8 +13,9 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Google Client ID',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                         description: 'Your google oauth client id - https://google.com/',
+                        validation: 'min:1,max:5',
                     },
                     expires: null,
                 }),
@@ -25,8 +26,10 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Google Client Secret',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                         description: 'Your google oauth client secret - https://google.com/',
+                        encrypted: true,
+                        validation: '',
                     },
                     expires: null,
                 }),
@@ -37,8 +40,9 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Github Client ID',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                         description: 'Your github oauth client id - https://github.com/',
+                        validation: '',
                     },
                     expires: null,
                 }),
@@ -49,8 +53,10 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Github Client Secret',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                         description: 'Your github oauth client secret - https://github.com/',
+                        encrypted: true,
+                        validation: '',
                     },
                     expires: null,
                 }),
@@ -62,7 +68,7 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'SMTP Host Adress',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                     },
                     expires: null,
                 }),
@@ -84,7 +90,7 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'SMTP User',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                     },
                     expires: null,
                 }),
@@ -95,7 +101,7 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'SMTP Password',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                     },
                     expires: null,
                 }),
@@ -106,7 +112,7 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Email From Adress',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                         description: 'The email adress that will be used as sender',
                     },
                     expires: null,
@@ -118,8 +124,9 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Pterodactyl API URL',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                         description: 'The URL to your pterodactyl panel API',
+                        validation: 'uri',
                     },
                     expires: null,
                 }),
@@ -130,8 +137,9 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Pterodactyl application API Key',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                         description: 'The application API key for your pterodactyl application',
+                        encrypted: true,
                     },
                     expires: null,
                 }),
@@ -142,9 +150,10 @@ const seedApplicationConfig = async () => {
                     value: {
                         label: 'Pterodactyl admin API Key',
                         value: '',
-                        type: 'text',
+                        type: 'string',
                         description:
                             'The admin API key for your pterodactyl application - create a user api key with admin permissions',
+                        encrypted: true,
                     },
                     expires: null,
                 }),
