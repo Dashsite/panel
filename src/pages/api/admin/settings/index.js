@@ -1,9 +1,6 @@
-import prisma from 'src/lib/utils/PrismaClient'
 import nextConnect from 'src/middleware'
 import Log from 'src/lib/utils/Logger'
 import Config from 'src/lib/utils/Config'
-
-import { validationFormatter, validationOptions } from 'src/lib/validations'
 
 const handler = nextConnect()
 
@@ -46,20 +43,22 @@ handler.patch(
      * @returns {Promise<void>}
      */
     async (req, res) => {
-        const { provider, options } = req.body
+        const { provider, ...options } = req.body
+        if (!provider || !options) return res.status(400).json({ message: 'Missing provider or options' })
 
-        // TODO Validate
+        // validate the options
         let validationErrors = {}
         for (const [key, value] of Object.entries(options)) {
             const error = await Config[provider].validate(key, value)
             if (error) validationErrors = { ...validationErrors, error }
         }
-        if (validationErrors) return res.status(400).json(validationErrors)
+        // return 400 if there are validation errors
+        if (Object.keys(validationErrors).length > 0) return res.status(400).json(validationErrors)
 
         // set the config
         try {
             for (const [key, value] of Object.entries(options)) {
-                await Config[provider].setValue(key, value)
+                console.log(await Config[provider].setValue(key, value))
             }
 
             return res.status(200).json({ message: 'Config updated' })
@@ -69,3 +68,5 @@ handler.patch(
         }
     }
 )
+
+export default handler

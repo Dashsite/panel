@@ -61,15 +61,17 @@ Object.values(Config).forEach(connection => {
             const valueObject = await connection.get(key)
             const { type, description, encrypted, ...rest } = valueObject
 
-            const error = this.validate(key, newValue)
-            if (error) return error
+            const error = connection.validate(key, newValue)
+
+            if (Object.keys(error).length > 0) return error
 
             if (encrypted) {
                 // encrypt the value
             }
 
-            // update the value
-            return await connection.set(key, { ...rest, value: newValue })
+            const res = await connection.set(key, { ...valueObject, value: newValue })
+
+            return res
         }
 
         /**
