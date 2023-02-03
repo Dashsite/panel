@@ -8,25 +8,17 @@ export const remoteInstance = namepspace =>
         table: 'config',
     })
 
-const system = () => remoteInstance('system')
-const auth = () => remoteInstance('auth')
-const pterodactyl = () => remoteInstance('pterodactyl')
+const namespaceList = ['system', 'auth', 'pterodactyl']
 
-// TODO -> make it generic!
-const Config = {
-    system: new KeyvTiered({
-        remote: system(),
+// Create a new config connection for each namespace
+// Use a tiered connection to allow for local caching
+const Config = namespaceList.reduce((acc, namespace) => {
+    acc[namespace] = new KeyvTiered({
         local: new Keyv(),
-    }),
-    auth: new KeyvTiered({
-        remote: auth(),
-        local: new Keyv(),
-    }),
-    pterodactyl: new KeyvTiered({
-        remote: pterodactyl(),
-        local: new Keyv(),
-    }),
-}
+        remote: remoteInstance(namespace),
+    })
+    return acc
+}, {})
 
 // apply error handler to all config connections
 Object.values(Config).forEach(connection => {
