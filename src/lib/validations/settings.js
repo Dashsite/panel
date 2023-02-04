@@ -16,7 +16,7 @@ const validateWithJoi = (newValue, valueObject) => {
     // validate the value
     const { error } = schema.validate({ [key]: newValue }, validationOptions)
 
-    return error || null
+    return error
 }
 
 const createValidationRule = (rules, type) => {

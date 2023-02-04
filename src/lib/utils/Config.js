@@ -30,7 +30,7 @@ Object.values(Config).forEach(connection => {
          * @description Validate a new value for a key using the validation rules
          * @param {string} key
          * @param {any} newValue
-         * @returns {null | object}
+         * @returns {object | undefined}
          * @example
          * Error object:
          * {
