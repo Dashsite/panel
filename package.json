@@ -38,6 +38,7 @@
     "clsx": "^1.2.1",
     "cookies": "^0.8.0",
     "core-js": "^3.27.2",
+    "crypto-js": "^4.1.1",
     "final-form": "^4.20.9",
     "formidable": "^2.1.1",
     "formidable-serverless": "^1.1.1",

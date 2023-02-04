@@ -1,6 +1,7 @@
 import Keyv from 'keyv'
 import KeyvTiered from '@keyv/tiered'
 import Log from './Logger'
+import CryptoJS from 'crypto-js'
 import { validateWithJoi } from '../validations/settings'
 
 export const remoteInstance = namepspace =>
@@ -64,11 +65,7 @@ Object.values(Config).forEach(connection => {
 
             if (Object.keys(error).length > 0) return error
 
-            if (encrypted) {
-                // encrypt the value
-            }
-
-            const res = await connection.set(key, { ...valueObject, value: newValue })
+            const res = await connection.set(key, { ...valueObject, value: encrypted ? encrypt(newValue) : newValue })
 
             return res
         }
@@ -82,11 +79,7 @@ Object.values(Config).forEach(connection => {
             const valueObject = await connection.get(key)
             const { value, encrypted, ...rest } = valueObject
 
-            if (encrypted) {
-                // decrypt the value
-            }
-
-            return value
+            return encrypted ? decrypt(value) : value
         }
 
         /**
@@ -109,5 +102,24 @@ Object.values(Config).forEach(connection => {
         connection.on('error', err => Log.error(`Config connection error: ${err}`))
     }
 })
+
+// encrypt a value using NEXTAUTH_SECRET env variable as the key
+const encrypt = value => {
+    const ciphertext = CryptoJS.AES.encrypt(value, process.env.NEXTAUTH_SECRET).toString()
+    return ciphertext
+}
+
+// decrypt a value using NEXTAUTH_SECRET env variable as the key
+const decrypt = value => {
+    const bytes = CryptoJS.AES.decrypt(value, process.env.NEXTAUTH_SECRET)
+    const plaintext = bytes.toString(CryptoJS.enc.Utf8)
+
+    // parse the value as a primitive type
+    try {
+        return JSON.parse(plaintext)
+    } catch (err) {
+        return plaintext
+    }
+}
 
 export default Config
