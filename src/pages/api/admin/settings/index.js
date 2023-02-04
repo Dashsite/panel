@@ -1,6 +1,7 @@
 import nextConnect from 'src/middleware'
 import Log from 'src/lib/utils/Logger'
 import Config from 'src/lib/utils/Config'
+import { validationFormatter } from 'src/lib/validations'
 
 const handler = nextConnect()
 
@@ -50,15 +51,19 @@ handler.patch(
         let validationErrors = {}
         for (const [key, value] of Object.entries(options)) {
             const error = await Config[provider].validate(key, value)
-            if (error) validationErrors = { ...validationErrors, error }
+            if (!error) continue
+
+            // if there are multiple errors, add them to the validationErrors object
+            validationErrors.details ? validationErrors.details.push(...error.details) : (validationErrors = error)
         }
         // return 400 if there are validation errors
-        if (Object.keys(validationErrors).length > 0) return res.status(400).json(validationErrors)
+        if (Object.keys(validationErrors).length > 0)
+            return res.status(400).json({ error: validationFormatter(validationErrors) })
 
         // set the config
         try {
             for (const [key, value] of Object.entries(options)) {
-                console.log(await Config[provider].setValue(key, value))
+                await Config[provider].setValue(key, value)
             }
 
             return res.status(200).json({ message: 'Config updated' })

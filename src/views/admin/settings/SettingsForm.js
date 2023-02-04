@@ -23,8 +23,6 @@ const GridItem = styled(Grid)(({ theme }) => ({
 const SettingsForm = ({ options, category }) => {
     const [openAlert, setOpenAlert] = useState(false)
 
-    console.log(category)
-
     if (!options) return null
     // convert options to an array of {optionName, value} -> do not include label, descpription, type
     const formOptions = Object.entries(options).reduce((acc, [key, { value }]) => {
@@ -43,8 +41,10 @@ const SettingsForm = ({ options, category }) => {
             body: JSON.stringify(values),
         })
         if (!res.ok) {
-            console.log(res)
-            return await res.json()
+            const json = await res.json()
+            console.log(json.error)
+
+            return json.error
         }
         setOpenAlert(true)
     }
@@ -93,11 +93,6 @@ const SettingsForm = ({ options, category }) => {
                                     Save
                                 </Button>
                             </Box>
-                            {submitErrors && (
-                                <Box sx={{ marginTop: 12 }}>
-                                    <Typography color='error'>{submitErrors}</Typography>
-                                </Box>
-                            )}
                         </Box>
                     </form>
                 </>

@@ -45,7 +45,7 @@ Object.values(Config).forEach(connection => {
             const { type, description, encrypted, validation, ...rest } = valueObject
 
             // validate using joi
-            return validateWithJoi(newValue, type, validation)
+            return validateWithJoi(key, newValue, type, validation)
         }
 
         // create a new setValue method that sets the value in the tiered provider
