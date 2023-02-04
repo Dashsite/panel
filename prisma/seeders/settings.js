@@ -12,9 +12,10 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'Google Client ID',
-                        value: '',
+                        value: null,
                         type: 'string',
                         description: 'Your google oauth client id - https://google.com/',
+                        encrypted: true,
                     },
                     expires: null,
                 }),
@@ -24,7 +25,7 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'Google Client Secret',
-                        value: '',
+                        value: null,
                         type: 'string',
                         description: 'Your google oauth client secret - https://google.com/',
                         encrypted: true,
@@ -37,9 +38,10 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'Github Client ID',
-                        value: '',
+                        value: null,
                         type: 'string',
                         description: 'Your github oauth client id - https://github.com/',
+                        encrypted: true,
                     },
                     expires: null,
                 }),
@@ -49,7 +51,7 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'Github Client Secret',
-                        value: '',
+                        value: null,
                         type: 'string',
                         description: 'Your github oauth client secret - https://github.com/',
                         encrypted: true,
@@ -63,7 +65,7 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'SMTP Host Address',
-                        value: '',
+                        value: null,
                         type: 'string',
                     },
                     expires: null,
@@ -85,7 +87,7 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'SMTP User',
-                        value: '',
+                        value: null,
                         type: 'string',
                     },
                     expires: null,
@@ -96,7 +98,7 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'SMTP Password',
-                        value: '',
+                        value: null,
                         type: 'string',
                     },
                     expires: null,
@@ -107,7 +109,7 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'Email From Adress',
-                        value: '',
+                        value: null,
                         type: 'string',
                         description: 'The email adress that will be used as sender',
                     },
@@ -132,7 +134,7 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'Pterodactyl application API Key',
-                        value: '',
+                        value: null,
                         type: 'string',
                         description: 'The application API key for your pterodactyl application',
                         encrypted: true,
@@ -145,7 +147,7 @@ const seedApplicationConfig = async () => {
                 value: JSON.stringify({
                     value: {
                         label: 'Pterodactyl admin API Key',
-                        value: '',
+                        value: null,
                         type: 'string',
                         description:
                             'The admin API key for your pterodactyl application - create a user api key with admin permissions',
