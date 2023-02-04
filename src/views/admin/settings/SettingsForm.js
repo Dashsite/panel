@@ -42,7 +42,6 @@ const SettingsForm = ({ options, category }) => {
         })
         if (!res.ok) {
             const json = await res.json()
-            console.log(json.error)
 
             return json.error
         }
@@ -58,8 +57,8 @@ const SettingsForm = ({ options, category }) => {
                     <FormNotifications
                         errors={submitErrors}
                         showLoadinger={submitting}
-                        open={openAlert && !dirtySinceLastSubmit}
-                        successTitle='Settings saved'
+                        showSuccess={openAlert && !dirtySinceLastSubmit}
+                        successMessage='Settings saved'
                         sx={{ flex: 1, marginLeft: 8 }}
                     />
                     <form onSubmit={handleSubmit}>
