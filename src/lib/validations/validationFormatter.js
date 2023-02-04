@@ -10,4 +10,4 @@
  *  "password": "Password must be at least 6 characters long."
  * }
  */
-export default error => error.details.map(e => ({ [e.context.label]: e.message }))
+export default error => error.details.map(e => ({ [e.context?.key]: e.message }))

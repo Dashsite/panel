@@ -1,10 +1,10 @@
 import Joi from 'Joi'
-import { validationFormatter, validationOptions } from 'src/lib/validations'
+import { validationOptions } from 'src/lib/validations'
 
 // create a function that validates a value using a comma separated list of validation rules
 // like 'required,max:255,min:3'
-const validateWithJoi = (newValue, valueObject) => {
-    const { key, type, label, validation } = valueObject
+const validateWithJoi = (newValue, valueObject, key) => {
+    const { type, label, validation } = valueObject
 
     if (!validation) return null
 
