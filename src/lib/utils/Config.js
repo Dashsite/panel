@@ -42,10 +42,9 @@ Object.values(Config).forEach(connection => {
          */
         connection.validate = async (key, newValue) => {
             const valueObject = await connection.get(key)
-            const { type, description, encrypted, validation, ...rest } = valueObject
 
             // validate using joi
-            return validateWithJoi(key, newValue, type, validation)
+            return validateWithJoi(newValue, valueObject)
         }
 
         // create a new setValue method that sets the value in the tiered provider

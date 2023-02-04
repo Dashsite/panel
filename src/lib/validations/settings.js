@@ -3,16 +3,18 @@ import { validationFormatter, validationOptions } from 'src/lib/validations'
 
 // create a function that validates a value using a comma separated list of validation rules
 // like 'required,max:255,min:3'
-const validateWithJoi = (key, value, type, validationRules) => {
-    if (!validationRules) return null
+const validateWithJoi = (newValue, valueObject) => {
+    const { key, type, label, validation } = valueObject
+
+    if (!validation) return null
 
     // create a schema to validate the value
     const schema = Joi.object({
-        [key]: createValidationRule(validationRules, type),
+        [key]: createValidationRule(validation, type).label(label),
     })
 
     // validate the value
-    const { error, ...results } = schema.validate({ [key]: value }, validationOptions)
+    const { error } = schema.validate({ [key]: newValue }, validationOptions)
 
     return error || null
 }
