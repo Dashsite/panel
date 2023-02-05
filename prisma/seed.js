@@ -8,11 +8,14 @@ const main = async () => {
     console.log('Start seeding ...')
 
     // Run every seeder inside the prisma/seeders
-
-    const files = fs.readdirSync(path.join(__dirname, 'seeders'))
+    // remove directories from the list of files
+    const files = fs
+        .readdirSync(path.join(__dirname, 'seeders'))
+        .filter(file => file.endsWith('.js') && !fs.lstatSync(path.join(__dirname, 'seeders', file)).isDirectory())
 
     for await (const file of files) {
         const seeder = require(`./seeders/${file}`)
+        console.log('----------------------------------')
         console.log(`Running seeder ${file} ...`)
         await seeder()
     }

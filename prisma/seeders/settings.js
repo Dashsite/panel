@@ -6,12 +6,8 @@ const prisma = new PrismaClient()
 const seedApplicationConfig = async () => {
     console.log('Seeding settings ...')
 
-    // flatten the settings object into an array of objects
-    // each namespace key has an array of objects
-    // all of these objects need to be flattened into a single array
+    // flatten the settings object into an array of settingsoptions
     const configOptions = Object.values(settings()).flat()
-
-    console.log(configOptions)
 
     await prisma.config.createMany({
         skipDuplicates: true,
