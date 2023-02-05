@@ -3051,6 +3051,7 @@ __metadata:
     react-popper: ^2.3.0
     react-redux: ^8.0.5
     redux: ^4.2.0
+    require-all: ^3.0.0
     swagger-jsdoc: ^6.2.7
     swagger-ui-react: ^4.15.5
     uuidv4: ^6.2.13
@@ -7330,6 +7331,13 @@ prisma@latest:
   version: 3.1.0
   resolution: "replace-string@npm:3.1.0"
   checksum: 39eebbb8ec24220bdd44677708989895ccf0628388e283232a78fb2ef72097084dd603ce354e5105a819c517f01e040539419275f0deecfc6be9e9d398969f71
+  languageName: node
+  linkType: hard
+
+"require-all@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "require-all@npm:3.0.0"
+  checksum: f2d652d6bca4201bda1ff2f7d4f46a3edd136cc6fd81d38caff50eaa4669ae7ae459f32a06b0892e754bf0f7aae21fbe69172409dff1abd78be5c12cab750a01
   languageName: node
   linkType: hard
 
