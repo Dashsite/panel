@@ -79,6 +79,8 @@ Object.values(Config).forEach(connection => {
             const valueObject = await connection.get(key)
             const { value, encrypted, ...rest } = valueObject
 
+            if (value === null) return null
+
             return encrypted ? decrypt(value) : value
         }
 
@@ -92,7 +94,7 @@ Object.values(Config).forEach(connection => {
             const { value, ...rest } = valueObject
 
             if (encrypted) {
-                // decrypt the value
+                return { ...rest, value: decrypt(value) }
             }
 
             return rest
@@ -114,7 +116,7 @@ const decrypt = value => {
     const bytes = CryptoJS.AES.decrypt(value, process.env.NEXTAUTH_SECRET)
     const plaintext = bytes.toString(CryptoJS.enc.Utf8)
 
-    // parse the value as a primitive type
+    // parse the value as a JSON valid value
     try {
         return JSON.parse(plaintext)
     } catch (err) {
