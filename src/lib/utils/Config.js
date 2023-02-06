@@ -10,7 +10,7 @@ export const remoteInstance = namepspace =>
         table: 'config',
     })
 
-const namespaceList = ['system', 'auth', 'pterodactyl']
+const namespaceList = ['system', 'auth', 'pterodactyl', 'legal']
 
 // Create a new config connection for each namespace
 // Use a tiered connection to allow for local caching

@@ -32,16 +32,11 @@ const settings = () => {
     //    expires: null,
     // }
     const prismaConfig = Object.entries(settingsObject).reduce((acc, [namespace, settings]) => {
-        acc[namespace] = settings.map(({ key, value, type, description, encrypted, label, validation }) => ({
+        acc[namespace] = settings.map(({ key, ...value }) => ({
             id: `${namespace}:${key}`,
             value: JSON.stringify({
                 value: {
-                    label: label,
-                    value: value,
-                    type: type,
-                    encrypted: encrypted,
-                    validation: validation,
-                    description: description,
+                    ...value,
                 },
                 expires: null,
             }),
