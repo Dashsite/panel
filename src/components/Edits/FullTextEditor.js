@@ -11,13 +11,21 @@ const FullTextEditor = ({ data, onChange }) => {
 
     useEffect(() => {
         if (data) {
-            console.log('data', data)
             const contentState = htmlToDraft(data)
-            console.log('contentState', contentState)
             const state = EditorState.createWithContent(ContentState.createFromBlockArray(contentState.contentBlocks))
             setEditorState(state)
         }
     }, [])
+
+    // if component gets unmounted and mounted again (e.g. when navigating to another tab and back) the editorState is lost
+    // so we need to set it again, but dont do it when component is mounted because the cursor will jump to the end
+    useEffect(() => {
+        if (data !== draftToHtml(convertToRaw(editorState.getCurrentContent()))) {
+            const contentState = htmlToDraft(data)
+            const state = EditorState.createWithContent(ContentState.createFromBlockArray(contentState.contentBlocks))
+            setEditorState(state)
+        }
+    }, [data])
 
     const handleChange = newEditorState => {
         setEditorState(newEditorState)
