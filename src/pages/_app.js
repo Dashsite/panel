@@ -7,7 +7,7 @@ import UserLayout from 'src/layouts/UserLayout'
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 import Providers from 'src/lib/utils/Providers'
 import 'react-perfect-scrollbar/dist/css/styles.css'
-import '../../styles/globals.css'
+import '../../styles/globals.scss'
 
 const clientSideEmotionCache = createEmotionCache()
 
