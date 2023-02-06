@@ -8,7 +8,7 @@ const SettingsEdit = ({ field, value, ...props }) => {
     const renderEdit = () => {
         if (field.isHtml) {
             return (
-                <Box sx={{ width: '100%', border: '1px solid #ccc', borderRadius: 1, padding: 5 }}>
+                <Box sx={{ width: '100%' }}>
                     {FullTextEditor && <FullTextEditor data={value} onChange={props.onChange} />}
                 </Box>
             )

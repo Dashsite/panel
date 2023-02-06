@@ -70,7 +70,7 @@ const FullTextEditor = ({ data, onChange }) => {
                     options: ['link', 'unlink'],
                 },
                 history: {
-                    inDropdown: true,
+                    inDropdown: false,
                     options: ['undo', 'redo'],
                 },
             }}

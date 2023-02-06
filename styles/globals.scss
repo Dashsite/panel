@@ -23,24 +23,30 @@ code[class*='language-'] {
     padding: 0;
 }
 
-.rdw-editor-toolbar {
-    padding: 6px 5px 0;
-    border-radius: 1px !important;
-    border: 1px solid #f1f1f1;
-    display: flex;
-    justify-content: flex-start;
+.rdw-editor-wrapper {
+    border: 1px solid #534d67 !important;
+    border-radius: 6px !important;
     background: #29223d !important;
-    flex-wrap: wrap;
-    font-size: 15px;
-    margin-bottom: 5px;
-    /* color children to have a background color that is not white and make the text color white */
+    padding: 10px !important;
+}
 
+.rdw-editor-toolbar {
+    border-radius: 8px !important;
+    border: none !important;
+    background: #29223d !important;
     img {
-        filter: invert(1);
+        filter: invert(1) !important;
     }
     span {
         color: #ffffff !important;
     }
+}
+
+.rdw-editor-main {
+    border: 1px solid #534d67 !important;
+    border-radius: 6px !important;
+    background: #29223d !important;
+    padding: 5px !important;
 }
 
 .rdw-dropdown-wrapper {
@@ -111,6 +117,14 @@ code[class*='language-'] {
     // remove hover effect
     &:hover {
         background: #8536df !important;
+        border: none !important;
+        border-radius: 3px !important;
+        box-shadow: none !important;
+    }
+
+    // style when element has class rdw-option-active
+    &.rdw-option-active {
+        background: #8536dfcb !important;
         border: none !important;
         border-radius: 3px !important;
         box-shadow: none !important;
