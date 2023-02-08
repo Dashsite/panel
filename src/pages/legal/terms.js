@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import Config from 'src/lib/utils/Config'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
+import LogoHeader from 'src/components/LogoHeader'
 
 const TOS = ({ content }) => {
     return (
