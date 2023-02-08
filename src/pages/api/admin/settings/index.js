@@ -26,6 +26,10 @@ handler.get(
                 }
             }
 
+            // revalidate the legal pages -> on settings save
+            await res.revalidate('/legal/terms')
+            await res.revalidate('/legal/privacy')
+
             // sort the providers alphabetically
             config = Object.fromEntries(Object.entries(config).sort(([a], [b]) => a.localeCompare(b)))
 
