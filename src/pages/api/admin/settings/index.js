@@ -26,10 +26,6 @@ handler.get(
                 }
             }
 
-            // revalidate the legal pages -> on settings save
-            await res.revalidate('/legal/terms')
-            await res.revalidate('/legal/privacy')
-
             // sort the providers alphabetically
             config = Object.fromEntries(Object.entries(config).sort(([a], [b]) => a.localeCompare(b)))
 
@@ -69,6 +65,8 @@ handler.patch(
             for (const [key, value] of Object.entries(options)) {
                 await Config[provider].setValue(key, value)
             }
+
+            fetch(`${process.env.APP_URL}/admin/revalidate`, { method: 'POST' })
 
             return res.status(200).json({ message: 'Config updated' })
         } catch (error) {
