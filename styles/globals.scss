@@ -47,6 +47,28 @@ code[class*='language-'] {
     border-radius: 6px !important;
     background: #29223d !important;
     padding: 5px !important;
+
+    // use scrollbar use overflow
+    overflow: scroll !important;
+    max-height: 20rem !important;
+
+    // do not show horizontal scrollbar
+    overflow-x: hidden !important;
+
+    // auto scroll on new line
+    scroll-behavior: smooth !important;
+
+    // style scrollbar
+    &::-webkit-scrollbar {
+        width: 5px;
+        background: transparent;
+
+        // style the thumb
+        &-thumb {
+            background: #463566;
+            border-radius: 3px;
+        }
+    }
 }
 
 .rdw-dropdown-wrapper {
