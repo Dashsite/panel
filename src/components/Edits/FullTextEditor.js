@@ -27,6 +27,19 @@ const FullTextEditor = ({ data, onChange }) => {
         }
     }, [data])
 
+    // scroll to bottom of editor when adding a new line -> magic happens here
+    useEffect(() => {
+        const editor = document.querySelector('.rdw-editor-main')
+        const editorStateBlocksArray = editorState.getCurrentContent().getBlocksAsArray()
+        const lastBlock = editorStateBlocksArray[editorStateBlocksArray.length - 1]
+        const lastBlockKey = lastBlock.getKey()
+        const lastBlockTextLength = lastBlock.getLength()
+        const selectionState = editorState.getSelection()
+        const currentKey = selectionState.getStartKey()
+        const currentOffset = selectionState.getStartOffset()
+        if (currentKey === lastBlockKey && currentOffset === lastBlockTextLength) editor.scrollTop = editor.scrollHeight
+    }, [editorState])
+
     const handleChange = newEditorState => {
         setEditorState(newEditorState)
         const contentState = newEditorState.getCurrentContent()
@@ -40,7 +53,6 @@ const FullTextEditor = ({ data, onChange }) => {
         <Editor
             editorState={editorState}
             onEditorStateChange={handleChange}
-            // theme it using MUI
             toolbar={{
                 options: [
                     'inline',
